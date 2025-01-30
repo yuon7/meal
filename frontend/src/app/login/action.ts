@@ -40,6 +40,5 @@ export async function signup(formData: FormData) {
     redirect("/error");
   }
 
-  revalidatePath("/", "layout");
-  redirect("/");
+  redirect("/auth/confirm-signup?email=" + encodeURIComponent(data.email));
 }
