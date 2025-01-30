@@ -1,8 +1,10 @@
+import { login, signup } from "@/app/login/action";
+
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
-        <form className="space-y-6">
+        <form method="post" className="space-y-6">
           <div>
             <label
               htmlFor="email"
@@ -36,10 +38,16 @@ export default function LoginPage() {
           </div>
 
           <div className="flex space-x-4">
-            <button className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">
+            <button
+              formAction={login}
+              className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+            >
               Log in
             </button>
-            <button className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700">
+            <button
+              formAction={signup}
+              className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
+            >
               Sign up
             </button>
           </div>
