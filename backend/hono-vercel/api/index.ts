@@ -1,14 +1,25 @@
-import { Hono } from 'hono'
-import { handle } from 'hono/vercel'
+import { PrismaClient } from "@prisma/client";
+import { Hono } from "hono";
+import { handle } from "hono/vercel";
 
 export const config = {
-  runtime: 'edge'
-}
+  runtime: "edge",
+};
 
-const app = new Hono().basePath('/api')
+const app = new Hono().basePath("/api");
+const prisma = new PrismaClient();
 
-app.get('/', (c) => {
-  return c.json({ message: 'Hello Hono!' })
-})
+app.get("/", (c) => {
+  return c.json({ message: "Hello Hono!" });
+});
 
-export default handle(app)
+app.get("users", async (c) => {
+  try {
+    const users = await prisma.user.findMany();
+    return c.json(users);
+  } catch (error) {
+    return c.json({ error: "Failed to fetch users" }, 500);
+  }
+});
+
+export default handle(app);
