@@ -3,7 +3,7 @@ import { login, signup } from "@/app/login/action";
 export default function LoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
+      <div className="max-w-md w-full space-y-8 p-8 bg-black rounded-lg shadow">
         <form method="post" className="space-y-6">
           <div>
             <label
@@ -17,7 +17,7 @@ export default function LoginPage() {
               name="email"
               type="email"
               required
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2"
+              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black"
             />
           </div>
 
