@@ -8,7 +8,7 @@ Next.js 内に Hono や Supabase Auth を組み込んだフルスタックテン
 - **データベース**: Supabase
 - **ORM**: Prisma
 - **認証**: Supabase Auth
-- **スタイリング**: Tailwind CSS
+- **スタイリング**: CSS Modules
 - **ホスティング**:
   - Next.js → Vercel
 - **コード品質管理**: ESLint & Prettier
