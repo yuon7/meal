@@ -1,0 +1,37 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #121212; /* 暗い背景 */
+}
+
+.card {
+  max-width: 28rem; /* max-w-md */
+  width: 100%;
+  padding: 2rem; /* p-8 */
+  background-color: #1e1e2f; /* 少し明るいカード背景 */
+  border-radius: 0.5rem; /* rounded-lg */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3); /* 柔らかいシャドウ */
+}
+
+.title {
+  font-size: 1.5rem; /* text-2xl */
+  font-weight: bold; /* font-bold */
+  margin-bottom: 1rem; /* mb-4 */
+  color: #ffffff; /* text-gray-600 */
+}
+
+.text {
+  color: #ffffff; /* text-gray-600 */
+  margin-bottom: 1.5rem; /* mb-6 (or mb-4 for shorter spacing) */
+}
+
+.link {
+  color: #2563eb; /* text-blue-600 */
+  text-decoration: underline;
+}
+
+.link:hover {
+  color: #1e40af; /* hover:text-blue-800 */
+}
