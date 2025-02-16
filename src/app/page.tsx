@@ -4,7 +4,6 @@ import styles from "./page.module.css";
 export default function Home() {
   return (
     <div className={styles.container}>
-      {/* ヘッダー */}
       <header className={styles.header}>
         <Image
           className={styles.logo}
@@ -18,45 +17,6 @@ export default function Home() {
           A modern template combining the power of Next.js and Hono.
         </p>
       </header>
-
-      {/* ボタンコンテナ */}
-      <div className={styles.buttonsContainer}>
-        <a
-          href="https://hono.dev"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.button}
-        >
-          Learn Hono
-        </a>
-        <a
-          href="https://nextjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-          className={styles.button}
-        >
-          Explore Next.js
-        </a>
-      </div>
-
-      {/* フッター */}
-      <footer className={styles.footer}>
-        <p>
-          Created with ❤️ using{" "}
-          <a href="https://hono.dev" target="_blank" rel="noopener noreferrer">
-            Hono
-          </a>{" "}
-          and{" "}
-          <a
-            href="https://nextjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Next.js
-          </a>
-          .
-        </p>
-      </footer>
     </div>
   );
 }
