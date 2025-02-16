@@ -1,15 +1,13 @@
 import { login, signup } from "@/app/login/action";
+import styles from "./page.module.css";
 
 export default function LoginPage() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full space-y-8 p-8 bg-black rounded-lg shadow">
-        <form method="post" className="space-y-6">
+    <div className={styles.container}>
+      <div className={styles.card}>
+        <form method="post" className={styles.form}>
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="email" className={styles.label}>
               Email:
             </label>
             <input
@@ -17,15 +15,12 @@ export default function LoginPage() {
               name="email"
               type="email"
               required
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black"
+              className={styles.input}
             />
           </div>
 
           <div>
-            <label
-              htmlFor="password"
-              className="block text-sm font-medium text-gray-700"
-            >
+            <label htmlFor="password" className={styles.label}>
               Password:
             </label>
             <input
@@ -33,20 +28,20 @@ export default function LoginPage() {
               name="password"
               type="password"
               required
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-black"
+              className={styles.input}
             />
           </div>
 
-          <div className="flex space-x-4">
+          <div className={styles.buttonGroup}>
             <button
               formAction={login}
-              className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              className={`${styles.button} ${styles.loginButton}`}
             >
               Log in
             </button>
             <button
               formAction={signup}
-              className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
+              className={`${styles.button} ${styles.signupButton}`}
             >
               Sign up
             </button>
