@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import "/style//globals.css";
+import "/styles/globals.css"; // グローバルCSSを正しいパスでインポート
+import Header from "@/components/Header/Header"; // ヘッダーコンポーネントをインポート
 
 export const metadata: Metadata = {
   title: "Next-Hono-Template",
@@ -13,7 +14,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
-      <body>{children}</body>
+      <body>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }

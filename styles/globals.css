@@ -10,12 +10,13 @@
   }
 }
 
-.html {
-  background-color: #121212;
+html {
+  background-color: var(--background);
 }
 
-.body {
+body {
   color: var(--foreground);
   background-color: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
 }
