@@ -2,12 +2,23 @@
 import React, { useState } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
 export default function Header() {
+  const supabase = await createClient();
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error(error.message);
+    } else {
+      console.log("User logged out");
+    }
   };
 
   return (
@@ -22,7 +33,7 @@ export default function Header() {
         <nav className={styles.nav}>
           <ul>
             <li>
-              <Link href="/">Logout</Link>
+              <button onClick={handleLogout}>Logout</button>
             </li>
           </ul>
 
