@@ -3,11 +3,26 @@ import React, { useState } from "react";
 import styles from "./Header.module.css";
 import Link from "next/link";
 
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const supabase = createClient();
+  const router = useRouter();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Logout failed:", error.message);
+    } else {
+      console.log("User logged out successfully.");
+      router.refresh();
+    }
   };
 
   return (
@@ -22,7 +37,7 @@ export default function Header() {
         <nav className={styles.nav}>
           <ul>
             <li>
-              <Link href="/">Logout</Link>
+              <button onClick={handleLogout}>Logout</button>
             </li>
           </ul>
 
