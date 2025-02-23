@@ -19,7 +19,8 @@
 }
 
 .logo a:hover {
-  color: #0070f3;
+  color: #fff;
+  background: #0a0a0a;
 }
 
 .nav {
@@ -40,53 +41,80 @@
 }
 
 .nav li a:hover {
-  color: #0070f3;
+  color: #fff;
+  background: #0a0a0a;
 }
 
 .hamburger {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 24px;
-  height: 18px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
 }
 
-.hamburger p:nth-child(1) {
-  margin: 0.4px 0;
-  width: 150%;
-  height: 2px;
-  border-radius: 2px;
-  background-color: black;
-}
-.hamburger p:nth-child(2) {
-  margin: 0.4px 0;
-  width: 125%;
-  height: 2px;
-  border-radius: 2px;
-  background-color: black;
-}
-.hamburger p:nth-child(3) {
-  margin: 0.4px 0;
-  width: 100%;
+.hamburger p {
+  margin: 4px 0;
+  width: var(--hamburger-bar-width, 100%);
   height: 2px;
   border-radius: 2px;
   background-color: black;
 }
 
+.hamburger p:nth-child(1) {
+  --hamburger-bar-width: 100%;
+}
+.hamburger p:nth-child(2) {
+  --hamburger-bar-width: 100%;
+}
+.hamburger p:nth-child(3) {
+  --hamburger-bar-width: 100%;
+}
+
 .drawerMenu {
-  position: fixed;
+  position: absolute;
   font-size: 1.5rem;
-  top: 7vh;
+  top: 8.5vh;
   right: -100%;
   width: 70vw;
   max-width: 200px;
   height: calc(100vh - 7vh);
   background-color: var(--background);
   transition: right 0.5s ease;
-  z-index: 1100;
+  z-index: 0;
 }
 
 .drawerOpen {
   right: 0;
+}
+
+.button {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  margin: auto;
+  padding: 0.5rem 1.5rem;
+  font-weight: bold;
+  border: 2px solid #0a0a0a;
+  color: #0a0a0a;
+  transition: 0.5s;
+  font-size: 1rem;
+}
+
+.button:hover {
+  color: #fff;
+  background: #0a0a0a;
+}
+
+.toggleMenu {
+  line-height: 3em;
+}
+
+.toggleMenu a {
+  color: #fff;
+}
+
+.toggleMenu a:hover {
+  color: #ccc;
 }
