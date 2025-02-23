@@ -73,16 +73,16 @@
 }
 
 .drawerMenu {
-  position: fixed;
+  position: absolute;
   font-size: 1.5rem;
-  top: 7vh;
+  top: 8.5vh;
   right: -100%;
   width: 70vw;
   max-width: 200px;
   height: calc(100vh - 7vh);
   background-color: var(--background);
   transition: right 0.5s ease;
-  z-index: 1100;
+  z-index: 0;
 }
 
 .drawerOpen {
@@ -105,4 +105,16 @@
 .button:hover {
   color: #fff;
   background: #0a0a0a;
+}
+
+.toggleMenu {
+  line-height: 3em;
+}
+
+.toggleMenu a {
+  color: #fff;
+}
+
+.toggleMenu a:hover {
+  color: #ccc;
 }
