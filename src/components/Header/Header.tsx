@@ -37,11 +37,17 @@ export default function Header() {
         <nav className={styles.nav}>
           <ul>
             <li>
-              <button onClick={handleLogout}>Logout</button>
+              <button className={styles.button} onClick={handleLogout}>
+                Logout
+              </button>
             </li>
           </ul>
 
-          <button className={styles.hamburger} onClick={toggleMenu}>
+          <button
+            className={styles.hamburger}
+            onClick={toggleMenu}
+            aria-label="Toggle navigation menu"
+          >
             <p></p>
             <p></p>
             <p></p>
