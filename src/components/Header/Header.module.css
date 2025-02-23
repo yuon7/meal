@@ -19,7 +19,8 @@
 }
 
 .logo a:hover {
-  color: #0070f3;
+  color: #fff;
+  background: #0a0a0a;
 }
 
 .nav {
@@ -40,38 +41,35 @@
 }
 
 .nav li a:hover {
-  color: #0070f3;
+  color: #fff;
+  background: #0a0a0a;
 }
 
 .hamburger {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  width: 24px;
-  height: 18px;
+  width: 36px;
+  height: 36px;
   cursor: pointer;
 }
 
-.hamburger p:nth-child(1) {
-  margin: 0.4px 0;
-  width: 150%;
+.hamburger p {
+  margin: 4px 0;
+  width: var(--hamburger-bar-width, 100%);
   height: 2px;
   border-radius: 2px;
   background-color: black;
+}
+
+.hamburger p:nth-child(1) {
+  --hamburger-bar-width: 100%;
 }
 .hamburger p:nth-child(2) {
-  margin: 0.4px 0;
-  width: 125%;
-  height: 2px;
-  border-radius: 2px;
-  background-color: black;
+  --hamburger-bar-width: 100%;
 }
 .hamburger p:nth-child(3) {
-  margin: 0.4px 0;
-  width: 100%;
-  height: 2px;
-  border-radius: 2px;
-  background-color: black;
+  --hamburger-bar-width: 100%;
 }
 
 .drawerMenu {
@@ -89,4 +87,22 @@
 
 .drawerOpen {
   right: 0;
+}
+
+.button {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  margin: auto;
+  padding: 0.5rem 1.5rem;
+  font-weight: bold;
+  border: 2px solid #0a0a0a;
+  color: #0a0a0a;
+  transition: 0.5s;
+  font-size: 1rem;
+}
+
+.button:hover {
+  color: #fff;
+  background: #0a0a0a;
 }
