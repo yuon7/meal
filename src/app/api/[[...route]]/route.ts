@@ -53,5 +53,18 @@ app.patch("/todos/:id", async (c) => {
   }
 });
 
+app.delete("/todos/:id", async (c) => {
+  const id = parseInt(c.req.param("id"), 10);
+  try {
+    await prisma.todo.delete({
+      where: { id },
+    });
+    return c.json({ message: "Todo deleted" });
+  } catch (error) {
+    console.error("Error deleting todo:", error);
+    return c.json({ error: "Failed to delete todo" }, 500);
+  }
+});
+
 export const GET = handle(app);
 export const POST = handle(app);
