@@ -32,5 +32,26 @@ app.post("/todos", async (c) => {
   return c.json(newTodos, 201);
 });
 
+app.patch("/todos/:id", async (c) => {
+  const id = parseInt(c.req.param("id"), 10);
+  const body = await c.req.json();
+  const { done } = body;
+
+  if (typeof done !== "boolean") {
+    return c.json({ error: "Done is required" }, 400);
+  }
+
+  try {
+    const updatedTodo = await prisma.todo.update({
+      where: { id },
+      data: { done },
+    });
+    return c.json(updatedTodo);
+  } catch (error) {
+    console.error("Error updating todo:", error);
+    return c.json({ error: "Failed to update todo" }, 500);
+  }
+});
+
 export const GET = handle(app);
 export const POST = handle(app);
