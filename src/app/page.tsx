@@ -1,13 +1,18 @@
-import styles from "./page.module.css";
-import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import TodoApp from "@/features/TodoApp/TodoApp";
+import { createClient } from "@/lib/supabase/server";
+import styles from "./page.module.css";
 
 export default async function Home() {
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.getUser();
-  if (error || !data?.user) {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
     redirect("/login");
   }
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -17,6 +22,7 @@ export default async function Home() {
           A modern template combining the power of Next.js and Hono.
         </p>
       </header>
+      <TodoApp />
     </div>
   );
 }
