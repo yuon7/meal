@@ -10,10 +10,9 @@ interface Todo {
 
 export default function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
-  const [newTodoTitle, setNewTodoTitle] = useState<string>(""); // 新しい状態を追加
+  const [newTodoTitle, setNewTodoTitle] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
 
-  // 初期データを取得
   useEffect(() => {
     fetch("/api/todos")
       .then((res) => res.json())
@@ -21,12 +20,10 @@ export default function TodoApp() {
       .catch((error) => console.error("Error fetching todos:", error));
   }, []);
 
-  // フォーム送信時の処理
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (!newTodoTitle.trim()) {
-      // 空白チェック
       setError("Please enter a todo");
       return;
     }
@@ -40,8 +37,8 @@ export default function TodoApp() {
     })
       .then((res) => res.json())
       .then((data) => {
-        setTodos([...todos, data]); // 新しいタスクをリストに追加
-        setNewTodoTitle(""); // 入力フィールドをリセット
+        setTodos([...todos, data]);
+        setNewTodoTitle("");
         setError(null);
       })
       .catch((error) => console.error("Error creating todo:", error));
@@ -63,8 +60,8 @@ export default function TodoApp() {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={newTodoTitle} // 入力フィールドはnewTodoTitleと連動
-          onChange={(e) => setNewTodoTitle(e.target.value)} // 入力値を更新
+          value={newTodoTitle}
+          onChange={(e) => setNewTodoTitle(e.target.value)}
         />
         <button type="submit">Add Todo</button>
       </form>
