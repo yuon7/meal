@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import "/styles/globals.css"; // グローバルCSSを正しいパスでインポート
-import Header from "@/components/Header/Header"; // ヘッダーコンポーネントをインポート
+import "/styles/globals.css";
+import Header from "@/components/Header/Header";
+import { MantineProvider } from "@mantine/core";
 
 export const metadata: Metadata = {
   title: "Next-Hono-Template",
@@ -15,8 +16,10 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <body>
-        <Header />
-        {children}
+        <MantineProvider>
+          <Header />
+          {children}
+        </MantineProvider>
       </body>
     </html>
   );
