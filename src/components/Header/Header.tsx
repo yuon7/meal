@@ -27,8 +27,9 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { MantineLogo } from "@mantinex/mantine-logo";
 import classes from "./Header.module.css";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 const mockdata = [
   {
@@ -87,11 +88,24 @@ export function HeaderMegaMenu() {
     </UnstyledButton>
   ));
 
+  const supabase = createClient();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Logout failed:", error.message);
+    } else {
+      console.log("User logged out successfully.");
+      router.refresh();
+    }
+  };
+
   return (
-    <Box pb={120}>
+    <Box>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-          <MantineLogo size={30} />
+          <a>Next-Hono-Template</a>
 
           <Group h="100%" gap={0} visibleFrom="sm">
             <a href="#" className={classes.link}>
@@ -153,8 +167,9 @@ export function HeaderMegaMenu() {
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button variant="default" onClick={handleLogout}>
+              Log out
+            </Button>
           </Group>
 
           <Burger
@@ -197,10 +212,10 @@ export function HeaderMegaMenu() {
           </a>
 
           <Divider my="sm" />
-
           <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default">Log in</Button>
-            <Button>Sign up</Button>
+            <Button variant="default" onClick={handleLogout}>
+              Log out
+            </Button>
           </Group>
         </ScrollArea>
       </Drawer>
