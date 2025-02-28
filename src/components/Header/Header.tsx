@@ -34,33 +34,44 @@ import { useRouter } from "next/navigation";
 const mockdata = [
   {
     icon: IconCode,
-    title: "Open source",
-    description: "This Pokémon’s cry is very loud and distracting",
+    title: "TypeScript",
+    description:
+      "TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.",
+    link: "https://www.typescriptlang.org/",
   },
   {
     icon: IconCoin,
-    title: "Free for everyone",
-    description: "The fluid of Smeargle’s tail secretions changes",
+    title: "React",
+    description:
+      "React is the library for web and native user interfaces. Build user interfaces out of individual pieces called components written in JavaScript.",
+    link: "https://ja.react.dev/",
   },
   {
     icon: IconBook,
-    title: "Documentation",
-    description: "Yanma is capable of seeing 360 degrees without",
+    title: "Next.js",
+    description:
+      "Used by some of the world's largest companies, Next.js enables you to create high-quality web applications with the power of React components.",
+    link: "https://nextjs.org/",
   },
   {
     icon: IconFingerprint,
-    title: "Security",
-    description: "The shell’s rounded shape and the grooves on its.",
+    title: "Supabase",
+    description: "Supabase is an open source Firebase alternative.",
+    link: "https://supabase.com/",
   },
   {
     icon: IconChartPie3,
-    title: "Analytics",
-    description: "This Pokémon uses its flying ability to quickly chase",
+    title: "Prisma",
+    description:
+      "Ship production apps at lightning speed, and scale to a global audience effortlessly with our next-gen serverless database.",
+    link: "https://www.prisma.io/",
   },
   {
     icon: IconNotification,
-    title: "Notifications",
-    description: "Combusken battles with the intensely hot flames it spews",
+    title: "Vercel",
+    description:
+      "Vercel provides the developer tools and cloud infrastructure to build, scale, and secure a faster, more personalized web.",
+    link: "https://vercel.com/",
   },
 ];
 
@@ -71,7 +82,7 @@ export function HeaderMegaMenu() {
   const theme = useMantineTheme();
 
   const links = mockdata.map((item) => (
-    <UnstyledButton className={classes.subLink} key={item.title}>
+    <Anchor href={item.link} className={classes.subLink} key={item.title}>
       <Group wrap="nowrap" align="flex-start">
         <ThemeIcon size={34} variant="default" radius="md">
           <item.icon size={22} color={theme.colors.blue[6]} />
@@ -85,7 +96,7 @@ export function HeaderMegaMenu() {
           </Text>
         </div>
       </Group>
-    </UnstyledButton>
+    </Anchor>
   ));
 
   const supabase = createClient();
@@ -122,7 +133,7 @@ export function HeaderMegaMenu() {
                 <a href="#" className={classes.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
-                      Features
+                      Tech Stack
                     </Box>
                     <IconChevronDown size={16} color={theme.colors.blue[6]} />
                   </Center>
@@ -131,10 +142,7 @@ export function HeaderMegaMenu() {
 
               <HoverCard.Dropdown style={{ overflow: "hidden" }}>
                 <Group justify="space-between" px="md">
-                  <Text fw={500}>Features</Text>
-                  <Anchor href="#" fz="xs">
-                    View all
-                  </Anchor>
+                  <Text fw={500}>Teck Stack</Text>
                 </Group>
 
                 <Divider my="sm" />
@@ -150,10 +158,12 @@ export function HeaderMegaMenu() {
                         Get started
                       </Text>
                       <Text size="xs" c="dimmed">
-                        Their food sources have decreased, and their numbers
+                        Get started with GitHub source code and your project
                       </Text>
                     </div>
-                    <Button variant="default">Get started</Button>
+                    <Anchor href="https://github.com/Sho0226/Next-Hono-Template">
+                      <Button variant="default">Get started</Button>
+                    </Anchor>
                   </Group>
                 </div>
               </HoverCard.Dropdown>
