@@ -1,9 +1,14 @@
 "use client";
 import {
+  IconBolt,
   IconBook,
+  IconBrandNextjs,
+  IconBrandPrisma,
+  IconBrandReact,
+  IconBrandTypescript,
+  IconBrandVercel,
   IconChartPie3,
   IconChevronDown,
-  IconCode,
   IconCoin,
   IconFingerprint,
   IconNotification,
@@ -33,41 +38,41 @@ import { useRouter } from "next/navigation";
 
 const mockdata = [
   {
-    icon: IconCode,
+    icon: IconBrandTypescript,
     title: "TypeScript",
     description:
       "TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.",
     link: "https://www.typescriptlang.org/",
   },
   {
-    icon: IconCoin,
+    icon: IconBrandReact,
     title: "React",
     description:
       "React is the library for web and native user interfaces. Build user interfaces out of individual pieces called components written in JavaScript.",
     link: "https://ja.react.dev/",
   },
   {
-    icon: IconBook,
+    icon: IconBrandNextjs,
     title: "Next.js",
     description:
       "Used by some of the world's largest companies, Next.js enables you to create high-quality web applications with the power of React components.",
     link: "https://nextjs.org/",
   },
   {
-    icon: IconFingerprint,
+    icon: IconBolt,
     title: "Supabase",
     description: "Supabase is an open source Firebase alternative.",
     link: "https://supabase.com/",
   },
   {
-    icon: IconChartPie3,
+    icon: IconBrandPrisma,
     title: "Prisma",
     description:
       "Ship production apps at lightning speed, and scale to a global audience effortlessly with our next-gen serverless database.",
     link: "https://www.prisma.io/",
   },
   {
-    icon: IconNotification,
+    icon: IconBrandVercel,
     title: "Vercel",
     description:
       "Vercel provides the developer tools and cloud infrastructure to build, scale, and secure a faster, more personalized web.",
