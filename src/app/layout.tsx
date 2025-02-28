@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import "/styles/globals.css";
-import Header from "@/components/Header/Header";
+import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
+import { HeaderMegaMenu } from "@/components/Header/Header";
 
 export const metadata: Metadata = {
   title: "Next-Hono-Template",
@@ -17,7 +17,7 @@ export default function RootLayout({
     <html lang="ja">
       <body>
         <MantineProvider>
-          <Header />
+          <HeaderMegaMenu />
           {children}
         </MantineProvider>
       </body>
