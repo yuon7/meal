@@ -1,17 +1,12 @@
 "use client";
 import {
   IconBolt,
-  IconBook,
   IconBrandNextjs,
   IconBrandPrisma,
   IconBrandReact,
   IconBrandTypescript,
   IconBrandVercel,
-  IconChartPie3,
   IconChevronDown,
-  IconCoin,
-  IconFingerprint,
-  IconNotification,
 } from "@tabler/icons-react";
 import {
   Anchor,
