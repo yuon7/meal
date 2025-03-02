@@ -161,7 +161,6 @@ export function HeaderMegaMenu() {
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
           <a>Next-Hono-Template</a>
-
           <Group h="100%" gap={0} visibleFrom="sm">
             <HoverCard
               width={600}
@@ -180,18 +179,14 @@ export function HeaderMegaMenu() {
                   </Center>
                 </a>
               </HoverCard.Target>
-
               <HoverCard.Dropdown style={{ overflow: "hidden" }}>
                 <Group justify="space-between" px="md">
                   <Text fw={500}>Teck Stack</Text>
                 </Group>
-
                 <Divider my="sm" />
-
                 <SimpleGrid cols={2} spacing={0}>
                   {techStackLinks}
                 </SimpleGrid>
-
                 <div className={classes.dropdownFooter}>
                   <Group justify="space-between">
                     <div>
@@ -242,7 +237,6 @@ export function HeaderMegaMenu() {
               Log out
             </Button>
           </Group>
-
           <Burger
             opened={drawerOpened}
             onClick={toggleDrawer}
@@ -250,38 +244,35 @@ export function HeaderMegaMenu() {
           />
         </Group>
       </header>
-
       <Drawer
         opened={drawerOpened}
         onClose={closeDrawer}
         size="100%"
         padding="md"
-        title="Navigation"
+        title="Menu"
         hiddenFrom="sm"
         zIndex={1000000}
       >
         <ScrollArea h="calc(100vh - 80px" mx="-md">
           <Divider my="sm" />
-
-          <a href="#" className={classes.link}>
-            Home
-          </a>
           <UnstyledButton className={classes.link} onClick={toggleLinks}>
             <Center inline>
               <Box component="span" mr={5}>
-                Features
+                Tech Stack
+              </Box>
+              <IconChevronDown size={16} color={theme.colors.blue[6]} />
+            </Center>
+          </UnstyledButton>
+          <Collapse in={linksOpened}>{techStackLinks}</Collapse>
+          <UnstyledButton className={classes.link} onClick={toggleLinks}>
+            <Center inline>
+              <Box component="span" mr={5}>
+                Docs
               </Box>
               <IconChevronDown size={16} color={theme.colors.blue[6]} />
             </Center>
           </UnstyledButton>
           <Collapse in={linksOpened}>{docsLinks}</Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
-
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
             <Button variant="default" onClick={handleLogout}>
