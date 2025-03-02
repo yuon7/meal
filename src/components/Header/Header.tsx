@@ -1,19 +1,150 @@
 "use client";
-import React, { useState } from "react";
-import styles from "./Header.module.css";
-import Link from "next/link";
-
+import {
+  IconBolt,
+  IconBrandNextjs,
+  IconBrandPrisma,
+  IconBrandReact,
+  IconBrandTypescript,
+  IconBrandVercel,
+  IconChevronDown,
+} from "@tabler/icons-react";
+import {
+  Anchor,
+  Box,
+  Burger,
+  Button,
+  Center,
+  Collapse,
+  Divider,
+  Drawer,
+  Group,
+  HoverCard,
+  ScrollArea,
+  SimpleGrid,
+  Text,
+  ThemeIcon,
+  UnstyledButton,
+  useMantineTheme,
+} from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import classes from "./Header.module.css";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
-export default function Header() {
-  const [menuOpen, setMenuOpen] = useState(false);
+const techStackMockdata = [
+  {
+    icon: IconBrandTypescript,
+    title: "TypeScript",
+    description:
+      "TypeScript is a strongly typed programming language that builds on JavaScript, giving you better tooling at any scale.",
+    link: "https://www.typescriptlang.org/",
+  },
+  {
+    icon: IconBrandReact,
+    title: "React",
+    description:
+      "React is the library for web and native user interfaces. Build user interfaces out of individual pieces called components written in JavaScript.",
+    link: "https://ja.react.dev/",
+  },
+  {
+    icon: IconBrandNextjs,
+    title: "Next.js",
+    description:
+      "Used by some of the world's largest companies, Next.js enables you to create high-quality web applications with the power of React components.",
+    link: "https://nextjs.org/",
+  },
+  {
+    icon: IconBolt,
+    title: "Supabase",
+    description: "Supabase is an open source Firebase alternative.",
+    link: "https://supabase.com/",
+  },
+  {
+    icon: IconBrandPrisma,
+    title: "Prisma",
+    description:
+      "Ship production apps at lightning speed, and scale to a global audience effortlessly with our next-gen serverless database.",
+    link: "https://www.prisma.io/",
+  },
+  {
+    icon: IconBrandVercel,
+    title: "Vercel",
+    description:
+      "Vercel provides the developer tools and cloud infrastructure to build, scale, and secure a faster, more personalized web.",
+    link: "https://vercel.com/",
+  },
+];
+
+const docsMockdata = [
+  {
+    icon: IconBolt,
+    title: "Supabase dashboard",
+    description:
+      "Supabase dashboard is a web-based interface for managing your Supabase project.",
+    link: "https://supabase.com/dashboard/projects",
+  },
+  {
+    icon: IconBrandPrisma,
+    title: "Prisma Data Platform",
+    description:
+      "Prisma Data Platform is a web-based interface for managing your Prisma project.",
+    link: "https://cloud.prisma.io/",
+  },
+];
+export function HeaderMegaMenu() {
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+    useDisclosure(false);
+  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
+  const theme = useMantineTheme();
+
+  const techStackLinks = techStackMockdata.map((item) => (
+    <Anchor
+      href={item.link}
+      className={classes.subLink}
+      key={item.title}
+      target="_blank"
+    >
+      <Group wrap="nowrap" align="flex-start">
+        <ThemeIcon size={34} variant="default" radius="md">
+          <item.icon size={22} color={theme.colors.blue[6]} />
+        </ThemeIcon>
+        <div>
+          <Text size="sm" fw={500}>
+            {item.title}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {item.description}
+          </Text>
+        </div>
+      </Group>
+    </Anchor>
+  ));
+
+  const docsLinks = docsMockdata.map((item) => (
+    <Anchor
+      href={item.link}
+      className={classes.subLink}
+      key={item.title}
+      target="_blank"
+    >
+      <Group wrap="nowrap" align="flex-start">
+        <ThemeIcon size={34} variant="default" radius="md">
+          <item.icon size={22} color={theme.colors.blue[6]} />
+        </ThemeIcon>
+        <div>
+          <Text size="sm" fw={500}>
+            {item.title}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {item.description}
+          </Text>
+        </div>
+      </Group>
+    </Anchor>
+  ));
+
   const supabase = createClient();
   const router = useRouter();
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
@@ -26,78 +157,130 @@ export default function Header() {
   };
 
   return (
-    <>
-      {menuOpen && <div onClick={toggleMenu}></div>}
-
-      <header className={styles.header}>
-        <div className={styles.logo}>
-          <Link href="/">Next-Hono-Template</Link>
-        </div>
-
-        <nav className={styles.nav}>
-          <ul>
-            <li>
-              <button className={styles.button} onClick={handleLogout}>
-                Logout
-              </button>
-            </li>
-          </ul>
-
-          <button
-            className={styles.hamburger}
-            onClick={toggleMenu}
-            aria-label="Toggle navigation menu"
-          >
-            <p></p>
-            <p></p>
-            <p></p>
-          </button>
-        </nav>
+    <Box>
+      <header className={classes.header}>
+        <Group justify="space-between" h="100%">
+          <a>Next-Hono-Template</a>
+          <Group h="100%" gap={0} visibleFrom="sm">
+            <HoverCard
+              width={600}
+              position="bottom"
+              radius="md"
+              shadow="md"
+              withinPortal
+            >
+              <HoverCard.Target>
+                <a href="#" className={classes.link}>
+                  <Center inline>
+                    <Box component="span" mr={5}>
+                      Tech Stack
+                    </Box>
+                    <IconChevronDown size={16} color={theme.colors.blue[6]} />
+                  </Center>
+                </a>
+              </HoverCard.Target>
+              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
+                <Group justify="space-between" px="md">
+                  <Text fw={500}>Teck Stack</Text>
+                </Group>
+                <Divider my="sm" />
+                <SimpleGrid cols={2} spacing={0}>
+                  {techStackLinks}
+                </SimpleGrid>
+                <div className={classes.dropdownFooter}>
+                  <Group justify="space-between">
+                    <div>
+                      <Text fw={500} fz="sm">
+                        Get started
+                      </Text>
+                      <Text size="xs" c="dimmed">
+                        Get started with GitHub source code and your project
+                      </Text>
+                    </div>
+                    <Anchor href="https://github.com/Sho0226/Next-Hono-Template">
+                      <Button variant="default">Get started</Button>
+                    </Anchor>
+                  </Group>
+                </div>
+              </HoverCard.Dropdown>
+            </HoverCard>
+            <HoverCard
+              width={600}
+              position="bottom"
+              radius="md"
+              shadow="md"
+              withinPortal
+            >
+              <HoverCard.Target>
+                <a href="#" className={classes.link}>
+                  <Center inline>
+                    <Box component="span" mr={5}>
+                      Docs
+                    </Box>
+                    <IconChevronDown size={16} color={theme.colors.blue[6]} />
+                  </Center>
+                </a>
+              </HoverCard.Target>
+              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
+                <Group justify="space-between" px="md">
+                  <Text fw={500}>Docs</Text>
+                </Group>
+                <Divider my="sm" />
+                <SimpleGrid cols={2} spacing={0}>
+                  {docsLinks}
+                </SimpleGrid>
+              </HoverCard.Dropdown>
+            </HoverCard>
+          </Group>
+          <Group visibleFrom="sm">
+            <Button variant="default" onClick={handleLogout}>
+              Log out
+            </Button>
+          </Group>
+          <Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            hiddenFrom="sm"
+          />
+        </Group>
       </header>
-
-      <div
-        className={`${styles.drawerMenu} ${menuOpen ? styles.drawerOpen : ""}`}
+      <Drawer
+        opened={drawerOpened}
+        onClose={closeDrawer}
+        size="100%"
+        padding="md"
+        title="Menu"
+        hiddenFrom="sm"
+        zIndex={1000000}
       >
-        <ul>
-          <div className={styles.toggleMenu}>
-            <div onClick={toggleMenu}>
-              <Link href="https://www.typescriptlang.org/" target="_blank">
-                TypeScript
-              </Link>
-            </div>
-            <div onClick={toggleMenu}>
-              <Link href="https://ja.react.dev/" target="_blank">
-                React
-              </Link>
-            </div>
-            <div onClick={toggleMenu}>
-              <Link href="https://nextjs.org/" target="_blank">
-                Next.js
-              </Link>
-            </div>
-            <div onClick={toggleMenu}>
-              <Link href="https://hono.dev/" target="_blank">
-                Hono
-              </Link>
-            </div>
-            <div onClick={toggleMenu}>
-              <Link href="https://supabase.com/" target="_blank">
-                Supabase
-              </Link>
-            </div>
-            <div onClick={toggleMenu}>
-              <Link href="https://www.prisma.io/" target="_blank">
-                Prisma
-              </Link>
-            </div>
-            <div onClick={toggleMenu}>
-              <Link href="https://vercel.com/" target="_blank">
-                Vercel
-              </Link>
-            </div>
-          </div>
-        </ul>
-      </div>
-    </>
+        <ScrollArea h="calc(100vh - 80px" mx="-md">
+          <Divider my="sm" />
+          <UnstyledButton className={classes.link} onClick={toggleLinks}>
+            <Center inline>
+              <Box component="span" mr={5}>
+                Tech Stack
+              </Box>
+              <IconChevronDown size={16} color={theme.colors.blue[6]} />
+            </Center>
+          </UnstyledButton>
+          <Collapse in={linksOpened}>{techStackLinks}</Collapse>
+          <UnstyledButton className={classes.link} onClick={toggleLinks}>
+            <Center inline>
+              <Box component="span" mr={5}>
+                Docs
+              </Box>
+              <IconChevronDown size={16} color={theme.colors.blue[6]} />
+            </Center>
+          </UnstyledButton>
+          <Collapse in={linksOpened}>{docsLinks}</Collapse>
+          <Divider my="sm" />
+          <Group justify="center" grow pb="xl" px="md">
+            <Button variant="default" onClick={handleLogout}>
+              Log out
+            </Button>
+          </Group>
+        </ScrollArea>
+      </Drawer>
+    </Box>
   );
 }
