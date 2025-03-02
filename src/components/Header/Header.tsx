@@ -87,7 +87,12 @@ export function HeaderMegaMenu() {
   const theme = useMantineTheme();
 
   const links = mockdata.map((item) => (
-    <Anchor href={item.link} className={classes.subLink} key={item.title}>
+    <Anchor
+      href={item.link}
+      className={classes.subLink}
+      key={item.title}
+      target="_blank"
+    >
       <Group wrap="nowrap" align="flex-start">
         <ThemeIcon size={34} variant="default" radius="md">
           <item.icon size={22} color={theme.colors.blue[6]} />
