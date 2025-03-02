@@ -31,7 +31,7 @@ import classes from "./Header.module.css";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
-const mockdata = [
+const techStackMockdata = [
   {
     icon: IconBrandTypescript,
     title: "TypeScript",
@@ -75,13 +75,52 @@ const mockdata = [
   },
 ];
 
+const docsMockdata = [
+  {
+    icon: IconBolt,
+    title: "Supabase dashboard",
+    description:
+      "Supabase dashboard is a web-based interface for managing your Supabase project.",
+    link: "https://supabase.com/dashboard/projects",
+  },
+  {
+    icon: IconBrandPrisma,
+    title: "Prisma Data Platform",
+    description:
+      "Prisma Data Platform is a web-based interface for managing your Prisma project.",
+    link: "https://cloud.prisma.io/",
+  },
+];
 export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const theme = useMantineTheme();
 
-  const links = mockdata.map((item) => (
+  const techStackLinks = techStackMockdata.map((item) => (
+    <Anchor
+      href={item.link}
+      className={classes.subLink}
+      key={item.title}
+      target="_blank"
+    >
+      <Group wrap="nowrap" align="flex-start">
+        <ThemeIcon size={34} variant="default" radius="md">
+          <item.icon size={22} color={theme.colors.blue[6]} />
+        </ThemeIcon>
+        <div>
+          <Text size="sm" fw={500}>
+            {item.title}
+          </Text>
+          <Text size="xs" c="dimmed">
+            {item.description}
+          </Text>
+        </div>
+      </Group>
+    </Anchor>
+  ));
+
+  const docsLinks = docsMockdata.map((item) => (
     <Anchor
       href={item.link}
       className={classes.subLink}
@@ -124,9 +163,6 @@ export function HeaderMegaMenu() {
           <a>Next-Hono-Template</a>
 
           <Group h="100%" gap={0} visibleFrom="sm">
-            <a href="#" className={classes.link}>
-              Home
-            </a>
             <HoverCard
               width={600}
               position="bottom"
@@ -153,7 +189,7 @@ export function HeaderMegaMenu() {
                 <Divider my="sm" />
 
                 <SimpleGrid cols={2} spacing={0}>
-                  {links}
+                  {techStackLinks}
                 </SimpleGrid>
 
                 <div className={classes.dropdownFooter}>
@@ -173,14 +209,34 @@ export function HeaderMegaMenu() {
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
-            <a href="#" className={classes.link}>
-              Learn
-            </a>
-            <a href="#" className={classes.link}>
-              Academy
-            </a>
+            <HoverCard
+              width={600}
+              position="bottom"
+              radius="md"
+              shadow="md"
+              withinPortal
+            >
+              <HoverCard.Target>
+                <a href="#" className={classes.link}>
+                  <Center inline>
+                    <Box component="span" mr={5}>
+                      Docs
+                    </Box>
+                    <IconChevronDown size={16} color={theme.colors.blue[6]} />
+                  </Center>
+                </a>
+              </HoverCard.Target>
+              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
+                <Group justify="space-between" px="md">
+                  <Text fw={500}>Docs</Text>
+                </Group>
+                <Divider my="sm" />
+                <SimpleGrid cols={2} spacing={0}>
+                  {docsLinks}
+                </SimpleGrid>
+              </HoverCard.Dropdown>
+            </HoverCard>
           </Group>
-
           <Group visibleFrom="sm">
             <Button variant="default" onClick={handleLogout}>
               Log out
@@ -218,7 +274,7 @@ export function HeaderMegaMenu() {
               <IconChevronDown size={16} color={theme.colors.blue[6]} />
             </Center>
           </UnstyledButton>
-          <Collapse in={linksOpened}>{links}</Collapse>
+          <Collapse in={linksOpened}>{docsLinks}</Collapse>
           <a href="#" className={classes.link}>
             Learn
           </a>
