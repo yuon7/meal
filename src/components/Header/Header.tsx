@@ -170,7 +170,7 @@ export function HeaderMegaMenu() {
               withinPortal
             >
               <HoverCard.Target>
-                <a href="#" className={classes.link}>
+                <a className={classes.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
                       Tech Stack
@@ -212,7 +212,7 @@ export function HeaderMegaMenu() {
               withinPortal
             >
               <HoverCard.Target>
-                <a href="#" className={classes.link}>
+                <a className={classes.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
                       Docs
