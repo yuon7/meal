@@ -160,7 +160,7 @@ export function HeaderMegaMenu() {
     <Box>
       <header className={classes.header}>
         <Group justify="space-between" h="100%">
-          <a>Next-Hono-Template</a>
+          <h3>Next-Hono-Template</h3>
           <Group h="100%" gap={0} visibleFrom="sm">
             <HoverCard
               width={600}
