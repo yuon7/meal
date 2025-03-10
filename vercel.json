@@ -3,11 +3,9 @@
   "builds": [
     {
       "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "out" 
-      }
+      "use": "@vercel/static-build"
     }
   ],
+  "outputDirectory": ".next",
   "buildCommand": "npm run build"
 }
