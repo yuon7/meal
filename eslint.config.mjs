@@ -15,6 +15,7 @@ const eslintConfig = [
     plugins: {
       "@next/next": true,
     },
+    extends: ['next'],
   },
 ];
 
