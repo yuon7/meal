@@ -6,7 +6,7 @@ Next.js 内に Hono や Supabase Auth、Prisma を組み込んだフルスタッ
 ## 特徴
 
 - **フロントエンド & バックエンド**: Next.js（Hono & Supabase Auth 統合）
-- **データベース**: Supabase
+- **データベース**: Supabase（Prisma Accelerate 経由で接続）
 - **ORM**: Prisma
 - **認証**: Supabase Auth
 - **スタイリング**: CSS Modules
@@ -41,7 +41,7 @@ Next.js 内に Hono や Supabase Auth、Prisma を組み込んだフルスタッ
 
    `.env`ファイルに必要な環境変数を入力。
 
-4. データベースをセットアップ:
+4. Prisma Accelerate をセットアップ:
    ```sh
    npx prisma migrate dev
    ```
@@ -55,12 +55,11 @@ Next.js 内に Hono や Supabase Auth、Prisma を組み込んだフルスタッ
 1. [Supabase](https://supabase.com/) にアクセスしてサインアップ。
 2. 新しいプロジェクトを作成。
 3. **プロジェクト設定** → **API** に移動。
-4. **プロジェクト URL**、**anon public API キー**、**データベースの URL** をコピー。
+4. **プロジェクト URL**、**anon public API キー** をコピー。
 5. `.env`ファイルに以下を追加:
    ```sh
    SUPABASE_URL=your_project_url
    SUPABASE_ANON_KEY=your_anon_key
-   SUPABASE_DATABASE_URL=your_database_url
    ```
 
 ## Prisma Accelerate の使用
