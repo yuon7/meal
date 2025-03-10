@@ -6,7 +6,7 @@
     "dev": "next dev",
     "dev:hcm": "hcm 'src/**/*.module.css' -w",
     "hcm": "hcm 'src/**/*.module.css'",
-    "build": "prisma generate && next build",
+    "build": "prisma generate --no-engine && next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:js": "eslint --ext .ts,.tsx,.js --ignore-path .gitignore .",
