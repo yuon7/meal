@@ -32,8 +32,11 @@ app.post("/todos", async (c) => {
   return c.json(newTodos, 201);
 });
 
-app.patch("/todos/:id", async (c) => {
+app.put("/todos/:id", async (c) => {
   const id = parseInt(c.req.param("id"), 10);
+  if (isNaN(id)) {
+    return c.json({ error: "Invalid ID" }, 400); // IDが数値でない場合はエラー
+  }
   const body = await c.req.json();
   const { done } = body;
 
@@ -68,3 +71,5 @@ app.delete("/todos/:id", async (c) => {
 
 export const GET = handle(app);
 export const POST = handle(app);
+export const PUT = handle(app);
+export const DELETE = handle(app);
