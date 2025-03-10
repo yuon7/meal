@@ -12,13 +12,21 @@ interface Todo {
 export default function TodoApp() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [newTodoTitle, setNewTodoTitle] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    setLoading(true);
     fetch("/api/todos")
       .then((res) => res.json())
-      .then((data) => setTodos(data))
-      .catch((error) => console.error("Error fetching todos:", error));
+      .then((data) => {
+        setTodos(data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching todos:", error);
+        setLoading(false);
+      });
   }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -66,39 +74,46 @@ export default function TodoApp() {
 
   return (
     <div className={styles.container}>
-      <h1 className={styles.heading}>Todo List</h1>
-      <form onSubmit={handleSubmit} className={styles.form}>
-        <input
-          type="text"
-          value={newTodoTitle}
-          onChange={(e) => setNewTodoTitle(e.target.value)}
-          className={styles.input}
-        />
-        <button type="submit" className={styles.button}>
-          Add Todo
-        </button>
-      </form>
-      {error && <p className={styles.error}>{error}</p>}
+      {loading ? (
+        <p className={styles.loading}>Loading...</p>
+      ) : (
+        <>
+          <h1 className={styles.heading}>Todo List</h1>
 
-      <h2 className={styles.subheading}>Todos</h2>
-      <ul className={styles.list}>
-        {todos.map((todo) => (
-          <li key={todo.id} className={styles.listItem}>
+          <form onSubmit={handleSubmit} className={styles.form}>
             <input
-              type="checkbox"
-              checked={todo.done}
-              onChange={() => handleToggleDone(todo.id)}
+              type="text"
+              value={newTodoTitle}
+              onChange={(e) => setNewTodoTitle(e.target.value)}
+              className={styles.input}
             />
-            <span>{todo.title}</span>
-            <button
-              onClick={() => handleDelete(todo.id)}
-              className={styles.deleteButton}
-            >
-              Delete
+            <button type="submit" className={styles.button}>
+              Add Todo
             </button>
-          </li>
-        ))}
-      </ul>
+          </form>
+          {error && <p className={styles.error}>{error}</p>}
+
+          <h2 className={styles.subheading}>Todos</h2>
+          <ul className={styles.list}>
+            {todos.map((todo) => (
+              <li key={todo.id} className={styles.listItem}>
+                <input
+                  type="checkbox"
+                  checked={todo.done}
+                  onChange={() => handleToggleDone(todo.id)}
+                />
+                <span>{todo.title}</span>
+                <button
+                  onClick={() => handleDelete(todo.id)}
+                  className={styles.deleteButton}
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 }
