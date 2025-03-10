@@ -3,9 +3,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 85vh;
+  width: 100vw;
+  height: 100vh;
   padding: 2rem;
-  background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  background: linear-gradient(135deg, #fff, #c3cfe2);
   font-family: var(--font-geist-sans);
 }
 
