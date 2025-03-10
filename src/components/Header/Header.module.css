@@ -1,92 +1,15 @@
 .header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  background-color: var(--background);
-  color: var(--foreground);
-  position: relative;
+  height: 60px;
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
+  border-bottom: 1px solid light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
 }
 
-.logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-}
-
-.logo a {
-  text-decoration: none;
-  color: var(--foreground);
-}
-
-.logo a:hover {
-  color: #0070f3;
-}
-
-.nav {
-  display: flex;
-}
-
-.nav ul {
-  display: flex;
-  list-style: none;
-  margin: 0 2rem;
-  padding: 0;
-  gap: 1.5rem;
-}
-
-.nav li a {
-  text-decoration: none;
-  color: var(--foreground);
-}
-
-.nav li a:hover {
-  color: #0070f3;
-}
-
-.hamburger {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  width: 24px;
-  height: 18px;
-  cursor: pointer;
-}
-
-.hamburger p:nth-child(1) {
-  margin: 0.4px 0;
-  width: 150%;
-  height: 2px;
-  border-radius: 2px;
-  background-color: black;
-}
-.hamburger p:nth-child(2) {
-  margin: 0.4px 0;
-  width: 125%;
-  height: 2px;
-  border-radius: 2px;
-  background-color: black;
-}
-.hamburger p:nth-child(3) {
-  margin: 0.4px 0;
-  width: 100%;
-  height: 2px;
-  border-radius: 2px;
-  background-color: black;
-}
-
-.drawerMenu {
-  position: fixed;
-  font-size: 1.5rem;
-  top: 7vh;
-  right: -100%;
-  width: 70vw;
-  max-width: 200px;
-  height: calc(100vh - 7vh);
-  background-color: var(--background);
-  transition: right 0.5s ease;
-  z-index: 1100;
-}
-
-.drawerOpen {
-  right: 0;
+.dropdownFooter {
+  background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-7));
+  margin: calc(var(--mantine-spacing-md) * -1);
+  margin-top: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-md) calc(var(--mantine-spacing-md) * 2);
+  padding-bottom: var(--mantine-spacing-xl);
+  border-top: 1px solid light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-5));
 }
