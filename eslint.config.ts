@@ -30,9 +30,6 @@ export default tseslint.config(
           "allowAny": false
         }
       ],
-      "prefer-template": "error"
-    }
-      
       '@typescript-eslint/no-unused-vars': [
         'warn',
         {
