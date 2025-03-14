@@ -22,7 +22,6 @@ export default tseslint.config(
       "@typescript-eslint/restrict-plus-operands": [
         "error",
         {
-          "checkCompoundAssignments": true,
           "allowBoolean": false,
           "allowNullish": false,
           "allowNumberAndString": false,
