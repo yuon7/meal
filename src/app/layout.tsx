@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "@mantine/core/styles.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { HeaderMegaMenu } from "@/components/Header/Header";
+import { Analytics } from '@vercel/analytics/next';
 
 export const metadata: Metadata = {
   title: "Next-Hono-Template",
@@ -22,6 +23,7 @@ export default function RootLayout({
         <MantineProvider>
           <HeaderMegaMenu />
           {children}
+          <Analytics />
         </MantineProvider>
       </body>
     </html>
