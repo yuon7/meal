@@ -7,7 +7,7 @@ export default tseslint.config(
   { files: ['**/*.ts'] },
   gitignore({ files: ['./.gitignore',] }),
   js.configs.recommended,
-  ...tseslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
   {
     rules: {
       eqeqeq: 'error',
