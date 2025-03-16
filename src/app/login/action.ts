@@ -40,5 +40,5 @@ export async function signup(formData: FormData) {
     redirect("/notFoundTitle");
   }
 
-  redirect(`/auth/confirm-signup?email=${encodeURIComponent(data.email)}`);
+  redirect(`/auth/confirmSignup?email=${encodeURIComponent(data.email)}`);
 }
