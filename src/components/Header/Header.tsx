@@ -99,11 +99,7 @@ export function HeaderMegaMenu() {
   const theme = useMantineTheme();
 
   const techStackLinks = techStackMockdata.map((item) => (
-    <Anchor
-      href={item.link}
-      key={item.title}
-      target="_blank"
-    >
+    <Anchor href={item.link} key={item.title} target="_blank">
       <Group wrap="nowrap" align="flex-start">
         <ThemeIcon size={34} variant="default" radius="md">
           <item.icon size={22} color={theme.colors.blue[6]} />
@@ -121,11 +117,7 @@ export function HeaderMegaMenu() {
   ));
 
   const dashBoardLinks = dashBoardMockdata.map((item) => (
-    <Anchor
-      href={item.link}
-      key={item.title}
-      target="_blank"
-    >
+    <Anchor href={item.link} key={item.title} target="_blank">
       <Group wrap="nowrap" align="flex-start">
         <ThemeIcon size={34} variant="default" radius="md">
           <item.icon size={22} color={theme.colors.blue[6]} />
@@ -159,9 +151,15 @@ export function HeaderMegaMenu() {
     <Box>
       <header className={styles.header}>
         <Group justify="space-between" h="100%">
-        <h3>Next-Hono-Template</h3>
+          <h3>Next-Hono-Template</h3>
           <Group h="100%" gap={0} visibleFrom="sm">
-            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
+            <HoverCard
+              width={600}
+              position="bottom"
+              radius="md"
+              shadow="md"
+              withinPortal
+            >
               <HoverCard.Target>
                 <a className={styles.link}>
                   <Center inline>
@@ -172,7 +170,7 @@ export function HeaderMegaMenu() {
                   </Center>
                 </a>
               </HoverCard.Target>
-              <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
+              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
                 <Group justify="space-between" px="md">
                   <Text fw={500}>Tech Stack</Text>
                 </Group>
@@ -187,18 +185,24 @@ export function HeaderMegaMenu() {
                         Get started
                       </Text>
                       <Text size="xs" c="dimmed">
-                      Get started with GitHub source code and your project
+                        Get started with GitHub source code and your project
                       </Text>
                     </div>
                     <Anchor href="https://github.com/Sho0226/Next-Hono-Template">
-                    <Button variant="default">Get started</Button>
+                      <Button variant="default">Get started</Button>
                     </Anchor>
                   </Group>
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
-            
-            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
+
+            <HoverCard
+              width={600}
+              position="bottom"
+              radius="md"
+              shadow="md"
+              withinPortal
+            >
               <HoverCard.Target>
                 <a className={styles.link}>
                   <Center inline>
@@ -206,30 +210,30 @@ export function HeaderMegaMenu() {
                       DashBoard
                     </Box>
                     <IconChevronDown size={16} color={theme.colors.blue[6]} />
-                    </Center>
+                  </Center>
                 </a>
-            </HoverCard.Target>
-            <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
-              <Group justify="space-between" px="md">
-                <Text fw={500}>dashBoard</Text>
-              </Group>
-              <Divider my="sm" />
-              <SimpleGrid cols={2} spacing={0}>
-                {dashBoardLinks}
-              </SimpleGrid>
-            </HoverCard.Dropdown>
-          </HoverCard>
-        </Group>
+              </HoverCard.Target>
+              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
+                <Group justify="space-between" px="md">
+                  <Text fw={500}>dashBoard</Text>
+                </Group>
+                <Divider my="sm" />
+                <SimpleGrid cols={2} spacing={0}>
+                  {dashBoardLinks}
+                </SimpleGrid>
+              </HoverCard.Dropdown>
+            </HoverCard>
+          </Group>
 
-        <Group visibleFrom="sm">
+          <Group visibleFrom="sm">
             <Button variant="default" onClick={handleLogout}>
               Log out
             </Button>
           </Group>
           <Burger
-           opened={drawerOpened}
-           onClick={toggleDrawer}
-           hiddenFrom="sm" 
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            hiddenFrom="sm"
           />
         </Group>
       </header>
