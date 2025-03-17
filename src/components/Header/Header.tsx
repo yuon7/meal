@@ -157,17 +157,11 @@ export function HeaderMegaMenu() {
     <Box>
       <header className={styles.header}>
         <Group justify="space-between" h="100%">
-          <h3>Next-Hono-Template</h3>
+        <h3>Next-Hono-Template</h3>
           <Group h="100%" gap={0} visibleFrom="sm">
-            <HoverCard
-              width={600}
-              position="bottom"
-              radius="md"
-              shadow="md"
-              withinPortal
-            >
+            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
               <HoverCard.Target>
-                <a>
+                <a className={styles.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
                       Tech Stack
@@ -176,14 +170,18 @@ export function HeaderMegaMenu() {
                   </Center>
                 </a>
               </HoverCard.Target>
-              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
+
+              <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
                 <Group justify="space-between" px="md">
-                  <Text fw={500}>Teck Stack</Text>
+                  <Text fw={500}>Tech Stack</Text>
                 </Group>
+
                 <Divider my="sm" />
+
                 <SimpleGrid cols={2} spacing={0}>
                   {techStackLinks}
                 </SimpleGrid>
+
                 <div className={styles.dropdownFooter}>
                   <Group justify="space-between">
                     <div>
@@ -191,68 +189,66 @@ export function HeaderMegaMenu() {
                         Get started
                       </Text>
                       <Text size="xs" c="dimmed">
-                        Get started with GitHub source code and your project
+                      Get started with GitHub source code and your project
                       </Text>
                     </div>
                     <Anchor href="https://github.com/Sho0226/Next-Hono-Template">
-                      <Button variant="default">Get started</Button>
+                    <Button variant="default">Get started</Button>
                     </Anchor>
                   </Group>
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
-            <HoverCard
-              width={600}
-              position="bottom"
-              radius="md"
-              shadow="md"
-              withinPortal
-            >
+            <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
               <HoverCard.Target>
-                <a>
+                <a className={styles.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
                       Docs
                     </Box>
                     <IconChevronDown size={16} color={theme.colors.blue[6]} />
-                  </Center>
+                    </Center>
                 </a>
-              </HoverCard.Target>
-              <HoverCard.Dropdown style={{ overflow: "hidden" }}>
-                <Group justify="space-between" px="md">
-                  <Text fw={500}>Docs</Text>
-                </Group>
-                <Divider my="sm" />
-                <SimpleGrid cols={2} spacing={0}>
-                  {docsLinks}
-                </SimpleGrid>
-              </HoverCard.Dropdown>
-            </HoverCard>
+            </HoverCard.Target>
+            <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
+              <Group justify="space-between" px="md">
+                <Text fw={500}>Docs</Text>
+              </Group>
+
+              <Divider my="sm" />
+
+              <SimpleGrid cols={2} spacing={0}>
+                {docsLinks}
+              </SimpleGrid>
+            </HoverCard.Dropdown>
+          </HoverCard>
           </Group>
+
           <Group visibleFrom="sm">
             <Button variant="default" onClick={handleLogout}>
               Log out
             </Button>
           </Group>
           <Burger
-            opened={drawerOpened}
-            onClick={toggleDrawer}
-            hiddenFrom="sm"
+           opened={drawerOpened}
+           onClick={toggleDrawer}
+           hiddenFrom="sm" 
           />
         </Group>
       </header>
+
       <Drawer
         opened={drawerOpened}
         onClose={closeDrawer}
         size="100%"
         padding="md"
-        title="Menu"
+        title="Navigation"
         hiddenFrom="sm"
         zIndex={1000000}
       >
         <ScrollArea h="calc(100vh - 80px" mx="-md">
           <Divider my="sm" />
-          <UnstyledButton onClick={toggleLinks}>
+          <UnstyledButton className={styles.link} onClick={toggleLinks}>
             <Center inline>
               <Box component="span" mr={5}>
                 Tech Stack
@@ -261,7 +257,7 @@ export function HeaderMegaMenu() {
             </Center>
           </UnstyledButton>
           <Collapse in={linksOpened}>{techStackLinks}</Collapse>
-          <UnstyledButton onClick={toggleLinks}>
+          <UnstyledButton onClick={toggleLinks} className={styles.link}>
             <Center inline>
               <Box component="span" mr={5}>
                 Docs
