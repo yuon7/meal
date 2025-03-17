@@ -75,7 +75,7 @@ const techStackMockdata = [
   },
 ];
 
-const docsMockdata = [
+const dashBoardMockdata = [
   {
     icon: IconBolt,
     title: "Supabase dashboard",
@@ -118,7 +118,7 @@ export function HeaderMegaMenu() {
     </Anchor>
   ));
 
-  const docsLinks = docsMockdata.map((item) => (
+  const dashBoardLinks = dashBoardMockdata.map((item) => (
     <Anchor
       href={item.link}
       key={item.title}
@@ -204,7 +204,7 @@ export function HeaderMegaMenu() {
                 <a className={styles.link}>
                   <Center inline>
                     <Box component="span" mr={5}>
-                      Docs
+                      DashBoard
                     </Box>
                     <IconChevronDown size={16} color={theme.colors.blue[6]} />
                     </Center>
@@ -212,13 +212,13 @@ export function HeaderMegaMenu() {
             </HoverCard.Target>
             <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
               <Group justify="space-between" px="md">
-                <Text fw={500}>Docs</Text>
+                <Text fw={500}>dashBoard</Text>
               </Group>
 
               <Divider my="sm" />
 
               <SimpleGrid cols={2} spacing={0}>
-                {docsLinks}
+                {dashBoardLinks}
               </SimpleGrid>
             </HoverCard.Dropdown>
           </HoverCard>
@@ -260,12 +260,12 @@ export function HeaderMegaMenu() {
           <UnstyledButton onClick={toggleLinks} className={styles.link}>
             <Center inline>
               <Box component="span" mr={5}>
-                Docs
+                DashBoard
               </Box>
               <IconChevronDown size={16} color={theme.colors.blue[6]} />
             </Center>
           </UnstyledButton>
-          <Collapse in={linksOpened}>{docsLinks}</Collapse>
+          <Collapse in={linksOpened}>{dashBoardLinks}</Collapse>
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
             <Button variant="default" onClick={handleLogout}>
