@@ -59,7 +59,7 @@ export default function TodoApp() {
 
   const handleToggleDone = (id: number) => {
     const updatedTodos = todos.map((todo) =>
-      todo.id === id ? { ...todo, done: !todo.done } : todo
+      todo.id === id ? { ...todo, done: !todo.done } : todo,
     );
     setTodos(updatedTodos);
 

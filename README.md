@@ -12,7 +12,7 @@ Next.js 内に Hono や Supabase Auth、Prisma を組み込んだフルスタッ
 - **スタイリング**: CSS Modules
 - **ホスティング**:
   - Next.js → Vercel
-- **コード品質管理**: ESLint & Prettier
+- **コード品質管理**: ESLint & stylelint
 - **エッジランタイム対応**: Prisma Accelerate
 
 ## はじめに
