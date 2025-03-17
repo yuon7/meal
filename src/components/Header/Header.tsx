@@ -94,11 +94,13 @@ const dashBoardMockdata = [
 export function HeaderMegaMenu() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
+  const [techStackOpened, { toggle: toggleTechStack }] = useDisclosure(false);
+  const [dashBoardOpened, { toggle: toggleDashBoard }] = useDisclosure(false);
   const theme = useMantineTheme();
 
   const techStackLinks = techStackMockdata.map((item) => (
     <Anchor
+      href={item.link}
       key={item.title}
       target="_blank"
     >
@@ -170,18 +172,14 @@ export function HeaderMegaMenu() {
                   </Center>
                 </a>
               </HoverCard.Target>
-
               <HoverCard.Dropdown style={{ overflow: 'hidden' }}>
                 <Group justify="space-between" px="md">
                   <Text fw={500}>Tech Stack</Text>
                 </Group>
-
                 <Divider my="sm" />
-
                 <SimpleGrid cols={2} spacing={0}>
                   {techStackLinks}
                 </SimpleGrid>
-
                 <div className={styles.dropdownFooter}>
                   <Group justify="space-between">
                     <div>
@@ -199,6 +197,7 @@ export function HeaderMegaMenu() {
                 </div>
               </HoverCard.Dropdown>
             </HoverCard>
+            
             <HoverCard width={600} position="bottom" radius="md" shadow="md" withinPortal>
               <HoverCard.Target>
                 <a className={styles.link}>
@@ -214,17 +213,15 @@ export function HeaderMegaMenu() {
               <Group justify="space-between" px="md">
                 <Text fw={500}>dashBoard</Text>
               </Group>
-
               <Divider my="sm" />
-
               <SimpleGrid cols={2} spacing={0}>
                 {dashBoardLinks}
               </SimpleGrid>
             </HoverCard.Dropdown>
           </HoverCard>
-          </Group>
+        </Group>
 
-          <Group visibleFrom="sm">
+        <Group visibleFrom="sm">
             <Button variant="default" onClick={handleLogout}>
               Log out
             </Button>
@@ -248,7 +245,7 @@ export function HeaderMegaMenu() {
       >
         <ScrollArea h="calc(100vh - 80px" mx="-md">
           <Divider my="sm" />
-          <UnstyledButton className={styles.link} onClick={toggleLinks}>
+          <UnstyledButton className={styles.link} onClick={toggleTechStack}>
             <Center inline>
               <Box component="span" mr={5}>
                 Tech Stack
@@ -256,8 +253,8 @@ export function HeaderMegaMenu() {
               <IconChevronDown size={16} color={theme.colors.blue[6]} />
             </Center>
           </UnstyledButton>
-          <Collapse in={linksOpened}>{techStackLinks}</Collapse>
-          <UnstyledButton onClick={toggleLinks} className={styles.link}>
+          <Collapse in={techStackOpened}>{techStackLinks}</Collapse>
+          <UnstyledButton onClick={toggleDashBoard} className={styles.link}>
             <Center inline>
               <Box component="span" mr={5}>
                 DashBoard
@@ -265,7 +262,7 @@ export function HeaderMegaMenu() {
               <IconChevronDown size={16} color={theme.colors.blue[6]} />
             </Center>
           </UnstyledButton>
-          <Collapse in={linksOpened}>{dashBoardLinks}</Collapse>
+          <Collapse in={dashBoardOpened}>{dashBoardLinks}</Collapse>
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
             <Button variant="default" onClick={handleLogout}>
