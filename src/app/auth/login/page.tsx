@@ -48,9 +48,9 @@ export default function LoginPage() {
           </div>
         </form>
       </div>
-      <div className={styles.passwordReset}>
-        <p>パスワードを忘れた場合</p>
-      </div>
+      <a href="/auth/password/form" className={styles.passwordReset}>
+        パスワードを忘れた場合
+      </a>
     </div>
   );
 }
