@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "@mantine/core/styles.css";
+import "../../styles/globals.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { HeaderMegaMenu } from "@/components/Header/Header";
 import { Analytics } from "@vercel/analytics/next";

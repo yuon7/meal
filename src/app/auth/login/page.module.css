@@ -4,6 +4,7 @@
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+  flex-direction: column;
 }
 
 .card {
@@ -69,4 +70,16 @@
 
 .signupButton:hover {
   background-color: #4b5563;
+}
+
+.passwordReset {
+  width: 100%;
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin-left: 110vw;
+  cursor: pointer;
+}
+
+.passwordReset:hover {
+  color: #4b5563;
 }

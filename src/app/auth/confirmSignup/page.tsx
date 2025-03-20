@@ -15,7 +15,7 @@ export default function ConfirmSignupPage({
         <p className={styles.text}>
           メール内のリンクをクリックして、アカウントを有効化してください。
         </p>
-        <a href="/login" className={styles.link}>
+        <a href="/auth/login" className={styles.link}>
           ログインページに戻る
         </a>
       </div>

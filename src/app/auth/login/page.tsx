@@ -1,4 +1,4 @@
-import { login, signup } from "@/app/login/action";
+import { login, signup } from "@/app/auth/login/action";
 import styles from "./page.module.css";
 
 export default function LoginPage() {
@@ -48,6 +48,9 @@ export default function LoginPage() {
           </div>
         </form>
       </div>
+      <a href="/auth/password/form" className={styles.passwordReset}>
+        パスワードを忘れた場合
+      </a>
     </div>
   );
 }

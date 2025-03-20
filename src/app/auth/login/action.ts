@@ -17,7 +17,7 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    redirect("/notFoundTitle");
+    redirect("/auth/notFoundTitle");
   }
 
   revalidatePath("/", "layout");
@@ -37,7 +37,7 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    redirect("/notFoundTitle");
+    redirect("auth/notFoundTitle");
   }
 
   redirect(`/auth/confirmSignup?email=${encodeURIComponent(data.email)}`);
