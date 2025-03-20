@@ -13,18 +13,17 @@ export async function resetPassword(formData: FormData) {
     throw new Error("パスワードが一致しません。");
   }
 
-  try {
-    const { error } = await supabase.auth.updateUser({
-      password: data.newPassword,
-    });
+  const { error } = await supabase.auth.updateUser({
+    password: data.newPassword,
+  });
 
-    if (error) {
-      throw error;
+  if (error) {
+    if (error.code === "same_password") {
+      throw new Error(
+        "新しいパスワードは古いパスワードと異なる必要があります。"
+      );
     }
-
-    redirect("/auth/login");
-  } catch (error) {
-    console.error(error);
-    redirect("/auth/notFoundTitle");
+    throw error;
   }
+  redirect("/");
 }

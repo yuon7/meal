@@ -12,7 +12,7 @@ export async function forgotPassword(formData: FormData) {
   };
 
   const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
-    redirectTo: "http://localhost:3000/passwordReset/",
+    redirectTo: "http://localhost:3000/auth/password/reset",
   });
   if (error) {
     throw error;
