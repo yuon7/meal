@@ -17,5 +17,5 @@ export async function forgotPassword(formData: FormData) {
   if (error) {
     throw error;
   }
-  redirect("/auth/password/reset");
+  redirect("/auth/login");
 }

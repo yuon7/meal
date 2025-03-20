@@ -1,14 +1,17 @@
 import { forgotPassword } from "./action";
 import styles from "./page.module.css";
 
-function forgotPasswordPage() {
+export default function forgotPasswordPage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
         <h2 className={styles.title}>パスワードをリセット</h2>
         <p className={styles.text}>
           パスワードをリセットするためのリンクを送信します。
+          <br />
+          送信後、メール内のリンクをクリックしてパスワードをリセットしてください。
         </p>
+
         <form method="post" className={styles.form}>
           <div>
             <label htmlFor="email" className={styles.label}>
@@ -33,5 +36,3 @@ function forgotPasswordPage() {
     </div>
   );
 }
-
-export default forgotPasswordPage;

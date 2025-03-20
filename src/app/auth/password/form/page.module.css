@@ -16,6 +16,18 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
+.title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #ffffff;
+}
+
+.text {
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+}
+
 .form {
   display: grid;
   gap: 1.5rem;
@@ -43,43 +55,17 @@
   color: #a3a3a3;
 }
 
-.buttonGroup {
-  display: flex;
-  gap: 1rem;
-}
-
 .button {
   flex-grow: 1;
   padding: 0.5rem 1rem;
   border-radius: 0.375rem;
 }
 
-.loginButton {
+.submitButton {
   background-color: #3b82f6;
   color: white;
 }
 
-.loginButton:hover {
+.submitButton:hover {
   background-color: #2563eb;
-}
-
-.signupButton {
-  background-color: #6b7280;
-  color: white;
-}
-
-.signupButton:hover {
-  background-color: #4b5563;
-}
-
-.passwordReset {
-  width: 100%;
-  font-size: 0.875rem;
-  color: #6b7280;
-  margin-left: 110vw;
-  cursor: pointer;
-}
-
-.passwordReset:hover {
-  color: #4b5563;
 }
