@@ -1,6 +1,8 @@
 "use server";
 import { createClient } from "@/lib/supabase/server";
+import { log } from "console";
 import { redirect } from "next/navigation";
+import { Logout } from "../../logout/action";
 
 export async function resetPassword(formData: FormData) {
   const supabase = await createClient();
@@ -11,6 +13,13 @@ export async function resetPassword(formData: FormData) {
 
   if (data.newPassword !== data.confirmPassword) {
     throw new Error("パスワードが一致しません。");
+  }
+
+  // 認証セッションの確認
+  const { data: sessionData, error: sessionError } =
+    await supabase.auth.getSession();
+  if (sessionError || !sessionData.session) {
+    throw new Error("認証セッションが存在しません。ログインしてください。");
   }
 
   const { error } = await supabase.auth.updateUser({
@@ -25,5 +34,6 @@ export async function resetPassword(formData: FormData) {
     }
     throw error;
   }
+  Logout();
   redirect("/");
 }
