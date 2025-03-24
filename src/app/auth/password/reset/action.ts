@@ -1,6 +1,5 @@
 "use server";
 import { createClient } from "@/lib/supabase/server";
-import { log } from "console";
 import { redirect } from "next/navigation";
 import { Logout } from "../../logout/action";
 
