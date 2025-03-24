@@ -1,6 +1,7 @@
 "use server";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { Logout } from "../../logout/action";
 
 export async function resetPassword(formData: FormData) {
   const supabase = await createClient();
@@ -25,5 +26,6 @@ export async function resetPassword(formData: FormData) {
     }
     throw error;
   }
+  Logout();
   redirect("/");
 }

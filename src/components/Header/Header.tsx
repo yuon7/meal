@@ -28,7 +28,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import styles from "./Header.module.css";
-import { createClient } from "@/lib/supabase/client";
+import { Logout } from "@/app/auth/logout/action";
 import { useRouter } from "next/navigation";
 
 const techStackMockdata = [
@@ -92,11 +92,16 @@ const dashBoardMockdata = [
   },
 ];
 export function HeaderMegaMenu() {
+  const router = useRouter();
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [techStackOpened, { toggle: toggleTechStack }] = useDisclosure(false);
   const [dashBoardOpened, { toggle: toggleDashBoard }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const handleLogout = () => {
+    Logout();
+    router.refresh();
+  };
 
   const techStackLinks = techStackMockdata.map((item) => (
     <Anchor href={item.link} key={item.title} target="_blank">
@@ -133,19 +138,6 @@ export function HeaderMegaMenu() {
       </Group>
     </Anchor>
   ));
-
-  const supabase = createClient();
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error("Logout failed:", error.message);
-    } else {
-      console.log("User logged out successfully.");
-      router.refresh();
-    }
-  };
 
   return (
     <Box>
