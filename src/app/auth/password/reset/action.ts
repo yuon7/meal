@@ -14,13 +14,6 @@ export async function resetPassword(formData: FormData) {
     throw new Error("パスワードが一致しません。");
   }
 
-  // 認証セッションの確認
-  const { data: sessionData, error: sessionError } =
-    await supabase.auth.getSession();
-  if (sessionError || !sessionData.session) {
-    throw new Error("認証セッションが存在しません。ログインしてください。");
-  }
-
   const { error } = await supabase.auth.updateUser({
     password: data.newPassword,
   });
