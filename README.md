@@ -10,6 +10,7 @@ Next.js 内に Hono や Supabase Auth、Prisma を組み込んだフルスタッ
 - **ORM**: Prisma
 - **認証**: Supabase Auth
 - **スタイリング**: CSS Modules
+- **UIライブラリ**: Mantine UI
 - **ホスティング**:
   - Next.js → Vercel
 - **コード品質管理**: ESLint & stylelint
