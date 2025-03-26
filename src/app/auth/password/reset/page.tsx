@@ -14,7 +14,6 @@ export default function ResetPasswordPage() {
       return;
     }
 
-    // トークンはサーバーサイドで処理されるため、ここでは追加しない
     await resetPassword(formData);
   };
 
