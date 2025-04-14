@@ -12,11 +12,9 @@ export default function ResetPasswordPage() {
     const code = url.searchParams.get("code");
 
     if (code) {
-      supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
+      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
         if (error) {
-          console.log("セッション復元失敗:", error.message);
-        } else {
-          console.log("セッション復元成功:", data);
+          throw new Error("セッション復元に失敗しました: ", error);
         }
       });
     }
