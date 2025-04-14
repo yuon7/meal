@@ -1,8 +1,27 @@
 "use client";
+import { createClient } from "@/lib/supabase/client";
 import { resetPassword } from "./action";
 import styles from "./page.module.css";
+import { useEffect } from "react";
 
 export default function ResetPasswordPage() {
+  const supabase = createClient();
+
+  useEffect(() => {
+    const url = new URL(window.location.href);
+    const code = url.searchParams.get("code");
+
+    if (code) {
+      supabase.auth.exchangeCodeForSession(code).then(({ data, error }) => {
+        if (error) {
+          console.log("セッション復元失敗:", error.message);
+        } else {
+          console.log("セッション復元成功:", data);
+        }
+      });
+    }
+  }, []);
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
