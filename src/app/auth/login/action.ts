@@ -17,10 +17,11 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data);
 
   if (error) {
-    let errorMessage = error.message;
-    if (error.message === "Invalid login credentials") {
-      errorMessage = "メールアドレスまたはパスワードが間違っています。";
-    }
+    const errorMessages: { [key: string]: string } = {
+      "Invalid login credentials":
+        "メールアドレスまたはパスワードが間違っています。",
+    };
+    const errorMessage = errorMessages[error.message] || error.message;
     redirect(`/auth/login?error=${encodeURIComponent(errorMessage)}`);
   }
 
@@ -41,10 +42,10 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data);
 
   if (error) {
-    let errorMessage = error.message;
-    if (error.message.includes("User already registered")) {
-      errorMessage = "このメールアドレスは既に登録されています。";
-    }
+    const errorMessages: { [key: string]: string } = {
+      "User already registered": "このメールアドレスは既に登録されています。",
+    };
+    const errorMessage = errorMessages[error.message] || error.message;
     redirect(`/auth/login?error=${encodeURIComponent(errorMessage)}`);
   }
 
