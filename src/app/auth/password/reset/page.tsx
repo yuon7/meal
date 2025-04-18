@@ -74,7 +74,7 @@ export default function ResetPasswordPage() {
   };
 
   if (loading) return <div>認証中...</div>;
-  if (error) return <div className={styles.error}>{error}</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className={styles.container}>
