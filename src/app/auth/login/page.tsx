@@ -10,14 +10,12 @@ export default function LoginPage({
     <div className={styles.container}>
       <div className={styles.card}>
         {searchParams.error && (
-          <div className={styles.error}>
-            {searchParams.error}
-          </div>
+          <div className={styles.error}>{searchParams.error}</div>
         )}
         <form method="post" className={styles.form}>
           <div>
             <label htmlFor="email" className={styles.label}>
-              Email:
+              メールアドレス:
             </label>
             <input
               id="email"
@@ -30,7 +28,7 @@ export default function LoginPage({
 
           <div>
             <label htmlFor="password" className={styles.label}>
-              Password:
+              パスワード:
             </label>
             <input
               id="password"
@@ -46,13 +44,13 @@ export default function LoginPage({
               formAction={login}
               className={`${styles.button} ${styles.loginButton}`}
             >
-              Log in
+              ログイン
             </button>
             <button
               formAction={signup}
               className={`${styles.button} ${styles.signupButton}`}
             >
-              Sign up
+              サインアップ
             </button>
           </div>
         </form>
