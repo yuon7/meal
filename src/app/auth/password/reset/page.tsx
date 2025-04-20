@@ -37,12 +37,12 @@ export default function ResetPasswordPage() {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h2 className={styles.title}>reset your Password</h2>
+        <h2 className={styles.title}>パスワードをリセット</h2>
         <p className={styles.text}>新しいパスワードを入力してください</p>
         <form method="post" className={styles.form} onSubmit={handleSubmit}>
           <div>
             <label htmlFor="newPassword" className={styles.label}>
-              new Password:
+              新しいパスワード:
             </label>
             <input
               id="newPassword"
@@ -54,7 +54,7 @@ export default function ResetPasswordPage() {
           </div>
           <div>
             <label htmlFor="confirmPassword" className={styles.label}>
-              confirm new Password:
+              新しいパスワード(確認):
             </label>
             <input
               id="confirmPassword"
@@ -68,7 +68,7 @@ export default function ResetPasswordPage() {
             type="submit"
             className={`${styles.button} ${styles.submitButton}`}
           >
-            submit
+            送信
           </button>
         </form>
       </div>
