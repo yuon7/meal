@@ -1,24 +1,49 @@
 "use client";
-import { createClient } from "@/lib/supabase/client";
-import { resetPassword } from "./action";
+import { useState, useEffect } from "react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import styles from "./page.module.css";
-import { useEffect } from "react";
 
 export default function ResetPasswordPage() {
-  const supabase = createClient();
+  const supabase = useSupabaseClient();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [, setSuccess] = useState(false);
 
   useEffect(() => {
-    const url = new URL(window.location.href);
-    const code = url.searchParams.get("code");
+    // リセットのurlから認証コードを取得
+    const params = new URLSearchParams(window.location.search);
+    const code = params.get('code');
+    const token_hash = params.get('token_hash');
 
+    // 認証コードがある場合はセッションを取得する
     if (code) {
-      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
+      supabase.auth.exchangeCodeForSession(code)
+        .then(({ error }) => {
+          if (error) {
+            console.error('Session error:', error);
+            setError(`認証エラー: ${error.message}`);
+          } else {
+            setSuccess(true);
+          }
+          setLoading(false);
+        });
+    } else if (token_hash) {
+      supabase.auth.verifyOtp({ 
+        token_hash, 
+        type: 'recovery'
+      }).then(({ error }) => {
         if (error) {
-          throw new Error("セッション復元に失敗しました: ", error);
+          setError(`認証エラー: ${error.message}`);
+        } else {
+          setSuccess(true);
         }
+        setLoading(false);
       });
+    } else {
+      setError("認証コードがありません。パスワードリセットリンクが正しくないか期限切れです。");
+      setLoading(false);
     }
-  }, []);
+  }, [supabase]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -27,12 +52,29 @@ export default function ResetPasswordPage() {
     const confirmPassword = formData.get("confirmPassword") as string;
 
     if (newPassword !== confirmPassword) {
-      alert("パスワードが一致しません。");
+      alert("パスワードが一致しません");
       return;
     }
 
-    await resetPassword(formData);
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+
+      if (error) {
+        alert(`パスワードの更新に失敗しました: ${error.message}`);
+      } else {
+        alert("パスワードが正常にリセットされました。");
+        window.location.href = "/";
+      }
+    } catch (error) {
+      alert(error);
+    }
+
   };
+
+  if (loading) return <div>認証中...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div className={styles.container}>
