@@ -4,10 +4,11 @@ import { Logout } from "@/app/auth/logout/action";
 import { Avatar, Button, Group, Menu, Text } from "@mantine/core";
 import { User } from "@supabase/supabase-js";
 import { IconChevronRight, IconLogout } from "@tabler/icons-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export function UserButton({ user }: { user: User | null }) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleLogin = () => {
     router.push("/auth/login");
@@ -17,6 +18,10 @@ export function UserButton({ user }: { user: User | null }) {
     await Logout();
     router.refresh();
   };
+
+  if (pathname === "/auth/login") {
+    return null;
+  }
 
   if (!user) {
     return (
