@@ -1,8 +1,14 @@
 name: CI & Deploy Preview to Vercel
 
+permissions:
+  pull-requests: write
+
 on:
   push:
   pull_request:
+
+permissions:
+  pull-requests: write
 
 jobs:
   test:
@@ -37,5 +43,5 @@ jobs:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          github-comment: 'true'
+          github-comment: "true"
           github-token: ${{ secrets.GITHUB_TOKEN }}

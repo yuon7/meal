@@ -219,7 +219,7 @@ export function HeaderMegaMenu() {
 
           <Group visibleFrom="sm">
             <Button variant="default" onClick={handleLogout}>
-              Log out
+              ログアウト
             </Button>
           </Group>
           <Burger
@@ -235,7 +235,7 @@ export function HeaderMegaMenu() {
         onClose={closeDrawer}
         size="100%"
         padding="md"
-        title="Navigation"
+        title="ナビゲーション"
         hiddenFrom="sm"
         zIndex={1000000}
       >
@@ -262,7 +262,7 @@ export function HeaderMegaMenu() {
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
             <Button variant="default" onClick={handleLogout}>
-              Log out
+              ログアウト
             </Button>
           </Group>
         </ScrollArea>

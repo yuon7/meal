@@ -4,6 +4,7 @@ import "../../styles/globals.css";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { HeaderMegaMenu } from "@/components/Header/Header";
 import { Analytics } from "@vercel/analytics/next";
+import { SupabaseProvider } from "@/components/SupabaseProvider/SupabaseProvider";
 
 export const metadata: Metadata = {
   title: "Next-Hono-Template",
@@ -21,11 +22,13 @@ export default function RootLayout({
         <ColorSchemeScript defaultColorScheme="light" />
       </head>
       <body>
-        <MantineProvider>
-          <HeaderMegaMenu />
-          {children}
-          <Analytics />
-        </MantineProvider>
+        <SupabaseProvider>
+          <MantineProvider>
+            <HeaderMegaMenu />
+            {children}
+            <Analytics />
+          </MantineProvider>
+        </SupabaseProvider>
       </body>
     </html>
   );
