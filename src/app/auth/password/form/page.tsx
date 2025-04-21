@@ -15,7 +15,7 @@ export default function forgotPasswordPage() {
         <form method="post" className={styles.form}>
           <div>
             <label htmlFor="email" className={styles.label}>
-              Email:
+              メールアドレス:
             </label>
             <input
               id="email"
