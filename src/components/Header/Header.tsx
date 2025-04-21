@@ -1,14 +1,5 @@
 "use client";
 import {
-  IconBolt,
-  IconBrandNextjs,
-  IconBrandPrisma,
-  IconBrandReact,
-  IconBrandTypescript,
-  IconBrandVercel,
-  IconChevronDown,
-} from "@tabler/icons-react";
-import {
   Anchor,
   Box,
   Burger,
@@ -27,9 +18,18 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { User } from "@supabase/supabase-js";
+import {
+  IconBolt,
+  IconBrandNextjs,
+  IconBrandPrisma,
+  IconBrandReact,
+  IconBrandTypescript,
+  IconBrandVercel,
+  IconChevronDown,
+} from "@tabler/icons-react";
+import { UserButton } from "../UserButton/UserButton";
 import styles from "./Header.module.css";
-import { Logout } from "@/app/auth/logout/action";
-import { useRouter } from "next/navigation";
 
 const techStackMockdata = [
   {
@@ -91,17 +91,12 @@ const dashBoardMockdata = [
     link: "https://cloud.prisma.io/",
   },
 ];
-export function HeaderMegaMenu() {
-  const router = useRouter();
+export function HeaderMegaMenu({ user }: { user: User | null }) {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
   const [techStackOpened, { toggle: toggleTechStack }] = useDisclosure(false);
   const [dashBoardOpened, { toggle: toggleDashBoard }] = useDisclosure(false);
   const theme = useMantineTheme();
-  const handleLogout = () => {
-    Logout();
-    router.refresh();
-  };
 
   const techStackLinks = techStackMockdata.map((item) => (
     <Anchor href={item.link} key={item.title} target="_blank">
@@ -218,9 +213,7 @@ export function HeaderMegaMenu() {
           </Group>
 
           <Group visibleFrom="sm">
-            <Button variant="default" onClick={handleLogout}>
-              ログアウト
-            </Button>
+            <UserButton user={user} />
           </Group>
           <Burger
             opened={drawerOpened}
@@ -237,7 +230,7 @@ export function HeaderMegaMenu() {
         padding="md"
         title="ナビゲーション"
         hiddenFrom="sm"
-        zIndex={1000000}
+        zIndex={100}
       >
         <ScrollArea h="calc(100vh - 80px" mx="-md">
           <Divider my="sm" />
@@ -261,9 +254,7 @@ export function HeaderMegaMenu() {
           <Collapse in={dashBoardOpened}>{dashBoardLinks}</Collapse>
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
-            <Button variant="default" onClick={handleLogout}>
-              ログアウト
-            </Button>
+            <UserButton user={user} />
           </Group>
         </ScrollArea>
       </Drawer>
