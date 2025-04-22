@@ -30,7 +30,6 @@ import { useDisclosure } from "@mantine/hooks";
 import styles from "./Header.module.css";
 import { Logout } from "@/app/auth/logout/action";
 import { useRouter } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
 
 const techStackMockdata = [
   {
@@ -101,6 +100,7 @@ export function HeaderMegaMenu() {
   const theme = useMantineTheme();
   const handleLogout = () => {
     Logout();
+    const router = useRouter();
     router.refresh();
     closeDrawer();
   };
