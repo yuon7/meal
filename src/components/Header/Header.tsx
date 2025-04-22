@@ -99,12 +99,7 @@ export function HeaderMegaMenu({ user }: { user: User | null }) {
   const [techStackOpened, { toggle: toggleTechStack }] = useDisclosure(false);
   const [dashBoardOpened, { toggle: toggleDashBoard }] = useDisclosure(false);
   const theme = useMantineTheme();
-  const handleLogout = () => {
-    Logout();
-    const router = useRouter();
-    router.refresh();
-    closeDrawer();
-  };
+  const router = useRouter();
 
   const techStackLinks = techStackMockdata.map((item) => (
     <Anchor href={item.link} key={item.title} target="_blank">
