@@ -30,7 +30,6 @@ import {
 } from "@tabler/icons-react";
 import { UserButton } from "../UserButton/UserButton";
 import styles from "./Header.module.css";
-import { Logout } from "@/app/auth/logout/action";
 import { useRouter } from "next/navigation";
 
 const techStackMockdata = [
