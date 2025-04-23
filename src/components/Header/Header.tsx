@@ -30,6 +30,7 @@ import {
 } from "@tabler/icons-react";
 import { UserButton } from "../UserButton/UserButton";
 import styles from "./Header.module.css";
+import { useRouter } from "next/navigation";
 
 const techStackMockdata = [
   {
@@ -97,6 +98,7 @@ export function HeaderMegaMenu({ user }: { user: User | null }) {
   const [techStackOpened, { toggle: toggleTechStack }] = useDisclosure(false);
   const [dashBoardOpened, { toggle: toggleDashBoard }] = useDisclosure(false);
   const theme = useMantineTheme();
+  const router = useRouter();
 
   const techStackLinks = techStackMockdata.map((item) => (
     <Anchor href={item.link} key={item.title} target="_blank">
@@ -138,7 +140,7 @@ export function HeaderMegaMenu({ user }: { user: User | null }) {
     <Box>
       <header className={styles.header}>
         <Group justify="space-between" h="100%">
-          <h3>Next-Hono-Template</h3>
+          <h3 style={{ cursor : "pointer" }} onClick={() => router.push("/")}>Next-Hono-Template</h3>
           <Group h="100%" gap={0} visibleFrom="sm">
             <HoverCard
               width={600}
