@@ -9,9 +9,6 @@ export default function LoginPage({
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        {searchParams.error && (
-          <div className={styles.error}>{searchParams.error}</div>
-        )}
         <form method="post" className={styles.form}>
           <div>
             <label htmlFor="email" className={styles.label}>
@@ -38,6 +35,9 @@ export default function LoginPage({
               className={styles.input}
             />
           </div>
+          {searchParams.error && (
+            <div className={styles.error}>{searchParams.error}</div>
+          )}
 
           <div className={styles.buttonGroup}>
             <button
