@@ -1,7 +1,11 @@
 import { forgotPassword } from "./action";
 import styles from "./page.module.css";
 
-export default function forgotPasswordPage() {
+export default function forgotPasswordPage({
+  searchParams,
+}: {
+  searchParams: { error?: string };
+}) {
   return (
     <div className={styles.container}>
       <div className={styles.card}>
@@ -25,6 +29,9 @@ export default function forgotPasswordPage() {
               className={styles.input}
             />
           </div>
+          {searchParams.error && (
+            <div className={styles.error}>{searchParams.error}</div>
+          )}
           <button
             formAction={forgotPassword}
             className={`${styles.button} ${styles.submitButton}`}
