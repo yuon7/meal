@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 
 export default function ResetPasswordPage({
@@ -9,48 +10,43 @@ export default function ResetPasswordPage({
   searchParams: { error?: string };
 }) {
   const supabase = useSupabaseClient();
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [, setSuccess] = useState(false);
 
   useEffect(() => {
-    // リセットのurlから認証コードを取得
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
     const token_hash = params.get("token_hash");
 
-    // 認証コードがある場合はセッションを取得する
-    if (code) {
-      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
-        if (error) {
-          console.error("Session error:", error);
-          setError(`認証エラー: ${error.message}`);
+    const handleAuthentication = async () => {
+      try {
+        if (code) {
+          const { error } = await supabase.auth.exchangeCodeForSession(code);
+          if (error) throw error;
+        } else if (token_hash) {
+          const { error } = await supabase.auth.verifyOtp({
+            token_hash,
+            type: "recovery",
+          });
+          if (error) throw error;
         } else {
-          setSuccess(true);
+          throw new Error("認証情報が不足しています");
         }
+        // URLクリーンアップ
+        window.history.replaceState({}, "", "/auth/password/reset");
+      } catch (error) {
+        router.push(
+          `/auth/password/reset?error=${encodeURIComponent(
+            error instanceof Error ? error.message : "不明なエラー"
+          )}`
+        );
+      } finally {
         setLoading(false);
-      });
-    } else if (token_hash) {
-      supabase.auth
-        .verifyOtp({
-          token_hash,
-          type: "recovery",
-        })
-        .then(({ error }) => {
-          if (error) {
-            setError(`認証エラー: ${error.message}`);
-          } else {
-            setSuccess(true);
-          }
-          setLoading(false);
-        });
-    } else {
-      setError(
-        "認証コードがありません。パスワードリセットリンクが正しくないか期限切れです。"
-      );
-      setLoading(false);
-    }
-  }, [supabase]);
+      }
+    };
+
+    handleAuthentication();
+  }, [supabase, router]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -59,7 +55,9 @@ export default function ResetPasswordPage({
     const confirmPassword = formData.get("confirmPassword") as string;
 
     if (newPassword !== confirmPassword) {
-      alert("パスワードが一致しません");
+      router.push(
+        `/auth/password/reset?error=${encodeURIComponent("パスワードが一致しません")}`
+      );
       return;
     }
 
@@ -68,25 +66,24 @@ export default function ResetPasswordPage({
         password: newPassword,
       });
 
-      if (error) {
-        alert(`パスワードの更新に失敗しました: ${error.message}`);
-      } else {
-        alert("パスワードが正常にリセットされました。");
-        window.location.href = "/";
-      }
+      if (error) throw error;
+
+      // セッションを確実に更新するためフルリロード
+      window.location.href = "/auth/login";
     } catch (error) {
-      alert(error);
+      router.push(
+        `/auth/password/reset?error=${encodeURIComponent(
+          error instanceof Error ? error.message : "不明なエラー"
+        )}`
+      );
     }
   };
 
   if (loading) return <div>認証中...</div>;
-  if (error) return <div>{error}</div>;
 
   return (
     <div className={styles.container}>
       <div className={styles.card}>
-        <h2 className={styles.title}>パスワードをリセット</h2>
-        <p className={styles.text}>新しいパスワードを入力してください</p>
         <form method="post" className={styles.form} onSubmit={handleSubmit}>
           <div>
             <label htmlFor="newPassword" className={styles.label}>

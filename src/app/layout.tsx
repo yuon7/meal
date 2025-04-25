@@ -1,4 +1,5 @@
 import { HeaderMegaMenu } from "@/components/Header/Header";
+import { SupabaseProvider } from "@/components/SupabaseProvider/SupabaseProvider";
 import { createClient } from "@/lib/supabase/server";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
@@ -26,11 +27,13 @@ export default async function RootLayout({
         <ColorSchemeScript defaultColorScheme="light" />
       </head>
       <body>
-        <MantineProvider>
-          <HeaderMegaMenu user={user} />
-          {children}
-          <Analytics />
-        </MantineProvider>
+        <SupabaseProvider>
+          <MantineProvider>
+            <HeaderMegaMenu user={user} />
+            {children}
+            <Analytics />
+          </MantineProvider>
+        </SupabaseProvider>
       </body>
     </html>
   );
