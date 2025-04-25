@@ -11,18 +11,9 @@ export async function forgotPassword(formData: FormData) {
     email: formData.get("email") as string,
   };
 
-  const { error, data: email } = await supabase.auth.resetPasswordForEmail(
-    data.email,
-    {
-      redirectTo: process.env.RESET_REDIRECT_URL,
-    }
-  );
-  if (email !== data.email) {
-    redirect(
-      `/auth/password/form?error=${encodeURIComponent("このメールアドレスは登録されていません。")}`
-    );
-  }
-
+  const { error } = await supabase.auth.resetPasswordForEmail(data.email, {
+    redirectTo: process.env.RESET_REDIRECT_URL,
+  });
   if (error) {
     throw error;
   }

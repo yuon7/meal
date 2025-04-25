@@ -3,7 +3,11 @@ import { useState, useEffect } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import styles from "./page.module.css";
 
-export default function ResetPasswordPage() {
+export default function ResetPasswordPage({
+  searchParams,
+}: {
+  searchParams: { error?: string };
+}) {
   const supabase = useSupabaseClient();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -12,35 +16,38 @@ export default function ResetPasswordPage() {
   useEffect(() => {
     // リセットのurlから認証コードを取得
     const params = new URLSearchParams(window.location.search);
-    const code = params.get('code');
-    const token_hash = params.get('token_hash');
+    const code = params.get("code");
+    const token_hash = params.get("token_hash");
 
     // 認証コードがある場合はセッションを取得する
     if (code) {
-      supabase.auth.exchangeCodeForSession(code)
-        .then(({ error }) => {
-          if (error) {
-            console.error('Session error:', error);
-            setError(`認証エラー: ${error.message}`);
-          } else {
-            setSuccess(true);
-          }
-          setLoading(false);
-        });
-    } else if (token_hash) {
-      supabase.auth.verifyOtp({ 
-        token_hash, 
-        type: 'recovery'
-      }).then(({ error }) => {
+      supabase.auth.exchangeCodeForSession(code).then(({ error }) => {
         if (error) {
+          console.error("Session error:", error);
           setError(`認証エラー: ${error.message}`);
         } else {
           setSuccess(true);
         }
         setLoading(false);
       });
+    } else if (token_hash) {
+      supabase.auth
+        .verifyOtp({
+          token_hash,
+          type: "recovery",
+        })
+        .then(({ error }) => {
+          if (error) {
+            setError(`認証エラー: ${error.message}`);
+          } else {
+            setSuccess(true);
+          }
+          setLoading(false);
+        });
     } else {
-      setError("認証コードがありません。パスワードリセットリンクが正しくないか期限切れです。");
+      setError(
+        "認証コードがありません。パスワードリセットリンクが正しくないか期限切れです。"
+      );
       setLoading(false);
     }
   }, [supabase]);
@@ -70,7 +77,6 @@ export default function ResetPasswordPage() {
     } catch (error) {
       alert(error);
     }
-
   };
 
   if (loading) return <div>認証中...</div>;
@@ -106,6 +112,9 @@ export default function ResetPasswordPage() {
               className={styles.input}
             />
           </div>
+          {searchParams.error && (
+            <div className={styles.error}>{searchParams.error}</div>
+          )}
           <button
             type="submit"
             className={`${styles.button} ${styles.submitButton}`}

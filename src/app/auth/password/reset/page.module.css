@@ -33,6 +33,10 @@
   gap: 1.5rem;
 }
 
+.error {
+  color: #ef4444;
+}
+
 .label {
   display: block;
   font-size: 0.875rem;

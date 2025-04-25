@@ -11,7 +11,10 @@ export async function resetPassword(formData: FormData) {
   };
 
   if (data.newPassword !== data.confirmPassword) {
-    throw new Error("パスワードが一致しません。");
+    redirect(
+      `/auth/resetPassword?error=${encodeURIComponent("パスワードが一致しません。")}`
+    );
+    return;
   }
 
   const { error } = await supabase.auth.updateUser({
@@ -19,13 +22,16 @@ export async function resetPassword(formData: FormData) {
   });
 
   if (error) {
-    if (error.code === "same_password") {
-      throw new Error(
-        "新しいパスワードは古いパスワードと異なる必要があります。"
-      );
-    }
-    throw error;
+    const errorMessages: { [key: string]: string } = {
+      "Password should be at least 6 characters":
+        "パスワードは6文字以上必要です。",
+    };
+
+    const errorMessage =
+      errorMessages[error.code || error.message] || error.message;
+    redirect(`/auth/resetPassword?error=${encodeURIComponent(errorMessage)}`);
   }
+
   Logout();
   redirect("/");
 }
