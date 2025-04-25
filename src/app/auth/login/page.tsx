@@ -1,11 +1,19 @@
+"use client";
 import { login, signup } from "@/app/auth/login/action";
 import styles from "./page.module.css";
+import { useState } from "react";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
 
 export default function LoginPage({
   searchParams,
 }: {
   searchParams: { error?: string };
 }) {
+  const [isRevealPassword, setIsRevealPassword] = useState(false);
+  const togglePassword = () => {
+    setIsRevealPassword((prevState) => !prevState);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.card}>
@@ -27,13 +35,29 @@ export default function LoginPage({
             <label htmlFor="password" className={styles.label}>
               パスワード:
             </label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              required
-              className={styles.input}
-            />
+            <div className={styles.inputWrapper}>
+              <input
+                id="password"
+                name="password"
+                type={isRevealPassword ? "text" : "password"}
+                required
+                className={styles.input}
+              />
+              <button
+                type="button"
+                onClick={togglePassword}
+                aria-label={
+                  isRevealPassword ? "パスワードを非表示" : "パスワードを表示"
+                }
+                className={styles.iconButton}
+              >
+                {isRevealPassword ? (
+                  <IconEye size={30} />
+                ) : (
+                  <IconEyeOff size={30} />
+                )}
+              </button>
+            </div>
           </div>
           {searchParams.error && (
             <div className={styles.error}>{searchParams.error}</div>

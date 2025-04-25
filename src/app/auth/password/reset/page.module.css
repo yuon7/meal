@@ -33,6 +33,10 @@
   color: #cfcfcf;
 }
 
+.inputWrapper {
+  position: relative;
+}
+
 .input {
   margin-top: 0.25rem;
   display: block;
@@ -46,6 +50,17 @@
 
 .input::placeholder {
   color: #a3a3a3;
+}
+
+.iconButton {
+  position: absolute;
+  top: 60%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
 .button {
