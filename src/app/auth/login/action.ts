@@ -39,7 +39,7 @@ export async function signup(formData: FormData) {
     password: formData.get("password") as string,
   };
 
-  const { error } = await supabase.auth.signUp(data);
+  const { data: signUpData, error } = await supabase.auth.signUp(data);
 
   if (error) {
     const errorMessages: { [key: string]: string } = {
@@ -47,6 +47,12 @@ export async function signup(formData: FormData) {
     };
     const errorMessage = errorMessages[error.message] || error.message;
     redirect(`/auth/login?error=${encodeURIComponent(errorMessage)}`);
+  }
+
+  if (signUpData?.user && signUpData.user.identities?.length === 0) {
+    redirect(
+      `/auth/login?error=${encodeURIComponent("このメールアドレスは既に登録されています。")}`
+    );
   }
 
   redirect(`/auth/confirmSignup?email=${encodeURIComponent(data.email)}`);

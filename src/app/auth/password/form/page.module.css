@@ -28,6 +28,10 @@
   margin-bottom: 1.5rem;
 }
 
+.error {
+  color: #ef4444;
+}
+
 .form {
   display: grid;
   gap: 1.5rem;
