@@ -1,5 +1,5 @@
 .container {
-  min-height: 100vh;
+  min-height: calc(100vh - 89px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,21 +16,13 @@
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
 }
 
-.title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #ffffff;
-}
-
-.text {
-  color: #ffffff;
-  margin-bottom: 1.5rem;
+.error {
+  color: #ef4444;
 }
 
 .form {
   display: grid;
-  gap: 1.5rem;
+  gap: 12px;
 }
 
 .label {
