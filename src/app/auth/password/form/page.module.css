@@ -1,10 +1,11 @@
 .container {
   min-height: calc(100vh - 60px);
-  padding-bottom: 29px;  display: flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
   flex-direction: column;
+  padding-bottom: 29px;
 }
 
 .card {
