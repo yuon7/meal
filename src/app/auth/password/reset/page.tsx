@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
+import { IconEye, IconEyeOff } from "@tabler/icons-react";
 
 export default function ResetPasswordPage({
   searchParams,
@@ -12,6 +13,14 @@ export default function ResetPasswordPage({
   const supabase = useSupabaseClient();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [isRevealPassword, setIsRevealPassword] = useState(false);
+  const [isRevealConfirmPassword, setIsRevealConfirmPassword] = useState(false);
+  const togglePassword = () => {
+    setIsRevealPassword((prevState) => !prevState);
+  };
+  const toggleConfirmPassword = () => {
+    setIsRevealConfirmPassword((prevState) => !prevState);
+  };
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -89,25 +98,59 @@ export default function ResetPasswordPage({
             <label htmlFor="newPassword" className={styles.label}>
               新しいパスワード:
             </label>
-            <input
-              id="newPassword"
-              name="newPassword"
-              type="password"
-              required
-              className={styles.input}
-            />
+            <div className={styles.inputWrapper}>
+              <input
+                id="newPassword"
+                name="newPassword"
+                type={isRevealPassword ? "text" : "password"}
+                required
+                className={styles.input}
+              />
+              <button
+                type="button"
+                onClick={togglePassword}
+                aria-label={
+                  isRevealPassword ? "パスワードを非表示" : "パスワードを表示"
+                }
+                className={styles.iconButton}
+              >
+                {isRevealPassword ? (
+                  <IconEye size={30} />
+                ) : (
+                  <IconEyeOff size={30} />
+                )}
+              </button>
+            </div>
           </div>
           <div>
             <label htmlFor="confirmPassword" className={styles.label}>
               新しいパスワード(確認):
             </label>
-            <input
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              required
-              className={styles.input}
-            />
+            <div className={styles.inputWrapper}>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type={isRevealConfirmPassword ? "text" : "password"}
+                required
+                className={styles.input}
+              />
+              <button
+                type="button"
+                onClick={toggleConfirmPassword}
+                aria-label={
+                  isRevealConfirmPassword
+                    ? "パスワードを非表示"
+                    : "パスワードを表示"
+                }
+                className={styles.iconButton}
+              >
+                {isRevealConfirmPassword ? (
+                  <IconEye size={30} />
+                ) : (
+                  <IconEyeOff size={30} />
+                )}
+              </button>
+            </div>
           </div>
           {searchParams.error && (
             <div className={styles.error}>{searchParams.error}</div>
