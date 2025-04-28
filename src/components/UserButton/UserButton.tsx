@@ -6,7 +6,13 @@ import { User } from "@supabase/supabase-js";
 import { IconChevronRight, IconLogout } from "@tabler/icons-react";
 import { usePathname, useRouter } from "next/navigation";
 
-export function UserButton({ user }: { user: User | null }) {
+export function UserButton({
+  user,
+  closeDrawer,
+}: {
+  user: User | null;
+  closeDrawer?: () => void;
+}) {
   const router = useRouter();
   const pathname = usePathname();
 
@@ -15,6 +21,7 @@ export function UserButton({ user }: { user: User | null }) {
   };
 
   const handleLogout = async () => {
+    closeDrawer?.();
     await Logout();
     router.refresh();
   };
