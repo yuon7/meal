@@ -140,7 +140,9 @@ export function HeaderMegaMenu({ user }: { user: User | null }) {
     <Box>
       <header className={styles.header}>
         <Group justify="space-between" h="100%">
-          <h3 style={{ cursor : "pointer" }} onClick={() => router.push("/")}>Next-Hono-Template</h3>
+          <h3 style={{ cursor: "pointer" }} onClick={() => router.push("/")}>
+            Next-Hono-Template
+          </h3>
           <Group h="100%" gap={0} visibleFrom="sm">
             <HoverCard
               width={600}
@@ -256,7 +258,7 @@ export function HeaderMegaMenu({ user }: { user: User | null }) {
           <Collapse in={dashBoardOpened}>{dashBoardLinks}</Collapse>
           <Divider my="sm" />
           <Group justify="center" grow pb="xl" px="md">
-            <UserButton user={user} />
+            <UserButton user={user} closeDrawer={closeDrawer} />
           </Group>
         </ScrollArea>
       </Drawer>
