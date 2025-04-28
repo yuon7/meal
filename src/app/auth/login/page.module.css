@@ -60,6 +60,7 @@
 .loginButton {
   background-color: #3b82f6;
   color: white;
+  cursor: pointer;
 }
 
 .loginButton:hover {
@@ -69,6 +70,7 @@
 .signupButton {
   background-color: #6b7280;
   color: white;
+  cursor: pointer;
 }
 
 .signupButton:hover {
