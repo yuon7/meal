@@ -2,6 +2,7 @@
 
 "use client";
 
+import Link from "next/link";
 import {
   Button,
   Container,
@@ -86,6 +87,8 @@ export default function Home() {
             </Text>
 
             <Button
+              component={Link}
+              href="/todo"
               variant="gradient"
               gradient={{ deg: 133, from: "blue", to: "cyan" }}
               size="lg"
