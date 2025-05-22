@@ -81,8 +81,8 @@ export default function Home() {
               Next-Hono-Template
             </Title>
             <Text c="dimmed">
-              Next.js 14 × Hono × Supabase × Prisma × Mantine でフルスタック Web
-              アプリを誰よりも速く構築。
+              Next.js 14 × Hono × Supabase × Prisma × Mantine フルスタック Web
+              アプリを高速に構築。
             </Text>
 
             <Button
