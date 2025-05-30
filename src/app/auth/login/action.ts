@@ -51,7 +51,7 @@ export async function signup(formData: FormData) {
 
   if (signUpData?.user && signUpData.user.identities?.length === 0) {
     redirect(
-      `/auth/login?error=${encodeURIComponent("このメールアドレスは既に登録されています。")}`
+      `/auth/login?error=${encodeURIComponent("このメールアドレスは既に登録されています。")}`,
     );
   }
 

@@ -14,7 +14,7 @@ export async function resetPassword(formData: FormData) {
 
   if (data.newPassword !== data.confirmPassword) {
     redirect(
-      `/auth/password/reset?error=${encodeURIComponent("パスワードが一致しません")}`
+      `/auth/password/reset?error=${encodeURIComponent("パスワードが一致しません")}`,
     );
   }
 

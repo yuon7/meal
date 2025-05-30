@@ -12,8 +12,6 @@ interface Question {
   id: number;
   type: "question";
   text: string;
-  quote?: string;
-  author?: string;
   options: string[];
 }
 
@@ -21,8 +19,6 @@ interface ChatMessageData {
   id: number;
   type: "question" | "answer";
   text: string;
-  quote?: string;
-  author?: string;
   questionId?: number;
 }
 
@@ -31,26 +27,18 @@ const allQuestions: Question[] = [
     id: 1,
     type: "question",
     text: "どんな雰囲気のお店がいいですか？",
-    quote:
-      "Life is like an npm install – you never know what you are going to get.",
-    author: "Forrest Gump",
     options: ["カジュアル", "落ち着いた", "賑やか", "おしゃれ"],
   },
   {
     id: 2,
     type: "question",
     text: "どんな料理のジャンルがお好みですか？",
-    quote: "The only way to do great work is to love what you do.",
-    author: "Steve Jobs",
     options: ["和食", "洋食", "中華", "イタリアン", "カフェ"],
   },
   {
     id: 3,
     type: "question",
     text: "予算はどれくらいですか？",
-    quote:
-      "The future belongs to those who believe in the beauty of their dreams.",
-    author: "Eleanor Roosevelt",
     options: ["〜1,000円", "1,000円〜3,000円", "3,000円〜5,000円", "5,000円〜"],
   },
 ];
@@ -79,20 +67,18 @@ const Page = () => {
 
       if (
         !newHistory.some(
-          (item) => item.id === questionId && item.type === "question"
+          (item) => item.id === questionId && item.type === "question",
         )
       ) {
         newHistory.push({
           id: questionId,
           type: "question",
           text: currentQuestion.text,
-          quote: currentQuestion.quote,
-          author: currentQuestion.author,
         });
       }
 
       const existingAnswerIndex = newHistory.findIndex(
-        (item) => item.type === "answer" && item.questionId === questionId
+        (item) => item.type === "answer" && item.questionId === questionId,
       );
 
       if (existingAnswerIndex !== -1) {
@@ -100,14 +86,14 @@ const Page = () => {
           id: Date.now(),
           type: "answer",
           text: selectedValue,
-          questionId: questionId,
+          questionId,
         };
       } else {
         newHistory.push({
           id: Date.now(),
           type: "answer",
           text: selectedValue,
-          questionId: questionId,
+          questionId,
         });
       }
 
@@ -119,7 +105,7 @@ const Page = () => {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
         setShowSummaryPage(true);
-        console.log("全ての質問に回答しました！最終確認画面へ遷移します。");
+        console.log("全ての質問に回答しました！お店を探すステップへ。");
       }
     }, 500);
   };
@@ -134,16 +120,16 @@ const Page = () => {
       const prevQuestionId = allQuestions[currentQuestionIndex - 1].id;
       setChatHistory((prevHistory) => {
         const indexToKeepFrom = prevHistory.findIndex(
-          (item) => item.id === prevQuestionId && item.type === "question"
+          (item) => item.id === prevQuestionId && item.type === "question",
         );
 
         if (indexToKeepFrom !== -1) {
-          return prevHistory
-            .slice(0, indexToKeepFrom + 1)
-            .filter(
-              (item) =>
-                !(item.type === "answer" && item.questionId === prevQuestionId)
-            );
+          let filteredHistory = prevHistory.slice(0, indexToKeepFrom + 1);
+          filteredHistory = filteredHistory.filter(
+            (item) =>
+              !(item.type === "answer" && item.questionId === prevQuestionId),
+          );
+          return filteredHistory;
         }
         return [];
       });
@@ -161,7 +147,9 @@ const Page = () => {
     console.log("質問を最初からやり直します。");
   };
 
-  const currentQuestion = allQuestions[currentQuestionIndex];
+  const currentQuestion = showSummaryPage
+    ? null
+    : allQuestions[currentQuestionIndex];
 
   return (
     <div>
@@ -181,17 +169,11 @@ const Page = () => {
               key={message.id}
               type={message.type}
               text={message.text}
-              quote={message.quote}
-              author={message.author}
             />
           ))}
           {!showSummaryPage && currentQuestion && (
             <div className={styles.currentQuestionBubble}>
-              <BlockQuote
-                quote={currentQuestion.quote}
-                author={currentQuestion.author}
-                questionText={currentQuestion.text}
-              />
+              <BlockQuote questionText={currentQuestion.text} />
             </div>
           )}
         </div>
@@ -206,7 +188,7 @@ const Page = () => {
                   chatHistory.findLast(
                     (item) =>
                       item.type === "answer" &&
-                      item.questionId === currentQuestion.id
+                      item.questionId === currentQuestion.id,
                   )?.text || null
                 }
               />
@@ -226,32 +208,17 @@ const Page = () => {
         )}
 
         {showSummaryPage && (
-          <div className={styles.summaryPageArea}>
-            <h2 className={styles.summaryTitle}>選択内容の確認</h2>
-            <div className={styles.summaryContent}>
-              {allQuestions.map((q) => {
-                const answer = chatHistory.find(
-                  (item) => item.type === "answer" && item.questionId === q.id
-                );
-                return (
-                  <div key={q.id} className={styles.summaryItem}>
-                    <p className={styles.summaryQuestion}>{q.text}</p>
-                    <p className={styles.summaryAnswer}>
-                      選択: {answer ? answer.text : "未回答"}
-                    </p>
-                  </div>
-                );
-              })}
-            </div>
-            <div className={styles.summaryButtons}>
+          <div className={styles.finalActionArea}>
+            <h2 className={styles.finalActionTitle}>お店を探しますか？</h2>
+            <div className={styles.finalActionButtons}>
               <button onClick={handleGoBack} className={styles.backButton}>
-                修正する
+                質問を修正する
               </button>
               <button
                 onClick={handleComplete}
                 className={styles.completeButton}
               >
-                この内容でお店を探す
+                お店を探す
               </button>
             </div>
             <div className={styles.resetButtonContainer}>

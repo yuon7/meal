@@ -55,32 +55,28 @@
   width: 0;
   height: 0;
   border-top: 8px solid transparent;
-  border-left: 8px solid #dcf8c6; /* 吹き出しの背景色と同じ色 */
+  border-left: 8px solid #dcf8c6;
   border-bottom: 8px solid transparent;
 }
 
-/* メッセージ内のテキスト */
 .messageText {
   margin: 0;
   padding: 0;
 }
 
-/* メッセージ内の引用ブロック（質問の場合のみ表示される） */
 .messageQuote {
   margin: 10px 0 0 0;
   padding-left: 10px;
-  border-left: 3px solid rgba(0,0,0,0.2); /* 引用の左側の線 */
+  border-left: 3px solid rgba(0, 0, 0, 0.2);
   font-size: 0.9em;
   color: #555;
-  font-style: italic; /* 引用なので斜体 */
+  font-style: italic;
 }
 
-/* 引用内のテキスト */
 .messageQuote .quoteText {
   margin: 0;
 }
 
-/* 引用内の著者名 */
 .messageQuote .author {
   text-align: right;
   font-size: 0.8em;

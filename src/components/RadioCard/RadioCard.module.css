@@ -1,68 +1,49 @@
-/* src/components/RadioCard/RadioCard.module.css */
-
-/* ラジオカード全体のコンテナ */
 .radioCardContainer {
   display: flex;
-  flex-direction: column; /* カードを縦に並べる */
-  gap: 15px; /* カード間の垂直方向のスペース */
-  margin-top: 30px; /* 上部の余白 */
-  max-width: 400px; /* カード領域の最大幅 */
-  margin-left: auto; /* 中央寄せ */
-  margin-right: auto; /* 中央寄せ */
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 30px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* 各ラジオカードのラベル（クリック可能領域） */
 .radioCardLabel {
-  display: flex; /* inputとcontentを横並びに配置 */
-  align-items: center; /* 垂直方向中央揃え */
-  cursor: pointer; /* カーソルをポインターにする */
-  border: 1px solid #ddd; /* 境界線 */
-  border-radius: 8px; /* 角を丸める */
-  padding: 15px 20px; /* 内側のパディング */
-  transition: all 0.3s ease; /* ホバーや選択時のアニメーション */
-  background-color: #fff; /* 背景色 */
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); /* 軽い影 */
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px 20px;
+  transition: all 0.3s ease;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 }
 
-/* ホバー時のスタイル */
 .radioCardLabel:hover {
-  border-color: #007bff; /* ホバー時に青系の境界線 */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* 影を強調 */
+  border-color: #007bff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* ラジオボタンの実際のinput要素 */
 .radioInput {
-  margin-right: 15px; /* ラジオボタンとテキストの間のスペース */
-  /* デフォルトのラジオボタンの見た目をカスタマイズしたい場合、
-     appearance: none; を使って非表示にし、::before/:after 擬似要素などで独自のスタイルを適用します。
-     今回はシンプルにデフォルトの見た目を尊重します。 */
-  width: 20px;  /* ラジオボタンのサイズ調整 */
-  height: 20px; /* ラジオボタンのサイズ調整 */
-  flex-shrink: 0; /* ラジオボタンが縮まないようにする */
+  margin-right: 15px;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
-/* 選択されたラジオボタンのラベル全体のスタイル */
-/* input:checked の状態を利用して、親のlabelにスタイルを適用 */
 .radioInput:checked + .cardContent {
-  color: #007bff; /* テキストの色を青に */
-  font-weight: bold; /* テキストを太字に */
+  color: #007bff;
+  font-weight: bold;
 }
 
-/* input:checked の状態を利用して、親のlabelにスタイルを適用 (複雑なセレクタになる場合) */
-/* これはCSSの限界で直接親には影響しにくいので、通常は上の方式か、JSでクラスを付与する */
-.radioInput:checked ~ .radioCardLabel {
-  /* このセレクタでは、兄弟要素（~）以降の要素にしか適用されません。
-     もし親要素の .radioCardLabel 自体の背景色や境界線を変えたい場合は、
-     .radioCardLabel に直接 .selected などのクラスをJavaScriptで付与するのが確実です。
-     あるいは、:has() 擬似クラスが使える環境であればより柔軟に記述できますが、
-     互換性を考慮するとJavaScriptがより一般的です。
-     今回は、.radioInput:checked + .cardContent のみで対応します。
-  */
+.radioCardLabel.selected {
+  border-color: #007bff;
+  background-color: #eaf7ff;
 }
 
-/* カード内のコンテンツ（テキスト部分） */
 .cardContent {
-  flex-grow: 1; /* 残りのスペースを埋めて、テキストが長くなっても対応できるように */
+  flex-grow: 1;
   font-size: 1.1em;
   color: #333;
 }

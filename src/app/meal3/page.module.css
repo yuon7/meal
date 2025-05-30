@@ -59,3 +59,130 @@
   padding: 0 10px;
   box-sizing: border-box;
 }
+
+.backButton {
+  background-color: #e9ecef;
+  color: #343a40;
+  border: 1px solid #ced4da;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1em;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.backButton:hover {
+  background-color: #dee2e6;
+  border-color: #adb5bd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.backButton:active {
+  background-color: #ced4da;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.backButton:disabled {
+  background-color: #f9f9f9;
+  color: #aaa;
+  border-color: #eee;
+  cursor: not-allowed;
+}
+
+.resetButtonSmall {
+  background-color: transparent;
+  color: #6c757d;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition:
+    color 0.2s,
+    background-color 0.2s;
+}
+
+.resetButtonSmall:hover {
+  color: #495057;
+  background-color: #f8f9fa;
+}
+
+.resetButtonSmall:active {
+  background-color: #e9ecef;
+}
+
+.resetButtonContainer {
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+.resetButton {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.resetButton:hover {
+  background-color: #c82333;
+}
+
+.resetButton:active {
+  background-color: #bd2130;
+}
+
+.finalActionArea {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 30px 20px;
+  background-color: #fff;
+  border-top: 1px solid #eee;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.finalActionTitle {
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.finalActionButtons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  width: 100%;
+}
+
+.completeButton {
+  background-color: #28a745;
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+.completeButton:hover {
+  background-color: #218838;
+}
+
+.completeButton:active {
+  background-color: #1e7e34;
+}
