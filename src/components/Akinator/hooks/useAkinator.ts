@@ -1,6 +1,6 @@
 "use client";
 
-type retrunQuestion = Question & {
+type returnQuestion = Question & {
   isFinished: boolean;
 };
 export type Question = {
@@ -41,7 +41,7 @@ export const questions: Question[] = [
   },
 ];
 
-const useAkinator = (id: number): retrunQuestion => {
+const useAkinator = (id: number): returnQuestion => {
   if (questions[id]) {
     const isFinished = id === questions.length - 1;
     return {
