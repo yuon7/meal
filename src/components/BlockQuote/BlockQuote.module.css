@@ -1,0 +1,35 @@
+.blockquoteContainer {
+  margin: 20px auto;
+  max-width: 600px;
+  padding: 20px;
+  background-color: #e6f7ff;
+  border-left: 5px solid #1890ff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.questionText {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.blockquote {
+  margin: 0;
+  padding: 0;
+}
+
+.quoteText {
+  font-size: 1em;
+  line-height: 1.5;
+  color: #555;
+  font-style: italic;
+}
+
+.author {
+  text-align: right;
+  font-size: 0.9em;
+  color: #777;
+  margin-top: 10px;
+}
