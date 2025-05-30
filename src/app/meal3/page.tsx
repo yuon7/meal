@@ -41,6 +41,12 @@ const allQuestions: Question[] = [
     text: "予算はどれくらいですか？",
     options: ["〜1,000円", "1,000円〜3,000円", "3,000円〜5,000円", "5,000円〜"],
   },
+  {
+    id: 4,
+    type: "question",
+    text: "こだわりはありますか？",
+    options: ["個室", "飲み放題", "食べ放題", "ペット可"],
+  },
 ];
 
 const Page = () => {
@@ -67,7 +73,7 @@ const Page = () => {
 
       if (
         !newHistory.some(
-          (item) => item.id === questionId && item.type === "question",
+          (item) => item.id === questionId && item.type === "question"
         )
       ) {
         newHistory.push({
@@ -78,7 +84,7 @@ const Page = () => {
       }
 
       const existingAnswerIndex = newHistory.findIndex(
-        (item) => item.type === "answer" && item.questionId === questionId,
+        (item) => item.type === "answer" && item.questionId === questionId
       );
 
       if (existingAnswerIndex !== -1) {
@@ -120,14 +126,14 @@ const Page = () => {
       const prevQuestionId = allQuestions[currentQuestionIndex - 1].id;
       setChatHistory((prevHistory) => {
         const indexToKeepFrom = prevHistory.findIndex(
-          (item) => item.id === prevQuestionId && item.type === "question",
+          (item) => item.id === prevQuestionId && item.type === "question"
         );
 
         if (indexToKeepFrom !== -1) {
           let filteredHistory = prevHistory.slice(0, indexToKeepFrom + 1);
           filteredHistory = filteredHistory.filter(
             (item) =>
-              !(item.type === "answer" && item.questionId === prevQuestionId),
+              !(item.type === "answer" && item.questionId === prevQuestionId)
           );
           return filteredHistory;
         }
@@ -188,7 +194,7 @@ const Page = () => {
                   chatHistory.findLast(
                     (item) =>
                       item.type === "answer" &&
-                      item.questionId === currentQuestion.id,
+                      item.questionId === currentQuestion.id
                   )?.text || null
                 }
               />
