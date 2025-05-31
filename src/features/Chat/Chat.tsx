@@ -18,7 +18,6 @@ interface Message {
   id: string;
   text: string;
   userId: string;
-  userName: string;
   created_at: string;
 }
 
@@ -53,8 +52,6 @@ export default function Chat({ user }: { user: User | null }) {
         id: crypto.randomUUID(),
         text: newMessage,
         userId: user.id,
-        //TODO:仮置きでメール (ユーザー名を登録してもらう仕組みを作る)
-        userName: user.email || "Anonymous",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       },
@@ -104,7 +101,8 @@ export default function Chat({ user }: { user: User | null }) {
               <Paper key={message.id} withBorder p="md" radius="md">
                 <Group justify="space-between" mb={4}>
                   <Text size="sm" c="dimmed">
-                    {message.userName}
+                    {/* 将来的にはユーザーネームを期待する */}
+                    {user?.email || "Anonymous"}
                   </Text>
                   <Text size="xs" c="dimmed">
                     {new Date(message.created_at).toLocaleString()}
