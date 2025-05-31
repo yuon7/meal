@@ -46,8 +46,8 @@ export default function ResetPasswordPage({
       } catch (error) {
         router.push(
           `/auth/password/reset?error=${encodeURIComponent(
-            error instanceof Error ? error.message : "不明なエラー"
-          )}`
+            error instanceof Error ? error.message : "不明なエラー",
+          )}`,
         );
       } finally {
         setLoading(false);
@@ -65,7 +65,7 @@ export default function ResetPasswordPage({
 
     if (newPassword !== confirmPassword) {
       router.push(
-        `/auth/password/reset?error=${encodeURIComponent("パスワードが一致しません")}`
+        `/auth/password/reset?error=${encodeURIComponent("パスワードが一致しません")}`,
       );
       return;
     }
@@ -82,8 +82,8 @@ export default function ResetPasswordPage({
     } catch (error) {
       router.push(
         `/auth/password/reset?error=${encodeURIComponent(
-          error instanceof Error ? error.message : "不明なエラー"
-        )}`
+          error instanceof Error ? error.message : "不明なエラー",
+        )}`,
       );
     }
   };

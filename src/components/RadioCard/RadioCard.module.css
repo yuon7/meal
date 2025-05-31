@@ -1,0 +1,54 @@
+.mantineOptionsContainer {
+  width: 100%;
+}
+
+.optionCard {
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-bottom: 8px;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
+}
+
+.optionCard:hover {
+  border-color: #aaa;
+}
+
+.optionCard.selected {
+  border-color: var(--mantine-color-blue-6);
+  background-color: var(--mantine-color-blue-0);
+}
+
+.cardContent {
+  font-size: var(--mantine-font-size-sm);
+  color: var(--mantine-color-black);
+  flex-grow: 1;
+}
+
+.scrollableOptionsArea {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.scrollableOptionsArea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollableOptionsArea::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.scrollableOptionsArea::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.scrollableOptionsArea::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
+}
