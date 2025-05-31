@@ -1,49 +1,54 @@
-.radioCardContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  margin-top: 30px;
-  max-width: 400px;
-  margin-left: auto;
-  margin-right: auto;
+.mantineOptionsContainer {
+  width: 100%;
 }
 
-.radioCardLabel {
-  display: flex;
-  align-items: center;
+.optionCard {
+  display: block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   cursor: pointer;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 15px 20px;
-  transition: all 0.3s ease;
-  background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  margin-bottom: 8px;
+  transition:
+    border-color 0.2s,
+    background-color 0.2s;
 }
 
-.radioCardLabel:hover {
-  border-color: #007bff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+.optionCard:hover {
+  border-color: #aaa;
 }
 
-.radioInput {
-  margin-right: 15px;
-  width: 20px;
-  height: 20px;
-  flex-shrink: 0;
-}
-
-.radioInput:checked + .cardContent {
-  color: #007bff;
-  font-weight: bold;
-}
-
-.radioCardLabel.selected {
-  border-color: #007bff;
-  background-color: #eaf7ff;
+.optionCard.selected {
+  border-color: var(--mantine-color-blue-6);
+  background-color: var(--mantine-color-blue-0);
 }
 
 .cardContent {
+  font-size: var(--mantine-font-size-sm);
+  color: var(--mantine-color-black);
   flex-grow: 1;
-  font-size: 1.1em;
-  color: #333;
+}
+
+.scrollableOptionsArea {
+  max-height: 300px;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.scrollableOptionsArea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollableOptionsArea::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+.scrollableOptionsArea::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.scrollableOptionsArea::-webkit-scrollbar-thumb:hover {
+  background: #aaa;
 }

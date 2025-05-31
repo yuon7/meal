@@ -1,7 +1,7 @@
 "use client";
 
 import styles from "./page.module.css";
-import { Footer } from "@/components/Footer/Footer";
+// import { Footer } from "@/components/Footer/Footer";
 import React, { useState, useEffect, useRef } from "react";
 import { ProgressBar } from "@/components/Progress/Progress";
 import { RadioCard } from "@/components/RadioCard/RadioCard";
@@ -13,12 +13,13 @@ interface Question {
   type: "question";
   text: string;
   options: string[];
+  allowMultiple?: boolean;
 }
 
 interface ChatMessageData {
   id: number;
   type: "question" | "answer";
-  text: string;
+  text: string | string[];
   questionId?: number;
 }
 
@@ -34,6 +35,7 @@ const allQuestions: Question[] = [
     type: "question",
     text: "どんな料理のジャンルがお好みですか？",
     options: ["和食", "洋食", "中華", "イタリアン", "カフェ"],
+    allowMultiple: true,
   },
   {
     id: 3,
@@ -46,6 +48,7 @@ const allQuestions: Question[] = [
     type: "question",
     text: "こだわりはありますか？",
     options: ["個室", "飲み放題", "食べ放題", "ペット可"],
+    allowMultiple: true,
   },
 ];
 
@@ -55,7 +58,6 @@ const Page = () => {
   const [showSummaryPage, setShowSummaryPage] = useState<boolean>(false);
 
   const totalSteps: number = allQuestions.length + 1;
-
   const chatHistoryRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,7 +66,7 @@ const Page = () => {
     }
   }, [chatHistory]);
 
-  const handleOptionChange = (selectedValue: string) => {
+  const handleOptionChange = (selectedValue: string | string[]) => {
     const currentQuestion = allQuestions[currentQuestionIndex];
 
     setChatHistory((prevHistory) => {
@@ -73,7 +75,7 @@ const Page = () => {
 
       if (
         !newHistory.some(
-          (item) => item.id === questionId && item.type === "question"
+          (item) => item.id === questionId && item.type === "question",
         )
       ) {
         newHistory.push({
@@ -84,14 +86,14 @@ const Page = () => {
       }
 
       const existingAnswerIndex = newHistory.findIndex(
-        (item) => item.type === "answer" && item.questionId === questionId
+        (item) => item.type === "answer" && item.questionId === questionId,
       );
 
       if (existingAnswerIndex !== -1) {
         newHistory[existingAnswerIndex] = {
           id: Date.now(),
           type: "answer",
-          text: selectedValue,
+          text: selectedValue, 
           questionId,
         };
       } else {
@@ -102,7 +104,6 @@ const Page = () => {
           questionId,
         });
       }
-
       return newHistory;
     });
 
@@ -122,18 +123,16 @@ const Page = () => {
       setCurrentQuestionIndex(allQuestions.length - 1);
     } else if (currentQuestionIndex > 0) {
       setCurrentQuestionIndex(currentQuestionIndex - 1);
-
       const prevQuestionId = allQuestions[currentQuestionIndex - 1].id;
       setChatHistory((prevHistory) => {
         const indexToKeepFrom = prevHistory.findIndex(
-          (item) => item.id === prevQuestionId && item.type === "question"
+          (item) => item.id === prevQuestionId && item.type === "question",
         );
-
         if (indexToKeepFrom !== -1) {
           let filteredHistory = prevHistory.slice(0, indexToKeepFrom + 1);
           filteredHistory = filteredHistory.filter(
             (item) =>
-              !(item.type === "answer" && item.questionId === prevQuestionId)
+              !(item.type === "answer" && item.questionId === prevQuestionId),
           );
           return filteredHistory;
         }
@@ -144,6 +143,10 @@ const Page = () => {
 
   const handleComplete = () => {
     console.log("お店を検索する！");
+    console.log(
+      "最終的な選択肢:",
+      chatHistory.filter((item) => item.type === "answer"),
+    );
   };
 
   const handleReset = () => {
@@ -174,7 +177,11 @@ const Page = () => {
             <ChatMessage
               key={message.id}
               type={message.type}
-              text={message.text}
+              text={
+                Array.isArray(message.text) 
+                  ? message.text.join(", ") 
+                  : message.text
+              }
             />
           ))}
           {!showSummaryPage && currentQuestion && (
@@ -194,12 +201,12 @@ const Page = () => {
                   chatHistory.findLast(
                     (item) =>
                       item.type === "answer" &&
-                      item.questionId === currentQuestion.id
+                      item.questionId === currentQuestion.id,
                   )?.text || null
                 }
+                allowMultiple={currentQuestion.allowMultiple}
               />
             </div>
-
             <div className={styles.questionNavButtons}>
               {currentQuestionIndex > 0 && (
                 <button onClick={handleGoBack} className={styles.backButton}>
