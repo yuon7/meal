@@ -95,7 +95,6 @@ export const RadioCard: React.FC<RadioCardProps> = ({
         </div>
         <Button
           onClick={handleMultipleSelectionComplete}
-          className={styles.completeButtonMantine}
           fullWidth
           mt="md"
         >
