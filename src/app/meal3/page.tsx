@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { ProgressBar } from "@/components/Progress/Progress";
 import { RadioCard } from "@/components/RadioCard/RadioCard";
 import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
-import { allQuestions, Question } from "@/data/questions";
+import { allQuestions } from "@/data/questions";
 
 const Page = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
