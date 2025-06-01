@@ -1,4 +1,3 @@
-// app/page.tsx (または適切なパス)
 "use client";
 
 import styles from "./page.module.css";
@@ -6,7 +5,7 @@ import React, { useState } from "react";
 import { ProgressBar } from "@/components/Progress/Progress";
 import { RadioCard } from "@/components/RadioCard/RadioCard";
 import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
-import { allQuestions, Question } from "@/data/questions"; // questions.tsからインポート
+import { allQuestions, Question } from "@/data/questions";
 
 const Page = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -41,7 +40,7 @@ const Page = () => {
       const questionToReAnswerId = allQuestions[prevQuestionIndex].id;
 
       setCurrentQuestionIndex(prevQuestionIndex);
-      setAnswers(prevAnswers => {
+      setAnswers((prevAnswers) => {
         const newAnswers = { ...prevAnswers };
         delete newAnswers[questionToReAnswerId];
         return newAnswers;

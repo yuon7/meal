@@ -25,12 +25,12 @@ export const RadioCard: React.FC<RadioCardProps> = ({
   useEffect(() => {
     if (allowMultiple) {
       setInternalMultiSelections(
-        Array.isArray(selectedValue) ? selectedValue : []
+        Array.isArray(selectedValue) ? selectedValue : [],
       );
       setInternalSingleSelection(null);
     } else {
       setInternalSingleSelection(
-        typeof selectedValue === "string" ? selectedValue : null
+        typeof selectedValue === "string" ? selectedValue : null,
       );
       setInternalMultiSelections([]);
     }
@@ -93,11 +93,7 @@ export const RadioCard: React.FC<RadioCardProps> = ({
             ))}
           </Stack>
         </div>
-        <Button
-          onClick={handleMultipleSelectionComplete}
-          fullWidth
-          mt="md"
-        >
+        <Button onClick={handleMultipleSelectionComplete} fullWidth mt="md">
           選択完了
         </Button>
       </div>
