@@ -94,7 +94,6 @@ export function AuthenticationForm({ searchParams, ...props }: CombinedProps) {
             radius="md"
           />
 
-          {/* Forgot password? ログイン時のみ表示 */}
           {type === "login" && (
             <Anchor
               component="a"
@@ -116,12 +115,10 @@ export function AuthenticationForm({ searchParams, ...props }: CombinedProps) {
             </Text>
           )}
 
-          {/* ボタンを幅いっぱいで中央寄せ */}
           <Button type="submit" radius="xl" fullWidth mt="md">
             {upperFirst(type)}
           </Button>
 
-          {/* アカウント切り替えリンクを一番下に中央寄せ */}
           <Anchor
             component="button"
             type="button"
