@@ -35,20 +35,17 @@
   margin-bottom: var(--mantine-spacing-md);
 }
 
+.scrollableOptionsArea {
+  max-height: 300px; /* または 40vh など、以前設定した値 */
+  overflow-y: auto;
+  margin-bottom: var(--mantine-spacing-md);
+
+  /* スクロールバーを非表示にするための設定 */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+/* WebKit系ブラウザ（Chrome, Safari, Edgeなど）用の設定 */
 .scrollableOptionsArea::-webkit-scrollbar {
-  width: 8px;
-}
-
-.scrollableOptionsArea::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 4px;
-}
-
-.scrollableOptionsArea::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
-}
-
-.scrollableOptionsArea::-webkit-scrollbar-thumb:hover {
-  background: #aaa;
+  display: none; /* または width: 0; background: transparent; など */
 }

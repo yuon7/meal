@@ -1,118 +1,34 @@
+// app/page.tsx (または適切なパス)
 "use client";
 
 import styles from "./page.module.css";
-// import { Footer } from "@/components/Footer/Footer";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import { ProgressBar } from "@/components/Progress/Progress";
 import { RadioCard } from "@/components/RadioCard/RadioCard";
 import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
-import { ChatMessage } from "@/components/ChatMessage/ChatMessage";
-
-interface Question {
-  id: number;
-  type: "question";
-  text: string;
-  options: string[];
-  allowMultiple?: boolean;
-}
-
-interface ChatMessageData {
-  id: number;
-  type: "question" | "answer";
-  text: string | string[];
-  questionId?: number;
-}
-
-const allQuestions: Question[] = [
-  {
-    id: 1,
-    type: "question",
-    text: "どんな雰囲気のお店がいいですか？",
-    options: ["カジュアル", "落ち着いた", "賑やか", "おしゃれ"],
-  },
-  {
-    id: 2,
-    type: "question",
-    text: "どんな料理のジャンルがお好みですか？",
-    options: ["和食", "洋食", "中華", "イタリアン", "カフェ"],
-    allowMultiple: true,
-  },
-  {
-    id: 3,
-    type: "question",
-    text: "予算はどれくらいですか？",
-    options: ["〜1,000円", "1,000円〜3,000円", "3,000円〜5,000円", "5,000円〜"],
-  },
-  {
-    id: 4,
-    type: "question",
-    text: "こだわりはありますか？",
-    options: ["個室", "飲み放題", "食べ放題", "ペット可"],
-    allowMultiple: true,
-  },
-];
+import { allQuestions, Question } from "@/data/questions"; // questions.tsからインポート
 
 const Page = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [chatHistory, setChatHistory] = useState<ChatMessageData[]>([]);
+  const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
   const [showSummaryPage, setShowSummaryPage] = useState<boolean>(false);
 
   const totalSteps: number = allQuestions.length + 1;
-  const chatHistoryRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (chatHistoryRef.current) {
-      chatHistoryRef.current.scrollTop = chatHistoryRef.current.scrollHeight;
-    }
-  }, [chatHistory]);
 
   const handleOptionChange = (selectedValue: string | string[]) => {
     const currentQuestion = allQuestions[currentQuestionIndex];
+    const questionId = currentQuestion.id;
 
-    setChatHistory((prevHistory) => {
-      const newHistory = [...prevHistory];
-      const questionId = currentQuestion.id;
-
-      if (
-        !newHistory.some(
-          (item) => item.id === questionId && item.type === "question",
-        )
-      ) {
-        newHistory.push({
-          id: questionId,
-          type: "question",
-          text: currentQuestion.text,
-        });
-      }
-
-      const existingAnswerIndex = newHistory.findIndex(
-        (item) => item.type === "answer" && item.questionId === questionId,
-      );
-
-      if (existingAnswerIndex !== -1) {
-        newHistory[existingAnswerIndex] = {
-          id: Date.now(),
-          type: "answer",
-          text: selectedValue, 
-          questionId,
-        };
-      } else {
-        newHistory.push({
-          id: Date.now(),
-          type: "answer",
-          text: selectedValue,
-          questionId,
-        });
-      }
-      return newHistory;
-    });
+    setAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      [questionId]: selectedValue,
+    }));
 
     setTimeout(() => {
       if (currentQuestionIndex < allQuestions.length - 1) {
         setCurrentQuestionIndex(currentQuestionIndex + 1);
       } else {
         setShowSummaryPage(true);
-        console.log("全ての質問に回答しました！お店を探すステップへ。");
       }
     }, 500);
   };
@@ -120,40 +36,28 @@ const Page = () => {
   const handleGoBack = () => {
     if (showSummaryPage) {
       setShowSummaryPage(false);
-      setCurrentQuestionIndex(allQuestions.length - 1);
     } else if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-      const prevQuestionId = allQuestions[currentQuestionIndex - 1].id;
-      setChatHistory((prevHistory) => {
-        const indexToKeepFrom = prevHistory.findIndex(
-          (item) => item.id === prevQuestionId && item.type === "question",
-        );
-        if (indexToKeepFrom !== -1) {
-          let filteredHistory = prevHistory.slice(0, indexToKeepFrom + 1);
-          filteredHistory = filteredHistory.filter(
-            (item) =>
-              !(item.type === "answer" && item.questionId === prevQuestionId),
-          );
-          return filteredHistory;
-        }
-        return [];
+      const prevQuestionIndex = currentQuestionIndex - 1;
+      const questionToReAnswerId = allQuestions[prevQuestionIndex].id;
+
+      setCurrentQuestionIndex(prevQuestionIndex);
+      setAnswers(prevAnswers => {
+        const newAnswers = { ...prevAnswers };
+        delete newAnswers[questionToReAnswerId];
+        return newAnswers;
       });
     }
   };
 
   const handleComplete = () => {
     console.log("お店を検索する！");
-    console.log(
-      "最終的な選択肢:",
-      chatHistory.filter((item) => item.type === "answer"),
-    );
+    console.log("最終的な回答:", answers);
   };
 
   const handleReset = () => {
     setCurrentQuestionIndex(0);
-    setChatHistory([]);
+    setAnswers({});
     setShowSummaryPage(false);
-    console.log("質問を最初からやり直します。");
   };
 
   const currentQuestion = showSummaryPage
@@ -172,41 +76,21 @@ const Page = () => {
           />
         </div>
 
-        <div className={styles.chatHistoryContainer} ref={chatHistoryRef}>
-          {chatHistory.map((message) => (
-            <ChatMessage
-              key={message.id}
-              type={message.type}
-              text={
-                Array.isArray(message.text) 
-                  ? message.text.join(", ") 
-                  : message.text
-              }
-            />
-          ))}
-          {!showSummaryPage && currentQuestion && (
-            <div className={styles.currentQuestionBubble}>
-              <BlockQuote questionText={currentQuestion.text} />
-            </div>
-          )}
-        </div>
-
         {!showSummaryPage && currentQuestion && (
           <div className={styles.currentQuestionInputArea}>
+            <div className={styles.currentQuestionDisplay}>
+              <BlockQuote questionText={currentQuestion.text} />
+            </div>
+
             <div className={styles.area}>
               <RadioCard
                 options={currentQuestion.options}
                 onOptionChange={handleOptionChange}
-                selectedValue={
-                  chatHistory.findLast(
-                    (item) =>
-                      item.type === "answer" &&
-                      item.questionId === currentQuestion.id,
-                  )?.text || null
-                }
+                selectedValue={answers[currentQuestion.id] || null}
                 allowMultiple={currentQuestion.allowMultiple}
               />
             </div>
+
             <div className={styles.questionNavButtons}>
               {currentQuestionIndex > 0 && (
                 <button onClick={handleGoBack} className={styles.backButton}>
@@ -242,7 +126,6 @@ const Page = () => {
           </div>
         )}
       </div>
-      {/* <Footer /> */}
     </div>
   );
 };

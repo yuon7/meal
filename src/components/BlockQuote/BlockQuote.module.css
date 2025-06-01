@@ -34,3 +34,16 @@
   color: #777;
   margin-top: 10px;
 }
+
+.scrollableOptionsArea {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: var(--mantine-spacing-md);
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.scrollableOptionsArea::-webkit-scrollbar {
+  display: none;
+}
