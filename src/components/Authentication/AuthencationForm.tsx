@@ -43,8 +43,8 @@ export function AuthenticationForm({ searchParams, ...props }: CombinedProps) {
 
   return (
     <Paper radius="md" p="lg" withBorder {...props}>
-      <Text size="lg" fw={500}>
-        Welcome to Mantine, {upperFirst(type)} with
+      <Text size="lg" fw={500} ta="center">
+        {upperFirst(type)} with
       </Text>
 
       <Group grow mb="md" mt="md">
@@ -74,7 +74,7 @@ export function AuthenticationForm({ searchParams, ...props }: CombinedProps) {
             required
             name="email"
             label="Email"
-            placeholder="hello@mantine.dev"
+            placeholder="hello@tech.dev"
             value={form.values.email}
             onChange={(event) =>
               form.setFieldValue("email", event.currentTarget.value)
@@ -93,17 +93,39 @@ export function AuthenticationForm({ searchParams, ...props }: CombinedProps) {
             }
             radius="md"
           />
-        </Stack>
-        {searchParams.error && (
-          <Text color="red" size="xs">
-            {searchParams.error}
-          </Text>
-        )}
 
-        <Group justify="space-between" mt="xl">
+          {/* Forgot password? ログイン時のみ表示 */}
+          {type === "login" && (
+            <Anchor
+              component="a"
+              href="/auth/password/form"
+              size="xs"
+              style={{
+                display: "block",
+                textAlign: "right",
+                marginTop: "-10px",
+              }}
+            >
+              Forgot password?
+            </Anchor>
+          )}
+
+          {searchParams.error && (
+            <Text color="red" size="xs">
+              {searchParams.error}
+            </Text>
+          )}
+
+          {/* ボタンを幅いっぱいで中央寄せ */}
+          <Button type="submit" radius="xl" fullWidth mt="md">
+            {upperFirst(type)}
+          </Button>
+
+          {/* アカウント切り替えリンクを一番下に中央寄せ */}
           <Anchor
             component="button"
             type="button"
+            underline="always"
             c="dimmed"
             onClick={() => {
               const url = new URL(window.location.href);
@@ -113,15 +135,13 @@ export function AuthenticationForm({ searchParams, ...props }: CombinedProps) {
               toggle();
             }}
             size="xs"
+            style={{ margin: "0 auto" }}
           >
             {type === "register"
               ? "Already have an account? Login"
               : "Don't have an account? Register"}
           </Anchor>
-          <Button type="submit" radius="xl">
-            {upperFirst(type)}
-          </Button>
-        </Group>
+        </Stack>
       </form>
     </Paper>
   );
