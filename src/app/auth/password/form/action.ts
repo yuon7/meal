@@ -15,7 +15,11 @@ export async function forgotPassword(formData: FormData) {
     redirectTo: process.env.RESET_REDIRECT_URL,
   });
   if (error) {
-    throw error;
+    let errorMessage = error.message;
+    if (errorMessage.includes("invalid format")) {
+      errorMessage = "メールアドレスの形式が正しくありません";
+    }
+    redirect(`/auth/password/form?error=${encodeURIComponent(errorMessage)}`);
   }
   redirect("/auth/login");
 }
