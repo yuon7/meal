@@ -6,7 +6,6 @@ import {
   PasswordInput,
   Stack,
   Text,
-  TextInput,
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -29,7 +28,6 @@ export function ResetPassword({
   const [type] = useToggle(["register"]);
   const form = useForm({
     initialValues: {
-      name: "",
       newPassword: "",
       confirmPassword: "",
     },
@@ -54,17 +52,6 @@ export function ResetPassword({
       <form action={resetPassword} onSubmit={onSubmit} method="post">
         <Paper radius="md" p="lg" withBorder {...props} mt="xl">
           <Stack>
-            <TextInput
-              label="Name"
-              name="name"
-              placeholder="Your name"
-              value={form.values.name}
-              onChange={(event) =>
-                form.setFieldValue("name", event.currentTarget.value)
-              }
-              radius="md"
-            />
-
             <PasswordInput
               required
               name="newPassword"

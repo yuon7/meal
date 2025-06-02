@@ -1,9 +1,10 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
 import { ResetPassword } from "@/components/Authentication/ResetPassword/ResetPassword";
+import { Loader } from "@mantine/core";
 
 export default function ResetPasswordPage({
   searchParams,
@@ -12,7 +13,6 @@ export default function ResetPasswordPage({
 }) {
   const router = useRouter();
   const supabase = useSupabaseClient();
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -41,7 +41,7 @@ export default function ResetPasswordPage({
           )}`
         );
       } finally {
-        setLoading(false);
+        <Loader color="blue" />;
       }
     };
 
@@ -52,11 +52,6 @@ export default function ResetPasswordPage({
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const data = {
-      options: {
-        data: {
-          newName: formData.get("newName") as string,
-        },
-      },
       newPassword: formData.get("newPassword") as string,
       confirmPassword: formData.get("confirmPassword") as string,
     };
@@ -71,9 +66,6 @@ export default function ResetPasswordPage({
     try {
       const { error } = await supabase.auth.updateUser({
         password: data.newPassword,
-        data: {
-          full_name: data.options.data.newName,
-        },
       });
 
       if (error) throw error;
@@ -86,8 +78,6 @@ export default function ResetPasswordPage({
       );
     }
   };
-
-  if (loading) return <div>認証中...</div>;
 
   return (
     <div className={styles.container}>
