@@ -1,5 +1,6 @@
 "use client";
-import { useEffect } from "react";
+import React from "react";
+import { useEffect, useState } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
@@ -11,6 +12,7 @@ export default function ResetPasswordPage({
 }: {
   searchParams: { error?: string };
 }) {
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
   const supabase = useSupabaseClient();
 
@@ -41,7 +43,7 @@ export default function ResetPasswordPage({
           )}`
         );
       } finally {
-        <Loader color="blue" />;
+        setIsLoading(false);
       }
     };
 
@@ -76,12 +78,18 @@ export default function ResetPasswordPage({
           error instanceof Error ? error.message : "不明なエラー"
         )}`
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className={styles.container}>
-      <ResetPassword searchParams={searchParams} onSubmit={handleSubmit} />
+      {isLoading ? (
+        <Loader color="blue" size="xl" />
+      ) : (
+        <ResetPassword searchParams={searchParams} onSubmit={handleSubmit} />
+      )}
     </div>
   );
 }

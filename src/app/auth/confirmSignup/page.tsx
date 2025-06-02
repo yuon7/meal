@@ -1,24 +1,56 @@
-import styles from "./page.module.css";
+import { IconArrowLeft } from "@tabler/icons-react";
+import {
+  Anchor,
+  Box,
+  Center,
+  Container,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  Title,
+} from "@mantine/core";
+import Link from "next/link";
+import classes from "./page.module.css";
 
-export default function ConfirmSignupPage({
-  searchParams,
-}: {
+type Props = {
   searchParams: { email: string };
-}) {
+};
+
+export default function ConfirmSignup({ searchParams }: Props) {
   return (
-    <div className={styles.container}>
-      <div className={styles.card}>
-        <h2 className={styles.title}>確認メールを送信しました</h2>
-        <p className={styles.text}>
+    <div className={classes.container}>
+      <Container size={460} my={30}>
+        <Title className={classes.title} ta="center">
+          確認メールを送信しました
+        </Title>
+        <Text c="dimmed" fz="sm" ta="center">
           {searchParams.email} に確認メールを送信しました。
-        </p>
-        <p className={styles.text}>
-          メール内のリンクをクリックして、アカウントを有効化してください。
-        </p>
-        <a href="/auth/login" className={styles.link}>
-          ログインページに戻る
-        </a>
-      </div>
+        </Text>
+        <form>
+          <Paper withBorder shadow="md" p={30} radius="md" mt="xl">
+            <Stack gap="xs">
+              <Text ta="center" c="dimmed" mb="xs">
+                メール内のリンクをクリックして、アカウントを有効化してください。
+              </Text>
+            </Stack>
+            <Group justify="space-between" mt="lg" className={classes.controls}>
+              <Anchor
+                c="dimmed"
+                size="sm"
+                href="/auth/login"
+                className={classes.control}
+                component={Link}
+              >
+                <Center inline>
+                  <IconArrowLeft size={12} stroke={1.5} />
+                  <Box ml={5}>ログインページに戻る</Box>
+                </Center>
+              </Anchor>
+            </Group>
+          </Paper>
+        </form>
+      </Container>
     </div>
   );
 }
