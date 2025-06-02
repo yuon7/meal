@@ -7,8 +7,28 @@ import { Analytics } from "@vercel/analytics/next";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Next-Hono-Template",
-  description: "A modern template combining Next.js and Hono.",
+  title: "Meal",
+  description: "なんかお店出してくれます",
+  openGraph: {
+    title: "Meal",
+    description: "なんかお店出してくれます",
+    images: [
+      {
+        url: "/image/image.png",
+        width: 1200,
+        height: 630,
+        alt: "おしゃれな料理の写真",
+      },
+    ],
+    type: "website",
+    locale: "ja_JP",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Meal",
+    description: "なんかお店出してくれます",
+    images: ["/image/image.png"],
+  },
 };
 
 export default async function RootLayout({
