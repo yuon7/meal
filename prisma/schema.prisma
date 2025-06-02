@@ -23,3 +23,24 @@ model Todo {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Room {
+  id        String   @id @default(uuid())
+  maxUser Int
+  area String
+  mealType String
+  date String
+  isClosed Boolean
+  createdAt DateTime @default(now())
+
+  RoomParticipant RoomParticipant[]
+}
+
+model RoomParticipant{
+  id String @id @default(uuid())
+  roomId String
+  userId String
+  isHost Boolean
+
+  room Room    @relation(fields: [roomId], references: [id])
+}
