@@ -3,24 +3,16 @@ import { useState, useEffect } from "react";
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/navigation";
 import styles from "./page.module.css";
-import { IconEye, IconEyeOff } from "@tabler/icons-react";
+import { ResetPassword } from "@/components/Authentication/ResetPassword/ResetPassword";
 
 export default function ResetPasswordPage({
   searchParams,
 }: {
   searchParams: { error?: string };
 }) {
-  const supabase = useSupabaseClient();
   const router = useRouter();
+  const supabase = useSupabaseClient();
   const [loading, setLoading] = useState(true);
-  const [isRevealPassword, setIsRevealPassword] = useState(false);
-  const [isRevealConfirmPassword, setIsRevealConfirmPassword] = useState(false);
-  const togglePassword = () => {
-    setIsRevealPassword((prevState) => !prevState);
-  };
-  const toggleConfirmPassword = () => {
-    setIsRevealConfirmPassword((prevState) => !prevState);
-  };
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -41,7 +33,6 @@ export default function ResetPasswordPage({
         } else {
           throw new Error("認証情報が不足しています");
         }
-        // URLクリーンアップ
         window.history.replaceState({}, "", "/auth/password/reset");
       } catch (error) {
         router.push(
@@ -60,10 +51,17 @@ export default function ResetPasswordPage({
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    const newPassword = formData.get("newPassword") as string;
-    const confirmPassword = formData.get("confirmPassword") as string;
+    const data = {
+      options: {
+        data: {
+          newName: formData.get("newName") as string,
+        },
+      },
+      newPassword: formData.get("newPassword") as string,
+      confirmPassword: formData.get("confirmPassword") as string,
+    };
 
-    if (newPassword !== confirmPassword) {
+    if (data.newPassword !== data.confirmPassword) {
       router.push(
         `/auth/password/reset?error=${encodeURIComponent("パスワードが一致しません")}`
       );
@@ -72,12 +70,13 @@ export default function ResetPasswordPage({
 
     try {
       const { error } = await supabase.auth.updateUser({
-        password: newPassword,
+        password: data.newPassword,
+        data: {
+          full_name: data.options.data.newName,
+        },
       });
 
       if (error) throw error;
-
-      // セッションを確実に更新するためフルリロード
       window.location.href = "/auth/login";
     } catch (error) {
       router.push(
@@ -92,77 +91,7 @@ export default function ResetPasswordPage({
 
   return (
     <div className={styles.container}>
-      <div className={styles.card}>
-        <form method="post" className={styles.form} onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor="newPassword" className={styles.label}>
-              新しいパスワード:
-            </label>
-            <div className={styles.inputWrapper}>
-              <input
-                id="newPassword"
-                name="newPassword"
-                type={isRevealPassword ? "text" : "password"}
-                required
-                className={styles.input}
-              />
-              <button
-                type="button"
-                onClick={togglePassword}
-                aria-label={
-                  isRevealPassword ? "パスワードを非表示" : "パスワードを表示"
-                }
-                className={styles.iconButton}
-              >
-                {isRevealPassword ? (
-                  <IconEye size={30} />
-                ) : (
-                  <IconEyeOff size={30} />
-                )}
-              </button>
-            </div>
-          </div>
-          <div>
-            <label htmlFor="confirmPassword" className={styles.label}>
-              新しいパスワード(確認):
-            </label>
-            <div className={styles.inputWrapper}>
-              <input
-                id="confirmPassword"
-                name="confirmPassword"
-                type={isRevealConfirmPassword ? "text" : "password"}
-                required
-                className={styles.input}
-              />
-              <button
-                type="button"
-                onClick={toggleConfirmPassword}
-                aria-label={
-                  isRevealConfirmPassword
-                    ? "パスワードを非表示"
-                    : "パスワードを表示"
-                }
-                className={styles.iconButton}
-              >
-                {isRevealConfirmPassword ? (
-                  <IconEye size={30} />
-                ) : (
-                  <IconEyeOff size={30} />
-                )}
-              </button>
-            </div>
-          </div>
-          {searchParams.error && (
-            <div className={styles.error}>{searchParams.error}</div>
-          )}
-          <button
-            type="submit"
-            className={`${styles.button} ${styles.submitButton}`}
-          >
-            送信
-          </button>
-        </form>
-      </div>
+      <ResetPassword searchParams={searchParams} onSubmit={handleSubmit} />
     </div>
   );
 }

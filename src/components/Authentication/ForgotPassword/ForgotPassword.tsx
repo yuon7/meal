@@ -36,7 +36,7 @@ export function ForgotPassword({ searchParams }: Props) {
             required
           />
           {searchParams.error && (
-            <Text color="red" size="xs">
+            <Text color="red" size="xs" ta="center">
               {searchParams.error}
             </Text>
           )}

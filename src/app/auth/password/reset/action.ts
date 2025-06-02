@@ -8,9 +8,16 @@ export async function resetPassword(formData: FormData) {
   const cookieStore = cookies();
 
   const data = {
+    options: {
+      data: {
+        full_name: formData.get("name") as string,
+      },
+    },
     newPassword: formData.get("newPassword") as string,
     confirmPassword: formData.get("confirmPassword") as string,
   };
+
+  console.log("Reset Password Data:", data);
 
   if (data.newPassword !== data.confirmPassword) {
     redirect(
@@ -20,6 +27,9 @@ export async function resetPassword(formData: FormData) {
 
   const { error } = await supabase.auth.updateUser({
     password: data.newPassword,
+    data: {
+      full_name: data.options.data.full_name,
+    },
   });
 
   if (error) {

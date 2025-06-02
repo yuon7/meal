@@ -20,6 +20,7 @@ import { login, signup } from "@/app/auth/login/action";
 type Props = {
   readonly searchParams: { error?: string };
 };
+
 type CombinedProps = PaperProps & Props;
 
 export function AuthenticationForm({ searchParams, ...props }: CombinedProps) {
@@ -110,7 +111,7 @@ export function AuthenticationForm({ searchParams, ...props }: CombinedProps) {
           )}
 
           {searchParams.error && (
-            <Text color="red" size="xs">
+            <Text color="red" size="xs" ta="center">
               {searchParams.error}
             </Text>
           )}
