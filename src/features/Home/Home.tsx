@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useDisclosure } from "@mantine/hooks";
 import {
   IconUser,
   IconUsers,
@@ -9,9 +10,11 @@ import {
   IconArrowRight,
 } from "@tabler/icons-react";
 import styles from "./Home.module.css";
+import CreateRoom from "../../components/CreateRoom/CreateRoom";
 
 export default function Home() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const menuOptions = [
     {
@@ -60,6 +63,11 @@ export default function Home() {
             {menuOptions.map((option) => {
               const IconComponent = option.icon;
               const isHovered = hoveredCard === option.id;
+              const handleClick = () => {
+                if (option.id === "create") {
+                  open();
+                }
+              };
 
               return (
                 <div
@@ -67,7 +75,7 @@ export default function Home() {
                   className={`${styles.menuCard} ${isHovered ? styles.menuCardHovered : ""}`}
                   onMouseEnter={() => setHoveredCard(option.id)}
                   onMouseLeave={() => setHoveredCard(null)}
-                  onClick={() => console.log(`Selected: ${option.id}`)}
+                  onClick={handleClick}
                 >
                   <div
                     className={styles.cardBgGradient}
@@ -115,6 +123,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <CreateRoom opened={opened} close={close} />
     </div>
   );
 }
