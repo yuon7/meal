@@ -3,14 +3,18 @@
 import React, { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import {
-  IconUser,
-  IconUsers,
-  IconUserPlus,
-  IconChefHat,
-  IconArrowRight,
-} from "@tabler/icons-react";
+  Container,
+  Stack,
+  Title,
+  Text,
+  Group,
+  ThemeIcon,
+  SimpleGrid,
+} from "@mantine/core";
+import { IconUser, IconUsers, IconChefHat } from "@tabler/icons-react";
 import styles from "./Home.module.css";
-import CreateRoom from "../../components/CreateRoom/CreateRoom";
+import MenuCard from "../../components/MenuCard/MenuCard";
+import CreateRoomModal from "../../components/CreateRoomModal/CreateRoomModal";
 
 export default function Home() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -20,11 +24,11 @@ export default function Home() {
     {
       id: "solo",
       title: "ひとりで",
-      subtitle: "あなただけのお店を見つけよう",
+      subtitle: "お店を見つけよう",
       icon: IconUser,
       color: "#FF6B6B",
       gradient: "linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%)",
-      description: "気分に合わせてお店をおまかせで選択",
+      description: "気分に合わせてお店を選択",
     },
     {
       id: "create",
@@ -35,95 +39,61 @@ export default function Home() {
       gradient: "linear-gradient(135deg, #4ECDC4 0%, #6ED5CE 100%)",
       description: "友達を招待して一緒にお店選び",
     },
-    {
-      id: "join",
-      title: "ルームに参加",
-      subtitle: "既存のルームに参加する",
-      icon: IconUserPlus,
-      color: "#45B7D1",
-      gradient: "linear-gradient(135deg, #45B7D1 0%, #69C5DB 100%)",
-      description: "ルームコードを入力して参加",
-    },
   ];
+
+  const handleCardClick = (optionId: string) => {
+    if (optionId === "solo") {
+      //TODO - mealに進行？？
+    } else {
+      open();
+    }
+  };
 
   return (
     <div className={styles.container}>
       <div className={styles.wrapper}>
-        <div className={styles.content}>
-          <div className={styles.header}>
-            <div className={styles.headerIconGroup}>
-              <div className={styles.logoIcon}>
+        <Container size="sm" className={styles.content}>
+          <Stack align="center" gap="lg" className={styles.header}>
+            <Group justify="center" className={styles.headerIconGroup}>
+              <ThemeIcon
+                size={50}
+                radius="xl"
+                className={styles.logoIcon}
+                gradient={{ from: "#ffd93d", to: "#ff8f3d", deg: 135 }}
+                variant="gradient"
+              >
                 <IconChefHat size={28} color="white" />
-              </div>
-            </div>
-            <h1 className={styles.title}>AppName</h1>
-            <p className={styles.subtitle}>今日のお店を一緒に決めよう！</p>
-          </div>
-          <div className={styles.menuGrid}>
-            {menuOptions.map((option) => {
-              const IconComponent = option.icon;
-              const isHovered = hoveredCard === option.id;
-              const handleClick = () => {
-                if (option.id === "create") {
-                  open();
-                }
-              };
+              </ThemeIcon>
+            </Group>
+            <Title order={1} className={styles.title}>
+              AppName
+            </Title>
+            <Text className={styles.subtitle}>
+              今日のお店を一緒に決めよう！
+            </Text>
+          </Stack>
 
-              return (
-                <div
-                  key={option.id}
-                  className={`${styles.menuCard} ${isHovered ? styles.menuCardHovered : ""}`}
-                  onMouseEnter={() => setHoveredCard(option.id)}
-                  onMouseLeave={() => setHoveredCard(null)}
-                  onClick={handleClick}
-                >
-                  <div
-                    className={styles.cardBgGradient}
-                    style={{ background: option.gradient }}
-                  />
-                  <div className={styles.cardContent}>
-                    <div className={styles.cardLeft}>
-                      <div
-                        className={`${styles.iconWrapper} ${isHovered ? styles.iconWrapperHovered : ""}`}
-                        style={{ background: option.gradient }}
-                      >
-                        <IconComponent size={28} color="white" />
-                      </div>
-                      <div className={styles.textContent}>
-                        <h3
-                          className={`${styles.cardTitle} ${isHovered ? styles.textHovered : ""}`}
-                        >
-                          {option.title}
-                        </h3>
-                        <p
-                          className={`${styles.cardSubtitle} ${isHovered ? styles.textHovered : ""}`}
-                        >
-                          {option.subtitle}
-                        </p>
-                        <p
-                          className={`${styles.cardDescription} ${isHovered ? styles.textHovered : ""}`}
-                        >
-                          {option.description}
-                        </p>
-                      </div>
-                    </div>
-                    <div
-                      className={`${styles.arrowWrapper} ${isHovered ? styles.arrowWrapperHovered : ""}`}
-                    >
-                      <IconArrowRight
-                        size={20}
-                        color={option.color}
-                        className={`${styles.arrowIcon} ${isHovered ? styles.arrowIconHovered : ""}`}
-                      />
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+          <SimpleGrid cols={1} spacing="md" className={styles.menuGrid}>
+            {menuOptions.map((option) => (
+              <MenuCard
+                key={option.id}
+                id={option.id}
+                title={option.title}
+                subtitle={option.subtitle}
+                description={option.description}
+                icon={option.icon}
+                color={option.color}
+                gradient={option.gradient}
+                isHovered={hoveredCard === option.id}
+                onMouseEnter={() => setHoveredCard(option.id)}
+                onMouseLeave={() => setHoveredCard(null)}
+                onClick={() => handleCardClick(option.id)}
+              />
+            ))}
+          </SimpleGrid>
+        </Container>
       </div>
-      <CreateRoom opened={opened} close={close} />
+      <CreateRoomModal opened={opened} close={close} />
     </div>
   );
 }
