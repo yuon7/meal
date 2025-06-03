@@ -17,6 +17,7 @@
     "format": "prettier --write \"./**/*.{ts,tsx,js,json,css,md}\" --ignore-path .gitignore"
   },
   "dependencies": {
+    "@geolonia/open-reverse-geocoder": "^0.1.0",
     "@mantine/core": "^7.17.0",
     "@mantine/form": "^8.0.2",
     "@mantine/hooks": "^7.17.0",
