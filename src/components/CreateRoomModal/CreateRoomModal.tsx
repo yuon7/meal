@@ -129,7 +129,7 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
       opened={opened}
       onClose={close}
       title="ルームを作成"
-      size="md"
+      size="80%"
       centered
     >
       <Stack gap="md">
