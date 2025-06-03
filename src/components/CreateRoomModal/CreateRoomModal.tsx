@@ -121,20 +121,7 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
   }, [opened]);
 
   const handleSubmit = () => {
-    console.log({ numPeople, location, timeSlot, date });
     close();
-  };
-
-  const resetForm = () => {
-    setNumPeople(2);
-    setLocation("");
-    setTimeSlot("lunch");
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, "0");
-    const dd = String(today.getDate()).padStart(2, "0");
-    setDate(`${yyyy}-${mm}-${dd}`);
-    setLocationError("");
   };
 
   return (
@@ -165,7 +152,7 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
           <Group gap="xs">
             <TextInput
               flex={1}
-              placeholder="地域名を入力（例：渋谷、新宿）"
+              placeholder="エリア・駅（例：渋谷、新宿）"
               value={location}
               onChange={(event) => setLocation(event.currentTarget.value)}
               leftSection={<IconMapPin size={16} />}
@@ -216,9 +203,6 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
         />
 
         <Group justify="space-between" mt="lg">
-          <Button variant="light" onClick={resetForm}>
-            リセット
-          </Button>
           <Button
             variant="filled"
             onClick={handleSubmit}
