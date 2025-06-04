@@ -25,8 +25,8 @@ export async function login(formData: FormData) {
     redirect(`/auth/login?error=${encodeURIComponent(errorMessage)}`);
   }
 
-  revalidatePath("/chat", "layout");
-  redirect("/chat");
+  revalidatePath("/home", "layout");
+  redirect("/home");
 }
 
 export async function signup(formData: FormData) {
