@@ -12,6 +12,5 @@ export default async function ChatPage() {
     redirect("/auth/login");
   }
 
-
   return <Chat user={user} />;
 }

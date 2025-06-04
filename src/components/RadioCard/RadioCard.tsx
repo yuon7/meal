@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Radio, Checkbox, Button, Stack } from "@mantine/core";
+import { Radio, Checkbox, Button, Stack, ScrollArea } from "@mantine/core"; // ScrollArea を追加
 import styles from "./RadioCard.module.css";
 
 interface RadioCardProps {
@@ -59,18 +59,27 @@ export const RadioCard: React.FC<RadioCardProps> = ({
     }
   };
 
+  // スクロールが開始されるまでの最大高。元のCSSの300pxに合わせています。
+  // これで約4つの選択肢が表示されます。
+  const scrollAreaMaxHeight = 300;
+
   if (allowMultiple) {
     return (
       <div className={styles.mantineOptionsContainer}>
-        {" "}
-        <div className={styles.scrollableOptionsArea}>
-          {" "}
+        <ScrollArea.Autosize
+          mah={scrollAreaMaxHeight} // 最大高を指定
+          type="always" // コンテンツが溢れたら常にスクロールバー表示
+          className={styles.scrollableOptionsArea} // CSSのスタイルを適用
+        >
           <Stack>
-            {" "}
             {options.map((option) => (
               <div
                 key={option}
-                className={`${styles.optionCard} ${internalMultiSelections.includes(option) ? styles.selected : ""}`}
+                className={`${styles.optionCard} ${
+                  internalMultiSelections.includes(option)
+                    ? styles.selected
+                    : ""
+                }`}
               >
                 <Checkbox
                   label={<div className={styles.cardContent}>{option}</div>}
@@ -92,7 +101,7 @@ export const RadioCard: React.FC<RadioCardProps> = ({
               </div>
             ))}
           </Stack>
-        </div>
+        </ScrollArea.Autosize>
         <Button onClick={handleMultipleSelectionComplete} fullWidth mt="md">
           選択完了
         </Button>
@@ -106,14 +115,18 @@ export const RadioCard: React.FC<RadioCardProps> = ({
       onChange={handleRadioChange}
       className={styles.mantineOptionsContainer}
     >
-      <div className={styles.scrollableOptionsArea}>
-        {" "}
+      <ScrollArea.Autosize
+        mah={scrollAreaMaxHeight} // 最大高を指定
+        type="always" // コンテンツが溢れたら常にスクロールバー表示
+        className={styles.scrollableOptionsArea} // CSSのスタイルを適用
+      >
         <Stack>
-          {" "}
           {options.map((option) => (
             <div
               key={option}
-              className={`${styles.optionCard} ${internalSingleSelection === option ? styles.selected : ""}`}
+              className={`${styles.optionCard} ${
+                internalSingleSelection === option ? styles.selected : ""
+              }`}
             >
               <Radio
                 label={<div className={styles.cardContent}>{option}</div>}
@@ -128,7 +141,7 @@ export const RadioCard: React.FC<RadioCardProps> = ({
             </div>
           ))}
         </Stack>
-      </div>
+      </ScrollArea.Autosize>
     </Radio.Group>
   );
 };

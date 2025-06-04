@@ -1,3 +1,4 @@
+/* RadioCard.module.css */
 .mantineOptionsContainer {
   width: 100%;
 }
@@ -29,21 +30,18 @@
 }
 
 .scrollableOptionsArea {
-  max-height: 300px;
-  overflow-y: auto;
-  padding-right: 4px;
-  margin-bottom: var(--mantine-spacing-md);
+  /* max-height: 300px; */ /* ← ScrollArea.Autosize の 'mah' プロパティで制御するためコメントアウト */
+  /* overflow-y: auto; */ /* ← ScrollArea.Autosize が処理するので不要 */
+  padding-right: 4px; /* ← 必要に応じて残す。Mantineのスクロールバー表示と合わせて調整 */
+  margin-bottom: var(--mantine-spacing-md); /* ← レイアウトとして必要なら残す */
+
+  /* ↓ MantineのScrollAreaを使用する場合、これらの標準スクロールバー非表示設定は
+     ScrollAreaコンポーネント自体には不要になります */
+  /* scrollbar-width: none; */
+  /* -ms-overflow-style: none; */
 }
 
-.scrollableOptionsArea {
-  max-height: 300px;
-  overflow-y: auto;
-  margin-bottom: var(--mantine-spacing-md);
-
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.scrollableOptionsArea::-webkit-scrollbar {
+/* ↓ MantineのScrollAreaを使用する場合、この標準スクロールバー非表示設定も不要です */
+/* .scrollableOptionsArea::-webkit-scrollbar {
   display: none;
-}
+} */
