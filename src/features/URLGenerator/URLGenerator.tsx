@@ -1,17 +1,39 @@
 "use client";
 
 import { useState } from "react";
-import { useGenerateTabelogURL } from "./data/hooks/useGenerateTabelogURL";
+
+type GenerateTabelogURLResponse = {
+  tabelogURL: string;
+};
 
 export default function URLGenerator() {
   const [url, setUrl] = useState<string>("");
-  const [lat, setLat] = useState<number>(35.41);
-  const [lng, setLng] = useState<number>(139.45);
+  const [lat, setLat] = useState<number>(35.774601);
+  const [lng, setLng] = useState<number>(139.707837);
+  const [keyword, setKeyword] = useState<string>("");
 
-  const generateUrl = async (latitude: number, longitude: number) => {
+  const generateUrl = async (
+    latitude: number,
+    longitude: number,
+    keyword: string
+  ) => {
     try {
-      const resultURL = await useGenerateTabelogURL(longitude, latitude);
-      setUrl(resultURL);
+      const fetchRes = await fetch("api/generateTabelogURL", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ lat: latitude, lng: longitude, keyword }),
+      });
+
+      if (!fetchRes.ok) {
+        throw new Error("Failed to generate URL");
+      }
+
+      const data: GenerateTabelogURLResponse = await fetchRes.json();
+      const tabelogURL = data.tabelogURL;
+
+      setUrl(tabelogURL);
     } catch (err) {
       console.error(err);
       setUrl("");
@@ -43,9 +65,18 @@ export default function URLGenerator() {
           />
         </label>
       </div>
+      <div>
+        <label>キーワード</label>
+        <input
+          type="text"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          placeholder="駅名など（例: 赤羽駅）"
+        />
+      </div>
 
       <button
-        onClick={() => generateUrl(lat, lng)}
+        onClick={() => generateUrl(lat, lng, keyword)}
         style={{ marginTop: "1rem" }}
       >
         URLを生成する

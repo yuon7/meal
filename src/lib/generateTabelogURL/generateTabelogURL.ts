@@ -1,6 +1,5 @@
 import { openReverseGeocoder } from "@geolonia/open-reverse-geocoder";
-import { PREFECTURE_MAPPING } from "../prefectureMap";
-
+import { PREFECTURE_MAPPING } from "./prefectureMap";
 
 type geocode = {
   code: string;
@@ -14,7 +13,10 @@ type CityCodeRes = {
 };
 
 // 緯度経度から市町村コードと都道府県のローマ字名を取得する関数
-const getPrefecture = async (lat: number, lng: number): Promise<CityCodeRes> => {
+const getPrefecture = async (
+  lat: number,
+  lng: number
+): Promise<CityCodeRes> => {
   const geocode: geocode = await openReverseGeocoder([lat, lng]);
   if (!geocode) {
     throw new Error("Geocode not found");
@@ -25,7 +27,10 @@ const getPrefecture = async (lat: number, lng: number): Promise<CityCodeRes> => 
   return { cityCode, prefectureEnglish };
 };
 
-export const useGenerateTabelogURL = async (lat: number, lng: number): Promise<string> => {
+export const generateTabelogURL = async (
+  lat: number,
+  lng: number
+): Promise<string> => {
   try {
     const { cityCode, prefectureEnglish } = await getPrefecture(lat, lng);
     const resultURL = `https://tabelog.com/${prefectureEnglish}/C${cityCode}/rstLst/`;
