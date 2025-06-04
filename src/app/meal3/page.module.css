@@ -2,6 +2,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: linear-gradient(135deg, #ffd93d, #ff8f3d);
   min-height: 100vh;
   padding: 20px;
   box-sizing: border-box;
