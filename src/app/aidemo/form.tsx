@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { getWeatherInfo } from "./action";
+import { getRecomendRestaurantInfo } from "./action";
 
 type Restaurant = {
   name: string;
@@ -31,11 +31,11 @@ export function Form() {
   const [result, setResult] = useState<RecommendationResult[] | null>(null);
 
   async function handleSubmit(formData: FormData) {
-    const res = await getWeatherInfo(formData);
-    if ('result' in res && Array.isArray(res.result)) {
+    const res = await getRecomendRestaurantInfo(formData);
+    if ("result" in res && Array.isArray(res.result)) {
       setResult(res.result);
     } else {
-      console.error('Invalid response format:', res);
+      console.error("Invalid response format:", res);
       setResult(null);
     }
   }
