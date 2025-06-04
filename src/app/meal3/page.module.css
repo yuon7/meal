@@ -2,8 +2,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(135deg, #ffd93d, #ff8f3d);
-  min-height: 100vh;
+  background: linear-gradient(135deg, #ff9a56 0%, #ff6b95 100%);
+  min-height: calc(100vh - 60px);
   padding: 20px;
   box-sizing: border-box;
 }
@@ -12,20 +12,19 @@
   padding: 15px 20px 10px;
   width: 100%;
   box-sizing: border-box;
-  background-color: #fff;
-  border-bottom: 1px solid #eee;
+  background-color: #fffaf0;
 }
 
 .currentQuestionInputArea {
   width: 100%;
   max-width: 600px;
   padding: 20px;
-  background-color: #fff;
+  background-color: #fffaf0;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  margin-top: 20px;
+  margin-top: 0px;
   margin-bottom: 20px;
 }
 
