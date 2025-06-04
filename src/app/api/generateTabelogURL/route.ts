@@ -22,6 +22,11 @@ app.post("/generateTabelogURL", async (c) => {
 
   try {
     const tabelogCitycodeURL: string = await generateTabelogURL(lng, lat);
+
+    if (keyword.trim() === "") {
+      return c.json({ tabelogURL: tabelogCitycodeURL });
+    }
+
     const serchTabelogURL = `${tabelogCitycodeURL}/?sa=${keyword}`;
 
     const browser = await puppeteer.launch({ headless: true });
