@@ -1,3 +1,4 @@
+/* RadioCard.module.css */
 .mantineOptionsContainer {
   width: 100%;
 }
@@ -32,3 +33,5 @@
   padding-right: 4px;
   margin-bottom: var(--mantine-spacing-md);
 }
+
+/* .nextButtonContainer スタイルを削除 */
