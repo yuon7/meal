@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Radio, Checkbox, Button, Stack, ScrollArea } from "@mantine/core"; // ScrollArea を追加
+import { Radio, Checkbox, Button, Stack, ScrollArea } from "@mantine/core";
 import styles from "./RadioCard.module.css";
 
 interface RadioCardProps {
@@ -25,12 +25,12 @@ export const RadioCard: React.FC<RadioCardProps> = ({
   useEffect(() => {
     if (allowMultiple) {
       setInternalMultiSelections(
-        Array.isArray(selectedValue) ? selectedValue : [],
+        Array.isArray(selectedValue) ? selectedValue : []
       );
       setInternalSingleSelection(null);
     } else {
       setInternalSingleSelection(
-        typeof selectedValue === "string" ? selectedValue : null,
+        typeof selectedValue === "string" ? selectedValue : null
       );
       setInternalMultiSelections([]);
     }
@@ -59,17 +59,16 @@ export const RadioCard: React.FC<RadioCardProps> = ({
     }
   };
 
-  // スクロールが開始されるまでの最大高。元のCSSの300pxに合わせています。
-  // これで約4つの選択肢が表示されます。
   const scrollAreaMaxHeight = 300;
 
   if (allowMultiple) {
     return (
       <div className={styles.mantineOptionsContainer}>
         <ScrollArea.Autosize
-          mah={scrollAreaMaxHeight} // 最大高を指定
-          type="always" // コンテンツが溢れたら常にスクロールバー表示
-          className={styles.scrollableOptionsArea} // CSSのスタイルを適用
+          mah={scrollAreaMaxHeight}
+          type="always"
+          className={styles.scrollableOptionsArea}
+          scrollbarSize={8}
         >
           <Stack>
             {options.map((option) => (
@@ -116,9 +115,10 @@ export const RadioCard: React.FC<RadioCardProps> = ({
       className={styles.mantineOptionsContainer}
     >
       <ScrollArea.Autosize
-        mah={scrollAreaMaxHeight} // 最大高を指定
-        type="always" // コンテンツが溢れたら常にスクロールバー表示
-        className={styles.scrollableOptionsArea} // CSSのスタイルを適用
+        mah={scrollAreaMaxHeight}
+        type="always"
+        className={styles.scrollableOptionsArea}
+        scrollbarSize={8}
       >
         <Stack>
           {options.map((option) => (
