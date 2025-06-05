@@ -13,7 +13,7 @@ import {
   Title,
 } from "@mantine/core";
 import { IconCurrencyYen, IconMapPin, IconStar } from "@tabler/icons-react";
-import classes from "./page.module.css";
+import classes from "./RecommendationResults.module.css";
 
 type Restaurant = {
   name: string;
