@@ -51,12 +51,8 @@ export default async function RootLayout({
         <SupabaseProvider>
           <MantineProvider>
             <div className={classes.rootContainer}>
-              <div className={classes.bgDecorationTop}></div>
-              <div className={classes.bgDecorationBottom}></div>
-              <div className={classes.contentWrapper}>
-                <HeaderMegaMenu user={user} />
-                {children}
-              </div>
+              <HeaderMegaMenu user={user} />
+              <div className={classes.contentWrapper}>{children}</div>
             </div>
             <Analytics />
           </MantineProvider>
