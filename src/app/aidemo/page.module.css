@@ -1,0 +1,225 @@
+.wrapper {
+  padding: calc(var(--mantine-spacing-xl) * 2) var(--mantine-spacing-xl);
+}
+
+.header {
+  text-align: center;
+  margin-bottom: calc(var(--mantine-spacing-xl) * 2);
+}
+
+.title {
+  font-family: Outfit, var(--mantine-font-family);
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.1;
+  margin-bottom: var(--mantine-spacing-md);
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
+
+.description {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.formContainer {
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  border-radius: var(--mantine-radius-lg);
+  padding: var(--mantine-spacing-xl);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+}
+
+.inputGroup {
+  margin-bottom: var(--mantine-spacing-lg);
+}
+
+.submitButton {
+  width: 100%;
+}
+
+.resultsContainer {
+  margin-top: calc(var(--mantine-spacing-xl) * 2);
+}
+
+.restaurantCard {
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  border: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  border-radius: var(--mantine-radius-lg);
+  padding: var(--mantine-spacing-xl);
+  margin-bottom: var(--mantine-spacing-lg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+.restaurantCard:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1), 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.restaurantName {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: var(--mantine-spacing-sm);
+  color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+}
+
+.restaurantInfo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--mantine-spacing-md);
+  margin-bottom: var(--mantine-spacing-md);
+}
+
+.infoItem {
+  background: light-dark(var(--mantine-color-gray-1), var(--mantine-color-dark-6));
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-sm);
+  font-size: 14px;
+}
+
+.recommendationDetails {
+  border-top: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  padding-top: var(--mantine-spacing-md);
+  margin-top: var(--mantine-spacing-md);
+}
+
+.matchScore {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  background: linear-gradient(135deg, var(--mantine-color-blue-6), var(--mantine-color-cyan-6));
+  color: white;
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-md);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.resultsCard {
+  background: light-dark(var(--mantine-color-white), var(--mantine-color-dark-7));
+  border-radius: var(--mantine-radius-lg);
+  padding: var(--mantine-spacing-lg);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+  border: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+  margin-top: calc(var(--mantine-spacing-xl) * 1.5);
+}
+
+.compactMatchScore {
+  background: linear-gradient(135deg, var(--mantine-color-blue-6), var(--mantine-color-cyan-6));
+  color: white;
+  font-weight: 600;
+  min-width: 50px;
+  text-align: center;
+}
+
+.mockSection {
+  text-align: center;
+  padding: var(--mantine-spacing-xl);
+  background: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-8));
+  border-radius: var(--mantine-radius-lg);
+  border: 1px solid light-dark(var(--mantine-color-gray-2), var(--mantine-color-dark-5));
+}
+
+/* スマホ表示用スタイル */
+.accordionHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+  gap: var(--mantine-spacing-sm);
+}
+
+.restaurantHeaderInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.restaurantNameRow {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-xs);
+  margin-bottom: 4px;
+}
+
+.restaurantNameMobile {
+  flex: 1;
+  min-width: 0;
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.restaurantMetaRow {
+  width: 100%;
+}
+
+.restaurantMeta {
+  flex-wrap: wrap;
+  row-gap: 2px;
+}
+
+.genreBadgeMobile {
+  flex-shrink: 0;
+}
+
+.restaurantDetailsStack {
+  margin-bottom: var(--mantine-spacing-xs);
+}
+
+.budgetInfo {
+  margin-bottom: var(--mantine-spacing-xs);
+}
+
+.budgetText {
+  display: block;
+  line-height: 1.4;
+}
+
+/* タブレット・デスクトップ用の調整 */
+@media (min-width: 768px) {
+  .restaurantMeta {
+    flex-wrap: nowrap;
+    gap: var(--mantine-spacing-sm);
+  }
+  
+  .restaurantDetailsStack {
+    flex-direction: row;
+    gap: var(--mantine-spacing-md);
+  }
+  
+  .budgetText {
+    display: inline;
+  }
+  
+  .budgetText + .budgetText::before {
+    content: " / ";
+  }
+}
+
+/* スマホ専用の調整 */
+@media (max-width: 767px) {
+  .resultsCard {
+    padding: var(--mantine-spacing-sm);
+    margin-top: var(--mantine-spacing-lg);
+  }
+  
+  .compactMatchScore {
+    min-width: 42px;
+    font-size: 11px;
+    padding: 2px 4px;
+  }
+  
+  .accordionHeader {
+    gap: var(--mantine-spacing-xs);
+  }
+  
+  .restaurantNameMobile {
+    font-size: 14px;
+  }
+  
+  .restaurantDetailsStack {
+    margin-bottom: 6px;
+  }
+  
+  .budgetInfo {
+    margin-bottom: 6px;
+  }
+}
