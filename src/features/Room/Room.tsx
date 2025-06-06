@@ -9,7 +9,6 @@ import {
   Container,
   Alert,
   Button,
-  Text,
   Box,
 } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
@@ -21,7 +20,7 @@ import {
   ParticipantsSection,
   RoomParticipant,
 } from "@/components/RoomParticipants/RoomParticipants";
-import { RoomFooter } from "@/components/RoomFooter/RoomFooter";
+import { RoomShare } from "@/components/RoomShare/RoomShare";
 
 type RoomWithParticipant = {
   id: string;
@@ -46,7 +45,6 @@ export const RoomPage = ({ roomId: roomid }: RoomPageProps) => {
   const [roomWithParticipant, setRoomWithParticipant] =
     useState<RoomWithParticipant | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isJoining, setIsJoining] = useState<boolean>(false);
 
   const fetchRoomInfo = useCallback(async () => {
     try {
@@ -77,25 +75,6 @@ export const RoomPage = ({ roomId: roomid }: RoomPageProps) => {
       clearInterval(interval);
     };
   }, [fetchRoomInfo]);
-
-  const handleJoin = async () => {
-    try {
-      setIsJoining(true);
-      setError(null);
-      const res = await fetch(`/rooms/${roomid}`, {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        throw new Error(data.error || "参加に失敗しました");
-      }
-      await fetchRoomInfo();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "参加エラーが発生しました");
-    } finally {
-      setIsJoining(false);
-    }
-  };
 
   if (loading) {
     return <LoadingState isCreated={isCreated} />;
@@ -128,13 +107,6 @@ export const RoomPage = ({ roomId: roomid }: RoomPageProps) => {
     RoomParticipant,
   } = roomWithParticipant;
 
-  const currentUserId = (() => {
-    return null as string | null;
-  })();
-
-  const alreadyJoined =
-    currentUserId && RoomParticipant.some((p) => p.userId === currentUserId);
-
   return (
     <Container size="md" py="xl">
       <Stack gap="lg">
@@ -157,20 +129,10 @@ export const RoomPage = ({ roomId: roomid }: RoomPageProps) => {
             maxUser={maxUser}
           />
           <Box mt="md" style={{ textAlign: "center" }}>
-            {alreadyJoined ? (
-              <Text c="dimmed">すでに参加済みです</Text>
-            ) : RoomParticipant.length < maxUser ? (
-              <Button onClick={handleJoin} loading={isJoining}>
-                参加する
-              </Button>
-            ) : (
-              <Text c="red" fw={500}>
-                満員です
-              </Text>
-            )}
+            <Button>Qrate</Button>
           </Box>
         </Card>
-        <RoomFooter roomId={id} isCreated={isCreated} />
+        <RoomShare roomId={id} showCreatedAlert={isCreated} />
       </Stack>
     </Container>
   );
