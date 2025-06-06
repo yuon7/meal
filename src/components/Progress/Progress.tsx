@@ -1,5 +1,23 @@
-import { Progress } from "@mantine/core";
+import React from "react";
+import styles from "./Progress.module.css";
 
-export function ProgressBar() {
-  return <Progress value={33} striped />;
+interface ProgressBarProps {
+  currentStep: number;
+  totalSteps: number;
 }
+
+export const ProgressBar: React.FC<ProgressBarProps> = ({
+  currentStep,
+  totalSteps,
+}) => {
+  const progressPercentage = (currentStep / totalSteps) * 100;
+
+  return (
+    <div className={styles.progressBarContainer}>
+      <div
+        className={styles.progressBarFill}
+        style={{ width: `${progressPercentage}%` }}
+      ></div>
+    </div>
+  );
+};

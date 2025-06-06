@@ -80,7 +80,7 @@ export default function Chat({ user }: { user: User | null }) {
         },
         () => {
           fetchMessages();
-        }
+        },
       )
       .subscribe();
 
