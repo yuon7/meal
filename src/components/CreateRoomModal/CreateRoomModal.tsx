@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Modal,
   Stack,
@@ -17,6 +18,7 @@ import {
   IconCurrentLocation,
   IconAlertCircle,
 } from "@tabler/icons-react";
+import { createRoom, CreateRoomData } from "@/app/home/action";
 
 type CreateRoomProps = {
   opened: boolean;
@@ -24,6 +26,7 @@ type CreateRoomProps = {
 };
 
 export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
+  const router = useRouter();
   const [numPeople, setNumPeople] = useState<number | undefined>(2);
   const [location, setLocation] = useState("");
   const [timeSlot, setTimeSlot] = useState<"lunch" | "dinner">("lunch");
@@ -36,6 +39,8 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
   });
   const [isGettingLocation, setIsGettingLocation] = useState(false);
   const [locationError, setLocationError] = useState("");
+  const [isCreating, setIsCreating] = useState(false);
+  const [createError, setCreateError] = useState("");
 
   const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
     try {
@@ -120,14 +125,57 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
     }
   }, [opened]);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    if (!numPeople || !location || !timeSlot || !date) return;
+
+    setIsCreating(true);
+    setCreateError("");
+
+    try {
+      const roomData: CreateRoomData = {
+        maxUser: numPeople,
+        area: location,
+        mealType: timeSlot,
+        date,
+      };
+
+      const result = await createRoom(roomData);
+
+      console.log("Room creation result:", result);
+
+      if (result.success && result.roomId) {
+        handleClose();
+        router.push(`/rooms/${result.roomId}?created=true`);
+      } else {
+        setCreateError(result.error || "ルームの作成に失敗しました");
+      }
+    } catch (error) {
+      setCreateError("ルームの作成中にエラーが発生しました");
+      console.error("Room creation error:", error);
+    } finally {
+      setIsCreating(false);
+    }
+  };
+
+  const handleClose = () => {
+    setCreateError("");
+    setNumPeople(2);
+    setLocation("");
+    setTimeSlot("lunch");
+    setDate(() => {
+      const today = new Date();
+      const yyyy = today.getFullYear();
+      const mm = String(today.getMonth() + 1).padStart(2, "0");
+      const dd = String(today.getDate()).padStart(2, "0");
+      return `${yyyy}-${mm}-${dd}`;
+    });
     close();
   };
 
   return (
     <Modal
       opened={opened}
-      onClose={close}
+      onClose={handleClose}
       title="ルームを作成"
       size="80%"
       centered
@@ -199,16 +247,23 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
           value={date}
           onChange={(event) => setDate(event.currentTarget.value)}
           required
-          min={new Date().toISOString().split("T")[0]} // 今日以降の日付のみ選択可能
+          min={new Date().toISOString().split("T")[0]}
         />
+
+        {createError && (
+          <Alert icon={<IconAlertCircle size={16} />} color="red">
+            {createError}
+          </Alert>
+        )}
 
         <Group justify="space-between" mt="lg">
           <Button
             variant="filled"
             onClick={handleSubmit}
             disabled={!numPeople || !location || !timeSlot || !date}
+            loading={isCreating}
           >
-            作成する
+            {isCreating ? "作成中..." : "作成する"}
           </Button>
         </Group>
       </Stack>
