@@ -25,7 +25,7 @@ const Page = () => {
         setIsSelectionMade(true);
       } else {
         setIsSelectionMade(
-          Array.isArray(answer) ? answer.length > 0 : Boolean(answer),
+          Array.isArray(answer) ? answer.length > 0 : Boolean(answer)
         );
       }
     }
@@ -40,12 +40,13 @@ const Page = () => {
       ...prevAnswers,
       [questionId]: selectedValue,
     }));
-
-    setIsSelectionMade(
-      Array.isArray(selectedValue)
-        ? selectedValue.length > 0
-        : Boolean(selectedValue),
-    );
+    if (
+      Array.isArray(selectedValue) ? selectedValue.length > 0 : selectedValue
+    ) {
+      setIsSelectionMade(true);
+    } else {
+      setIsSelectionMade(false);
+    }
   };
 
   const proceedToNext = () => {
