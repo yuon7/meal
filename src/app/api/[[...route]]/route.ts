@@ -1,11 +1,10 @@
-import { PrismaClient } from "@prisma/client/edge";
+import { prisma } from "@/lib/prisma/prisma";
 import { Hono } from "hono";
 import { handle } from "hono/vercel";
 
 export const runtime = "edge";
 
 const app = new Hono().basePath("/api");
-const prisma = new PrismaClient();
 
 app.get("/todos", async (c) => {
   const todos = await prisma.todo.findMany();
