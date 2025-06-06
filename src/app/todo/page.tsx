@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import TodoApp from "@/features/TodoApp/TodoApp";
-import { createClient } from "@/lib/supabase/server";
 import styles from "./page.module.css";
+import { createClient } from "@/utils/supabase/server";
 
 export default async function TodoPage() {
   const supabase = await createClient();
