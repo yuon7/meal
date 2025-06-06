@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import { generateTabelogURL } from "@/lib/generateTabelogURL/generateTabelogURL";
 import puppeteer from "puppeteer";
+import shapingTaelogURL from "@/lib/generateTabelogURL/shapingTabelogURL";
 
 export const runtime = "nodejs";
 
@@ -46,9 +47,10 @@ app.post("/generateTabelogURL", async (c) => {
         page.waitForNavigation({ waitUntil: "networkidle2" }),
       ]);
     }
-    const tabelogURL = page.url();
+    const scrapeTabelogURL = page.url();
+    // クエリ削除
+    const tabelogURL = shapingTaelogURL(scrapeTabelogURL);
     await browser.close();
-
     return c.json({ tabelogURL });
   } catch (error) {
     console.error("Error generating final Tabelog URL:", error);
