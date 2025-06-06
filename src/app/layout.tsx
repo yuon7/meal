@@ -1,6 +1,6 @@
 import { HeaderMegaMenu } from "@/components/Header/Header";
 import { SupabaseProvider } from "@/components/SupabaseProvider/SupabaseProvider";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { Analytics } from "@vercel/analytics/next";

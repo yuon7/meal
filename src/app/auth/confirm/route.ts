@@ -1,6 +1,6 @@
+import { createClient } from "@/utils/supabase/server";
 import { type EmailOtpType } from "@supabase/supabase-js";
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
 import { NextRequest } from "next/server";
 
 export async function GET(request: NextRequest) {
