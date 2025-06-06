@@ -10,12 +10,16 @@ import classes from "./layout.module.css";
 export const metadata: Metadata = {
   title: "Meal",
   description: "なんかお店出してくれます",
+  themeColor: [
+    { media: "(prefers-color-scheme: dark)", color: "#B26A00" },
+    { media: "(prefers-color-scheme: light)", color: "#FFD180" },
+  ],
   openGraph: {
     title: "Meal",
     description: "なんかお店出してくれます",
     images: [
       {
-        url: "/image/image.png",
+        url: "/image/dummy.jpg",
         width: 1200,
         height: 630,
         alt: "おしゃれな料理の写真",
@@ -28,7 +32,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Meal",
     description: "なんかお店出してくれます",
-    images: ["/image/image.png"],
+    images: ["/image/dummy.jpg"],
   },
 };
 
