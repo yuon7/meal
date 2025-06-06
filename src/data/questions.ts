@@ -36,6 +36,7 @@ export const allQuestions: Question[] = [
       "接待・会食で",
       "一人でゆっくり",
     ],
+    required: false,
   },
   {
     id: 3,
@@ -49,6 +50,7 @@ export const allQuestions: Question[] = [
       "アットホームな感じ",
     ],
     allowMultiple: true,
+    required: false,
   },
   {
     id: 4,
@@ -60,7 +62,7 @@ export const allQuestions: Question[] = [
       "2,000円",
       "3,000円",
       "5,000円",
-      "8,000円",
+      "10,000円",
       "15,000円",
       "30,000円以上",
     ],
