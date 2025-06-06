@@ -2,8 +2,9 @@
 import { useSearchParams } from "next/navigation";
 import styles from "./page.module.css";
 import { AuthenticationForm } from "@/components/Authentication/AuthencationForm";
-import { signInWithGoogle } from "../google/action";
-import { signInWithTwitter } from "../twitter/action";
+import { signInWithGoogle } from "../social/google/action";
+import { signInWithTwitter } from "../social/twitter/action";
+import { signInWithGitHub } from "../social/github/action";
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
@@ -14,6 +15,9 @@ export default function LoginPage() {
   const handleTwitterLogin = async () => {
     await signInWithTwitter();
   };
+  const handleGitHubLogin = async () => {
+    await signInWithGitHub();
+  };
 
   return (
     <div className={styles.container}>
@@ -21,6 +25,7 @@ export default function LoginPage() {
         searchParams={{ error }}
         handleGoogleLogin={handleGoogleLogin}
         handleTwitterLogin={handleTwitterLogin}
+        handleGitHubLogin={handleGitHubLogin}
       />
     </div>
   );
