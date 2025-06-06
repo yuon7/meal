@@ -132,7 +132,7 @@ const analyzeAndRecommend = createStep({
       restaurant: SearchRestaurantInfoSchema,
       recommendReason: z.string(),
       matchScore: z.number(),
-    })
+    }),
   ),
   execute: async ({ inputData }) => {
     const prompt = `
@@ -189,7 +189,7 @@ ${JSON.stringify(inputData.restaurants, null, 2)}
           restaurant: SearchRestaurantInfoSchema,
           recommendReason: z.string(),
           matchScore: z.number(),
-        })
+        }),
       );
 
       const generateResult = await tabelogAgent.generate(prompt, {
@@ -215,7 +215,7 @@ ${JSON.stringify(inputData.restaurants, null, 2)}
             item &&
             item.restaurant &&
             typeof item.recommendReason === "string" &&
-            typeof item.matchScore === "number"
+            typeof item.matchScore === "number",
         );
 
         if (resultArray.length === 0) {
@@ -224,7 +224,7 @@ ${JSON.stringify(inputData.restaurants, null, 2)}
       } catch (error) {
         console.error("レスポンスの解析に失敗:", error);
         throw new Error(
-          `推薦結果の解析に失敗しました: ${error instanceof Error ? error.message : "不明なエラー"}`
+          `推薦結果の解析に失敗しました: ${error instanceof Error ? error.message : "不明なエラー"}`,
         );
       }
 
@@ -250,7 +250,7 @@ export const restaurantRecommendationWorkflow = createWorkflow({
       restaurant: SearchRestaurantInfoSchema,
       recommendReason: z.string(),
       matchScore: z.number(),
-    })
+    }),
   ),
 })
   .then(fetchRestaurants)

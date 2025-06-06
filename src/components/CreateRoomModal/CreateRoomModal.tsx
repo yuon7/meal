@@ -40,7 +40,7 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
   const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ja&addressdetails=1`
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ja&addressdetails=1`,
       );
       const data = await response.json();
 
@@ -110,7 +110,7 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 300000,
-      }
+      },
     );
   };
 

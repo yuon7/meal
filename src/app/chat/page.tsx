@@ -1,5 +1,5 @@
 import Chat from "@/features/Chat/Chat";
-import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
 export default async function ChatPage() {
@@ -11,7 +11,6 @@ export default async function ChatPage() {
   if (!user) {
     redirect("/auth/login");
   }
-
 
   return <Chat user={user} />;
 }
