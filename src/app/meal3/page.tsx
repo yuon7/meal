@@ -15,13 +15,21 @@ const Page = () => {
   const [isSelectionMade, setIsSelectionMade] = useState<boolean>(false);
 
   const totalSteps: number = allQuestions.length + 1;
-
   useEffect(() => {
-    const currentQuestionId = allQuestions[currentQuestionIndex]?.id;
-    setIsSelectionMade(
-      Boolean(currentQuestionId !== undefined && answers[currentQuestionId]),
-    );
-  }, [currentQuestionIndex, answers, allQuestions]);
+    const currentQuestion = allQuestions[currentQuestionIndex];
+    const currentQuestionId = currentQuestion?.id;
+    const answer = answers[currentQuestionId];
+
+    if (currentQuestion) {
+      if (currentQuestion.required === false) {
+        setIsSelectionMade(true);
+      } else {
+        setIsSelectionMade(
+          Array.isArray(answer) ? answer.length > 0 : Boolean(answer)
+        );
+      }
+    }
+  }, [currentQuestionIndex, answers]);
 
   const handleOptionChange = (selectedValue: string | string[]) => {
     const currentQuestion = allQuestions[currentQuestionIndex];
