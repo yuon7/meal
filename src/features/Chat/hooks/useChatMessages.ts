@@ -22,43 +22,44 @@ export function useChatMessages(selectedRoomId: string | null, user: User | null
       return;
     }
 
-    const { data, error } = await supabase
-      .from("Message")
-      .select("*")
-      .eq("roomId", selectedRoomId)
-      .order("createdAt", { ascending: true });
-
-    if (error) {
+    try {
+      const response = await fetch(`/api/rooms/${selectedRoomId}/messages`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch messages");
+      }
+      const messages: Message[] = await response.json();
+      setMessages(messages);
+    } catch (error) {
       console.error("Error fetching messages:", error);
-      return;
+      setMessages([]);
     }
-
-    if (data) {
-      setMessages(data);
-    }
-  }, [selectedRoomId, supabase]);
+  }, [selectedRoomId]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newMessage.trim() || !selectedRoomId || !user) return;
 
-    const { error } = await supabase.from("Message").insert([
-      {
-        id: crypto.randomUUID(),
-        text: newMessage,
-        userId: user.id,
-        roomId: selectedRoomId,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-    ]);
+    try {
+      const response = await fetch(`/api/rooms/${selectedRoomId}/messages`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text: newMessage,
+          userId: user.id,
+        }),
+      });
 
-    if (error) {
+      if (!response.ok) {
+        throw new Error("Failed to send message");
+      }
+
+      setNewMessage("");
+      fetchMessages();
+    } catch (error) {
       console.error("Error sending message:", error);
-      return;
     }
-
-    setNewMessage("");
   };
 
   useEffect(() => {

@@ -20,22 +20,13 @@ export function useRoomParticipants(selectedRoomId: string | null, user: User) {
     }
 
     try {
-      const { data: roomParticipants, error } = await supabase
-        .from("RoomParticipant")
-        .select("id, userId, isHost")
-        .eq("roomId", selectedRoomId);
-
-      if (error) {
-        console.error("Error fetching participants:", error);
-        return;
+      const response = await fetch(`/api/rooms/${selectedRoomId}/participants`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch participants");
       }
+      const roomParticipants = await response.json();
 
-      if (!roomParticipants) {
-        setParticipants([]);
-        return;
-      }
-
-      const participantsWithUsernames = roomParticipants.map((participant) => {
+      const participantsWithUsernames = roomParticipants.map((participant: any) => {
         return {
           id: participant.id,
           userId: participant.userId,
@@ -52,7 +43,7 @@ export function useRoomParticipants(selectedRoomId: string | null, user: User) {
       console.error("Error fetching participants:", error);
       setParticipants([]);
     }
-  }, [selectedRoomId, supabase, user]);
+  }, [selectedRoomId, user]);
 
   useEffect(() => {
     fetchParticipants();

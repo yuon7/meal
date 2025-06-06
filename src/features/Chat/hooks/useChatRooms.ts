@@ -1,4 +1,3 @@
-import { createClient } from "@/lib/supabase/client";
 import { useCallback, useEffect, useState } from "react";
 
 export interface Room {
@@ -13,33 +12,20 @@ export interface Room {
 
 export function useChatRooms() {
   const [rooms, setRooms] = useState<Room[]>([]);
-  const supabase = createClient();
 
   const fetchRooms = useCallback(async () => {
     try {
-      const { data: rooms, error } = await supabase
-        .from("Room")
-        .select("*")
-        .eq("isClosed", false)
-        .order("createdAt", { ascending: false });
-
-      if (error) {
-        console.error("Error fetching rooms:", error);
-        setRooms([]);
-        return;
+      const response = await fetch("/api/rooms");
+      if (!response.ok) {
+        throw new Error("Failed to fetch rooms");
       }
-
-      if (!rooms) {
-        setRooms([]);
-        return;
-      }
-
+      const rooms: Room[] = await response.json();
       setRooms(rooms);
     } catch (error) {
       console.error("Error fetching rooms:", error);
       setRooms([]);
     }
-  }, [supabase]);
+  }, []);
 
   useEffect(() => {
     fetchRooms();
