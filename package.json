@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run dev:next & npm run dev:mastra",
+    "dev": "npm run dev:next & npm run dev:hcm",
     "dev:next": "next dev",
     "dev:mastra": "mastra dev --dir mastra",
     "build:mastra": "mastra build --dir mastra",
