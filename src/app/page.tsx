@@ -2,9 +2,9 @@
 
 "use client";
 
-import Link from "next/link";
 import {
   Button,
+  Card,
   Container,
   Grid,
   SimpleGrid,
@@ -18,6 +18,7 @@ import {
   IconCode,
   IconShieldLock,
 } from "@tabler/icons-react";
+import Link from "next/link";
 import classes from "./page.module.css";
 
 /* ------------------------------------------
@@ -75,36 +76,38 @@ export default function Home() {
 
   return (
     <Container size="lg" px="lg" py={80}>
-      <div className={classes.wrapper}>
-        <Grid gutter={80}>
-          <Grid.Col span={{ base: 12, md: 5 }}>
-            <Title className={classes.title} order={2}>
-              Next-Hono-Template
-            </Title>
-            <Text c="dimmed">
-              Next.js 14 × Hono × Supabase × Prisma × Mantine フルスタック Web
-              アプリを高速に構築。
-            </Text>
+      <Card>
+        <div className={classes.wrapper}>
+          <Grid gutter={80}>
+            <Grid.Col span={{ base: 12, md: 5 }}>
+              <Title className={classes.title} order={2}>
+                Next-Hono-Template
+              </Title>
+              <Text c="dimmed">
+                Next.js 14 × Hono × Supabase × Prisma × Mantine フルスタック Web
+                アプリを高速に構築。
+              </Text>
 
-            <Button
-              component={Link}
-              href="/todo"
-              variant="gradient"
-              gradient={{ deg: 133, from: "blue", to: "cyan" }}
-              size="lg"
-              radius="md"
-              mt="xl"
-            >
-              Get started
-            </Button>
-          </Grid.Col>
-          <Grid.Col span={{ base: 12, md: 7 }}>
-            <SimpleGrid cols={{ base: 1, md: 2 }} spacing={30}>
-              {items}
-            </SimpleGrid>
-          </Grid.Col>
-        </Grid>
-      </div>
+              <Button
+                component={Link}
+                href="/todo"
+                variant="gradient"
+                gradient={{ deg: 133, from: "blue", to: "cyan" }}
+                size="lg"
+                radius="md"
+                mt="xl"
+              >
+                Get started
+              </Button>
+            </Grid.Col>
+            <Grid.Col span={{ base: 12, md: 7 }}>
+              <SimpleGrid cols={{ base: 1, md: 2 }} spacing={30}>
+                {items}
+              </SimpleGrid>
+            </Grid.Col>
+          </Grid>
+        </div>
+      </Card>
     </Container>
   );
 }

@@ -4,15 +4,15 @@ import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import { useState } from "react";
 
 export const SupabaseProvider = ({
-    children,
+  children,
 }: {
-    children: React.ReactNode;
+  children: React.ReactNode;
 }) => {
-    const [supabaseClient] = useState(() => createPagesBrowserClient());
+  const [supabaseClient] = useState(() => createPagesBrowserClient());
 
-    return (
-        <SessionContextProvider supabaseClient={supabaseClient}>
-            {children}
-        </SessionContextProvider>
-    )
-}
+  return (
+    <SessionContextProvider supabaseClient={supabaseClient}>
+      {children}
+    </SessionContextProvider>
+  );
+};

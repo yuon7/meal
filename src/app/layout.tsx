@@ -5,6 +5,7 @@ import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { Analytics } from "@vercel/analytics/next";
 import { Metadata } from "next";
+import classes from "./layout.module.css";
 
 export const metadata: Metadata = {
   title: "Meal",
@@ -53,8 +54,10 @@ export default async function RootLayout({
       <body>
         <SupabaseProvider>
           <MantineProvider>
-            <HeaderMegaMenu user={user} />
-            {children}
+            <div className={classes.rootContainer}>
+              <HeaderMegaMenu user={user} />
+              <div className={classes.contentWrapper}>{children}</div>
+            </div>
             <Analytics />
           </MantineProvider>
         </SupabaseProvider>
