@@ -1,4 +1,3 @@
-// RadioCard.tsx
 import React, { useState, useEffect } from "react";
 import { Radio, Checkbox, Stack, ScrollArea } from "@mantine/core";
 import styles from "./RadioCard.module.css";
@@ -26,12 +25,12 @@ export const RadioCard: React.FC<RadioCardProps> = ({
   useEffect(() => {
     if (allowMultiple) {
       setInternalMultiSelections(
-        Array.isArray(selectedValue) ? selectedValue : [],
+        Array.isArray(selectedValue) ? selectedValue : []
       );
       setInternalSingleSelection(null);
     } else {
       setInternalSingleSelection(
-        typeof selectedValue === "string" ? selectedValue : null,
+        typeof selectedValue === "string" ? selectedValue : null
       );
       setInternalMultiSelections([]);
     }
@@ -40,7 +39,7 @@ export const RadioCard: React.FC<RadioCardProps> = ({
   const handleRadioChange = (value: string) => {
     setInternalSingleSelection(value);
     if (onOptionChange) {
-      onOptionChange(value); // 単一選択は選択時に即時親へ通知
+      onOptionChange(value);
     }
   };
 
@@ -50,7 +49,7 @@ export const RadioCard: React.FC<RadioCardProps> = ({
       : internalMultiSelections.filter((item) => item !== optionValue);
     setInternalMultiSelections(newSelections);
     if (onOptionChange) {
-      onOptionChange(newSelections); // 複数選択も変更があるたびに親へ通知
+      onOptionChange(newSelections);
     }
   };
 
@@ -97,7 +96,6 @@ export const RadioCard: React.FC<RadioCardProps> = ({
             ))}
           </Stack>
         </ScrollArea.Autosize>
-        {/* 「選択完了/次へ」ボタンを削除 */}
       </div>
     );
   }
@@ -137,7 +135,6 @@ export const RadioCard: React.FC<RadioCardProps> = ({
           </Stack>
         </ScrollArea.Autosize>
       </Radio.Group>
-      {/* 「選択完了/次へ」ボタンを削除 */}
     </div>
   );
 };

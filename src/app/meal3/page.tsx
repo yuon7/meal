@@ -5,7 +5,7 @@ import React, { useState, useEffect } from "react";
 import { ProgressBar } from "@/components/Progress/Progress";
 import { RadioCard } from "@/components/RadioCard/RadioCard";
 import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
-import { allQuestions } from "@/data/questions"; // questions.ts を想定
+import { allQuestions } from "@/data/questions";
 import { Button } from "@mantine/core";
 
 const Page = () => {
@@ -19,9 +19,9 @@ const Page = () => {
   useEffect(() => {
     const currentQuestionId = allQuestions[currentQuestionIndex]?.id;
     setIsSelectionMade(
-      Boolean(currentQuestionId !== undefined && answers[currentQuestionId]),
+      Boolean(currentQuestionId !== undefined && answers[currentQuestionId])
     );
-  }, [currentQuestionIndex, answers, allQuestions]);
+  }, [currentQuestionIndex, answers]);
 
   const handleOptionChange = (selectedValue: string | string[]) => {
     const currentQuestion = allQuestions[currentQuestionIndex];
@@ -32,13 +32,12 @@ const Page = () => {
       ...prevAnswers,
       [questionId]: selectedValue,
     }));
-    if (
-      Array.isArray(selectedValue) ? selectedValue.length > 0 : selectedValue
-    ) {
-      setIsSelectionMade(true);
-    } else {
-      setIsSelectionMade(false);
-    }
+
+    setIsSelectionMade(
+      Array.isArray(selectedValue)
+        ? selectedValue.length > 0
+        : Boolean(selectedValue)
+    );
   };
 
   const proceedToNext = () => {
@@ -83,90 +82,81 @@ const Page = () => {
     : allQuestions[currentQuestionIndex];
 
   return (
-    <div>
-      <div className={styles.container}>
-        <div className={styles.progress}>
-          <ProgressBar
-            currentStep={
-              showSummaryPage ? totalSteps : currentQuestionIndex + 1
-            }
-            totalSteps={totalSteps}
-          />
-        </div>
+    <div className={styles.container}>
+      <div className={styles.progress}>
+        <ProgressBar
+          currentStep={showSummaryPage ? totalSteps : currentQuestionIndex + 1}
+          totalSteps={totalSteps}
+        />
+      </div>
 
-        {!showSummaryPage && currentQuestion && (
-          <div className={styles.currentQuestionInputArea}>
-            <div className={styles.currentQuestionDisplay}>
-              <BlockQuote questionText={currentQuestion.text} />
-            </div>
-
-            <div className={styles.area}>
-              <RadioCard
-                options={currentQuestion.options}
-                onOptionChange={handleOptionChange}
-                selectedValue={answers[currentQuestion.id] || null}
-                allowMultiple={currentQuestion.allowMultiple}
-              />
-            </div>
-
-            <div className={styles.questionNavButtons}>
-              {currentQuestionIndex > 0 && (
-                <Button
-                  onClick={handleGoBack}
-                  className={styles.backButton}
-                  variant="default"
-                  size="md"
-                >
-                  戻る
-                </Button>
-              )}
-              {/* {currentQuestionIndex > 0 && (
-                <button
-                  onClick={handleReset}
-                  className={styles.resetButtonSmall}
-                >
-                  最初から
-                </button>
-              )} */}
-              <Button
-                onClick={proceedToNext}
-                size="md"
-                disabled={!isSelectionMade}
-                className={styles.nextButton}
-              >
-                次へ
-              </Button>
-            </div>
+      {!showSummaryPage && currentQuestion && (
+        <div className={styles.currentQuestionInputArea}>
+          <div className={styles.currentQuestionDisplay}>
+            <BlockQuote questionText={currentQuestion.text} />
           </div>
-        )}
 
-        {showSummaryPage && (
-          <div className={styles.finalActionArea}>
-            <h2 className={styles.finalActionTitle}>お店を探しますか？</h2>
-            <div className={styles.finalActionButtons}>
+          <div className={styles.area}>
+            <RadioCard
+              options={currentQuestion.options}
+              onOptionChange={handleOptionChange}
+              selectedValue={answers[currentQuestion.id] || null}
+              allowMultiple={currentQuestion.allowMultiple}
+            />
+          </div>
+
+          <div className={styles.questionNavButtons}>
+            {currentQuestionIndex > 0 && (
               <Button
                 onClick={handleGoBack}
                 className={styles.backButton}
                 variant="default"
                 size="md"
               >
-                質問を修正する
+                戻る
               </Button>
-              <button
-                onClick={handleComplete}
-                className={styles.completeButton}
-              >
-                お店を探す
-              </button>
-            </div>
-            <div className={styles.resetButtonContainer}>
-              <button onClick={handleReset} className={styles.resetButton}>
-                最初からやり直す
-              </button>
-            </div>
+            )}
+            <Button
+              onClick={proceedToNext}
+              size="md"
+              disabled={!isSelectionMade}
+              className={styles.nextButton}
+            >
+              次へ
+            </Button>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {showSummaryPage && (
+        <div className={styles.finalActionArea}>
+          <h2 className={styles.finalActionTitle}>回答を確認してください</h2>
+          <div className={styles.summaryAnswers}>
+            {allQuestions.map((q) => (
+              <div key={q.id} className={styles.answerBlock}>
+                <strong>{q.text}</strong>
+                <div className={styles.answerContent}>
+                  {Array.isArray(answers[q.id])
+                    ? (answers[q.id] as string[]).join(", ")
+                    : answers[q.id]}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.finalActionButtons}>
+            <button onClick={handleComplete} className={styles.completeButton}>
+              お店を探す
+            </button>
+          </div>
+
+          <div className={styles.resetButtonContainer}>
+            <button onClick={handleReset} className={styles.resetButton}>
+              最初からやり直す
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
