@@ -1,8 +1,17 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSearchParams } from "next/navigation";
-import { Card, Stack, Divider, Container, Alert } from "@mantine/core";
+import {
+  Card,
+  Stack,
+  Divider,
+  Container,
+  Alert,
+  Button,
+  Text,
+  Box,
+} from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons-react";
 
 import { LoadingState } from "@/components/LoadingState/LoadingState";
@@ -29,7 +38,7 @@ interface RoomPageProps {
   roomId: string;
 }
 
-export const RoomPage = ({ roomId }: RoomPageProps) => {
+export const RoomPage = ({ roomId: roomid }: RoomPageProps) => {
   const searchParams = useSearchParams();
   const isCreated = searchParams.get("created") === "true";
 
@@ -37,33 +46,61 @@ export const RoomPage = ({ roomId }: RoomPageProps) => {
   const [roomWithParticipant, setRoomWithParticipant] =
     useState<RoomWithParticipant | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isJoining, setIsJoining] = useState<boolean>(false);
+
+  const fetchRoomInfo = useCallback(async () => {
+    try {
+      setError(null);
+      const res = await fetch(`/api/rooms/${roomid}`, { method: "GET" });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "ルーム情報の取得に失敗しました");
+      }
+      setRoomWithParticipant(data as RoomWithParticipant);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "エラーが発生しました");
+      setRoomWithParticipant(null);
+    } finally {
+      setLoading(false);
+    }
+  }, [roomid]);
 
   useEffect(() => {
-    const fetchRoom = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const res = await fetch(`/api/rooms/${roomId}`);
+    setLoading(true);
+    fetchRoomInfo();
 
-        if (!res.ok) {
-          throw new Error("ルーム情報の取得に失敗しました");
-        }
+    const interval = setInterval(() => {
+      fetchRoomInfo();
+    }, 5000);
 
-        const data = await res.json();
-        setRoomWithParticipant(data);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "エラーが発生しました");
-      } finally {
-        setLoading(false);
-      }
+    return () => {
+      clearInterval(interval);
     };
+  }, [fetchRoomInfo]);
 
-    fetchRoom();
-  }, [roomId]);
+  const handleJoin = async () => {
+    try {
+      setIsJoining(true);
+      setError(null);
+      const res = await fetch(`/rooms/${roomid}`, {
+        method: "POST",
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "参加に失敗しました");
+      }
+      await fetchRoomInfo();
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "参加エラーが発生しました");
+    } finally {
+      setIsJoining(false);
+    }
+  };
 
   if (loading) {
     return <LoadingState isCreated={isCreated} />;
   }
+
   if (error || !roomWithParticipant) {
     return (
       <Container size="md" py="xl">
@@ -79,6 +116,7 @@ export const RoomPage = ({ roomId }: RoomPageProps) => {
       </Container>
     );
   }
+
   const {
     id,
     maxUser,
@@ -90,6 +128,13 @@ export const RoomPage = ({ roomId }: RoomPageProps) => {
     RoomParticipant,
   } = roomWithParticipant;
 
+  const currentUserId = (() => {
+    return null as string | null;
+  })();
+
+  const alreadyJoined =
+    currentUserId && RoomParticipant.some((p) => p.userId === currentUserId);
+
   return (
     <Container size="md" py="xl">
       <Stack gap="lg">
@@ -99,18 +144,31 @@ export const RoomPage = ({ roomId }: RoomPageProps) => {
             participantCount={RoomParticipant.length}
             maxUser={maxUser}
           />
-          <Divider />
+          <Divider mb="sm" />
           <RoomBasicInfo
             area={area}
             mealType={mealType}
             date={date}
             createdAt={createdAt}
           />
-          <Divider />
+          <Divider my="sm" />
           <ParticipantsSection
             participants={RoomParticipant}
             maxUser={maxUser}
           />
+          <Box mt="md" style={{ textAlign: "center" }}>
+            {alreadyJoined ? (
+              <Text c="dimmed">すでに参加済みです</Text>
+            ) : RoomParticipant.length < maxUser ? (
+              <Button onClick={handleJoin} loading={isJoining}>
+                参加する
+              </Button>
+            ) : (
+              <Text c="red" fw={500}>
+                満員です
+              </Text>
+            )}
+          </Box>
         </Card>
         <RoomFooter roomId={id} isCreated={isCreated} />
       </Stack>

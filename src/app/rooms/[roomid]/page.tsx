@@ -1,26 +1,26 @@
-import Home from "@/features/Home/Home";
-import { RoomCard } from "@/features/Room/Room";
-import { createClient } from "@/lib/supabase/server";
-import { redirect } from "next/navigation";
-import { useRouter } from "next/router";
+import { RoomPage as RoomPageComponent } from "@/features/Room/Room";
+import { waitingRoom } from "@/app/rooms/[roomid]/action";
 
-export default async function HomePage() {
-  const supabase = await createClient();
-  const router = useRouter();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  
+export default async function RoomPage({
+  params,
+}: {
+  params: { roomid: string };
+}) {
+  const { roomid: roomId } = params;
 
-  const {roomId} = router.query;
-
-
-  if (!user) {
-    redirect("/auth/login");
-  }
-  if (!roomId || typeof roomId !== 'string') {
-    return <p>Invalid room ID</p>;
+  if (!roomId) {
+    return <p>ルームIDが指定されていません。</p>;
   }
 
-  return <RoomCard roomId={roomId }  />;
+  const result = await waitingRoom({ roomId });
+
+  if (!result.success) {
+    return <p>{result.error ?? "Invalid room ID"}</p>;
+  }
+
+  if (!result.room) {
+    return <p>ルームデータが存在しません。</p>;
+  }
+
+  return <RoomPageComponent roomId={result.room.id} />;
 }

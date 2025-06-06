@@ -83,7 +83,7 @@ export function ParticipantsSection({
 
         {participantCount < maxUser && (
           <Text size="sm" c="dimmed">
-            +{maxUser - participantCount} 名募集中
+            @{maxUser - participantCount} 名募集中
           </Text>
         )}
       </Group>
