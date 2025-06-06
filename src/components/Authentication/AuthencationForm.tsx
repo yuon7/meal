@@ -20,6 +20,7 @@ import { login, signup } from "@/app/auth/login/action";
 type Props = {
   readonly searchParams: { error?: string };
   readonly handleGoogleLogin: () => Promise<void>;
+  readonly handleTwitterLogin?: () => Promise<void>;
 };
 
 type CombinedProps = PaperProps & Props;
@@ -27,6 +28,7 @@ type CombinedProps = PaperProps & Props;
 export function AuthenticationForm({
   searchParams,
   handleGoogleLogin,
+  handleTwitterLogin,
   ...props
 }: CombinedProps) {
   const [type, toggle] = useToggle(["login", "register"]);
@@ -57,7 +59,9 @@ export function AuthenticationForm({
         <GoogleButton radius="xl" onClick={handleGoogleLogin}>
           Google
         </GoogleButton>
-        <TwitterButton radius="xl">Twitter</TwitterButton>
+        <TwitterButton radius="xl" onClick={handleTwitterLogin}>
+          Twitter
+        </TwitterButton>
       </Group>
 
       <Divider label="Or continue with email" labelPosition="center" my="lg" />
