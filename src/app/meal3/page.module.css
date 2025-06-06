@@ -2,8 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
+  align-items: center;
+
   background: linear-gradient(135deg, #ff9a56 0%, #ff6b95 100%);
-  min-height: calc(100vh - 60px);
+  min-height: 100vh;
   padding: 20px;
   box-sizing: border-box;
 }
@@ -17,6 +20,7 @@
 
 .currentQuestionInputArea {
   width: 100%;
+  min-height: max-content;
   max-width: 600px;
   padding: 20px;
   background-color: #fffaf0;
@@ -123,12 +127,12 @@
 .finalActionArea {
   width: 100%;
   padding: 30px 20px;
-  background-color: #fff;
+  background-color: #fffaf0;
   display: flex;
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  margin-top: 20px;
+  margin-top: 0px;
 }
 
 .finalActionTitle {
@@ -172,4 +176,23 @@
 }
 .nextButton {
   margin-left: auto;
+}
+.summaryAnswers {
+  width: 100%;
+  margin: 1rem 0;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+.summaryContent {
+  padding: 1rem;
+}
+
+.answerBlock {
+  margin-bottom: 1rem;
+}
+
+.answerContent {
+  margin-top: 0.25rem;
+  padding-left: 1rem;
+  color: #333;
 }
