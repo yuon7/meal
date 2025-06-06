@@ -1,4 +1,4 @@
-import { openReverseGeocoder } from "@geolonia/open-reverse-geocoder";
+import {openReverseGeocoder} from "@geolonia/open-reverse-geocoder";
 import { PREFECTURE_MAPPING } from "./prefectureMap";
 
 type geocode = {
@@ -17,7 +17,7 @@ const getPrefecture = async (
   lat: number,
   lng: number
 ): Promise<CityCodeRes> => {
-  const geocode: geocode = await openReverseGeocoder([lat, lng]);
+  const geocode: geocode = await openReverseGeocoder([lng, lat]);
   if (!geocode) {
     throw new Error("Geocode not found");
   }

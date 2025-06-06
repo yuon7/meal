@@ -23,7 +23,7 @@ app.post("/generateTabelogURL", async (c) => {
   }
 
   try {
-    const tabelogCitycodeURL: string = await generateTabelogURL(lng, lat);
+    const tabelogCitycodeURL: string = await generateTabelogURL(lat, lng);
 
     if (keyword.trim() === "") {
       return c.json({ tabelogURL: tabelogCitycodeURL });
