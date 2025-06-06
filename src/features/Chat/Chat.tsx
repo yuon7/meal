@@ -1,6 +1,6 @@
 "use client";
 
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 import {
   Button,
   Container,
@@ -80,7 +80,7 @@ export default function Chat({ user }: { user: User | null }) {
         },
         () => {
           fetchMessages();
-        }
+        },
       )
       .subscribe();
 

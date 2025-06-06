@@ -46,7 +46,7 @@ export const tabelogSearchResultsTool = createTool({
         hasVpoint: z.boolean().describe("Vpoint availability"),
         isHotRestaurant: z.boolean().describe("Hot restaurant award status"),
         thumbnailImages: z.array(z.string()).describe("Thumbnail image URLs"),
-      })
+      }),
     ),
   }),
   execute: async ({ context }) => {
@@ -129,7 +129,7 @@ const scrapeSearchResults = async (url: string) => {
       const thumbnailImages: string[] = [];
       $el
         .find(
-          ".js-cassette-img[data-original], .js-switch-thumbnail-img[data-lazy]"
+          ".js-cassette-img[data-original], .js-switch-thumbnail-img[data-lazy]",
         )
         .each((j, img) => {
           const src =
@@ -173,7 +173,7 @@ const scrapeSearchResults = async (url: string) => {
     };
   } catch (error) {
     throw new Error(
-      `Failed to scrape search results: ${error instanceof Error ? error.message : "Unknown error"}`
+      `Failed to scrape search results: ${error instanceof Error ? error.message : "Unknown error"}`,
     );
   }
 };

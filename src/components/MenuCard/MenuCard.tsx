@@ -40,11 +40,12 @@ export default function MenuCard({
       withBorder={false}
       shadow="sm"
     >
-      <div
-        className={styles.cardBgGradient}
-        style={{ background: gradient }}
-      />
-      <Group justify="space-between" align="center" className={styles.cardContent}>
+      <div className={styles.cardBgGradient} style={{ background: gradient }} />
+      <Group
+        justify="space-between"
+        align="center"
+        className={styles.cardContent}
+      >
         <Group align="center" gap="md" className={styles.cardLeft}>
           <ThemeIcon
             size="lg"
