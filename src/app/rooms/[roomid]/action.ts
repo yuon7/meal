@@ -2,22 +2,16 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { PrismaClient } from "@prisma/client";
-import { CreateRoomData } from "@/app/home/action";
 
 const prisma = new PrismaClient();
 
-interface waitingRoomData {
-  id: string;
-  roomId: string;
-  userId: string;
-  isHost: Boolean;
-  room: CreateRoomData;
-}
-
-export async function waitingRoom(data: waitingRoomData) {
+export async function waitingRoom({ roomId }: { roomId: string }) {
   try {
-    const supabase = await createClient();
+    if (!roomId) {
+      throw new Error("roomId が未定義です。");
+    }
 
+    const supabase = await createClient();
     const {
       data: { user },
       error: authError,
@@ -28,21 +22,17 @@ export async function waitingRoom(data: waitingRoomData) {
     }
 
     const roomWithParticipant = await prisma.room.findUnique({
-      where: {
-        id: data.roomId,
-      },
-      include: {
-        RoomParticipant: true,
-      },
+      where: { id: roomId },
+      include: { RoomParticipant: true },
     });
     if (!roomWithParticipant) {
-      throw new Error("ルームが見つかりません");
+      return { success: false, error: "ルームが見つかりません。" };
     }
 
     if (
       roomWithParticipant.RoomParticipant.length >= roomWithParticipant.maxUser
     ) {
-      throw new Error("ルームが満員です");
+      return { success: false, error: "ルームが満員です。" };
     }
     if (
       !roomWithParticipant.RoomParticipant.some(
@@ -51,16 +41,13 @@ export async function waitingRoom(data: waitingRoomData) {
     ) {
       await prisma.roomParticipant.create({
         data: {
-          roomId: data.roomId,
+          roomId,
           userId: user.id,
           isHost: false,
         },
       });
     }
-    return {
-      success: true,
-      room: roomWithParticipant,
-    };
+    return { success: true, room: roomWithParticipant };
   } catch (error) {
     console.error("Waiting room error:", error);
     return {
