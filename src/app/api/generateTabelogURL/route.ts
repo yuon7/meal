@@ -8,6 +8,38 @@ export const runtime = "nodejs";
 
 const app = new Hono().basePath("/api");
 
+export const dynamic = "force-dynamic";
+
+const CHROMIUM_PATH =
+  "https://vomrghiulbmrfvmhlflk.supabase.co/storage/v1/object/public/chromium-pack/chromium-v123.0.0-pack.tar";
+
+async function getBrowser() {
+  if (process.env.VERCEL_ENV === "production") {
+    const chromium = await import("@sparticuz/chromium-min").then(
+      (mod) => mod.default
+    );
+
+    const puppeteerCore = await import("puppeteer-core").then(
+      (mod) => mod.default
+    );
+
+    const executablePath = await chromium.executablePath(CHROMIUM_PATH);
+
+    const browser = await puppeteerCore.launch({
+      args: chromium.args,
+      defaultViewport: chromium.defaultViewport,
+      executablePath,
+      headless: true,
+    });
+    return browser;
+  } else {
+    const puppeteer = await import("puppeteer").then((mod) => mod.default);
+
+    const browser = await puppeteer.launch();
+    return browser;
+  }
+}
+
 app.post("/generateTabelogURL", async (c) => {
   const { lat, lng, keyword } = await c.req.json();
 
@@ -31,12 +63,7 @@ app.post("/generateTabelogURL", async (c) => {
 
     const serchTabelogURL = `${tabelogCitycodeURL}/?sa=${keyword}`;
 
-    const browser = await puppeteer.launch({
-      args: chromium.args,
-      executablePath: await chromium.executablePath(),
-      headless: chromium.headless,
-      defaultViewport: chromium.defaultViewport,
-    });
+    const browser = await getBrowser();
 
     const page = await browser.newPage();
 
