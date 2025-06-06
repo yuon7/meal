@@ -19,11 +19,16 @@ import { login, signup } from "@/app/auth/login/action";
 
 type Props = {
   readonly searchParams: { error?: string };
+  readonly handleGoogleLogin: () => Promise<void>;
 };
 
 type CombinedProps = PaperProps & Props;
 
-export function AuthenticationForm({ searchParams, ...props }: CombinedProps) {
+export function AuthenticationForm({
+  searchParams,
+  handleGoogleLogin,
+  ...props
+}: CombinedProps) {
   const [type, toggle] = useToggle(["login", "register"]);
 
   const form = useForm({
@@ -49,7 +54,9 @@ export function AuthenticationForm({ searchParams, ...props }: CombinedProps) {
       </Text>
 
       <Group grow mb="md" mt="md">
-        <GoogleButton radius="xl">Google</GoogleButton>
+        <GoogleButton radius="xl" onClick={handleGoogleLogin}>
+          Google
+        </GoogleButton>
         <TwitterButton radius="xl">Twitter</TwitterButton>
       </Group>
 
