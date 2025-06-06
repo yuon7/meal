@@ -1,4 +1,3 @@
-// RadioCard.tsx
 import React, { useState, useEffect } from "react";
 import { Radio, Checkbox, Stack, ScrollArea } from "@mantine/core";
 import styles from "./RadioCard.module.css";
@@ -40,7 +39,7 @@ export const RadioCard: React.FC<RadioCardProps> = ({
   const handleRadioChange = (value: string) => {
     setInternalSingleSelection(value);
     if (onOptionChange) {
-      onOptionChange(value); // 単一選択は選択時に即時親へ通知
+      onOptionChange(value);
     }
   };
 
@@ -50,21 +49,18 @@ export const RadioCard: React.FC<RadioCardProps> = ({
       : internalMultiSelections.filter((item) => item !== optionValue);
     setInternalMultiSelections(newSelections);
     if (onOptionChange) {
-      onOptionChange(newSelections); // 複数選択も変更があるたびに親へ通知
+      onOptionChange(newSelections);
     }
   };
-
-  const scrollAreaMaxHeight = 300;
-  const scrollbarThickness = 8;
 
   if (allowMultiple) {
     return (
       <div className={styles.mantineOptionsContainer}>
         <ScrollArea.Autosize
-          mah={scrollAreaMaxHeight}
+          mah="42vh"
           type="always"
           className={styles.scrollableOptionsArea}
-          scrollbarSize={scrollbarThickness}
+          scrollbarSize={8}
         >
           <Stack>
             {options.map((option) => (
@@ -97,7 +93,6 @@ export const RadioCard: React.FC<RadioCardProps> = ({
             ))}
           </Stack>
         </ScrollArea.Autosize>
-        {/* 「選択完了/次へ」ボタンを削除 */}
       </div>
     );
   }
@@ -106,38 +101,39 @@ export const RadioCard: React.FC<RadioCardProps> = ({
     <div className={styles.mantineOptionsContainer}>
       <Radio.Group value={internalSingleSelection} onChange={handleRadioChange}>
         <ScrollArea.Autosize
-          mah={scrollAreaMaxHeight}
+          mah="42vh"
           type="always"
           className={styles.scrollableOptionsArea}
-          scrollbarSize={scrollbarThickness}
+          scrollbarSize={8}
         >
-          <Stack>
-            {options.map((option) => (
-              <div
-                key={option}
-                className={`${styles.optionCard} ${
-                  internalSingleSelection === option ? styles.selected : ""
-                }`}
-              >
-                <Radio
-                  label={<div className={styles.cardContent}>{option}</div>}
-                  value={option}
-                  size="md"
-                  styles={{
-                    root: {
-                      width: "100%",
-                      padding: "var(--mantine-spacing-sm)",
-                    },
-                    body: { alignItems: "center", width: "100%" },
-                    labelWrapper: { width: "100%" },
-                  }}
-                />
-              </div>
-            ))}
-          </Stack>
+          <div className={styles.optionArea}>
+            <Stack>
+              {options.map((option) => (
+                <div
+                  key={option}
+                  className={`${styles.optionCard} ${
+                    internalSingleSelection === option ? styles.selected : ""
+                  }`}
+                >
+                  <Radio
+                    label={<div className={styles.cardContent}>{option}</div>}
+                    value={option}
+                    size="md"
+                    styles={{
+                      root: {
+                        width: "100%",
+                        padding: "var(--mantine-spacing-sm)",
+                      },
+                      body: { alignItems: "center", width: "100%" },
+                      labelWrapper: { width: "100%" },
+                    }}
+                  />
+                </div>
+              ))}
+            </Stack>
+          </div>
         </ScrollArea.Autosize>
       </Radio.Group>
-      {/* 「選択完了/次へ」ボタンを削除 */}
     </div>
   );
 };
