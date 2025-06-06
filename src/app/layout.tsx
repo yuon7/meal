@@ -1,4 +1,3 @@
-import { HeaderMegaMenu } from "@/components/Header/Header";
 import { SupabaseProvider } from "@/components/SupabaseProvider/SupabaseProvider";
 import { createClient } from "@/utils/supabase/server";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
@@ -55,7 +54,6 @@ export default async function RootLayout({
         <SupabaseProvider>
           <MantineProvider>
             <div className={classes.rootContainer}>
-              <HeaderMegaMenu user={user} />
               <div className={classes.contentWrapper}>{children}</div>
             </div>
             <Analytics />
