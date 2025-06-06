@@ -17,7 +17,18 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
       <div
         className={styles.progressBarFill}
         style={{ width: `${progressPercentage}%` }}
-      ></div>
+      />
+
+      {[...Array(totalSteps + 1)].map((_, index) => {
+        const left = (index / totalSteps) * 100;
+        return (
+          <div
+            key={index}
+            className={styles.stepMarker}
+            style={{ left: `${left}%` }}
+          />
+        );
+      })}
     </div>
   );
 };
