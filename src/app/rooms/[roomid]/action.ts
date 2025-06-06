@@ -28,25 +28,28 @@ export async function waitingRoom({ roomId }: { roomId: string }) {
     if (!roomWithParticipant) {
       return { success: false, error: "ルームが見つかりません。" };
     }
+    if (
+      roomWithParticipant.RoomParticipant.some(
+        (participant) => participant.userId === user.id
+      )
+    ) {
+      return { success: true, room: roomWithParticipant };
+    }
 
     if (
       roomWithParticipant.RoomParticipant.length >= roomWithParticipant.maxUser
     ) {
       return { success: false, error: "ルームが満員です。" };
     }
-    if (
-      !roomWithParticipant.RoomParticipant.some(
-        (participant) => participant.userId === user.id
-      )
-    ) {
-      await prisma.roomParticipant.create({
-        data: {
-          roomId,
-          userId: user.id,
-          isHost: false,
-        },
-      });
-    }
+
+    await prisma.roomParticipant.create({
+      data: {
+        roomId,
+        userId: user.id,
+        isHost: false,
+      },
+    });
+
     return { success: true, room: roomWithParticipant };
   } catch (error) {
     console.error("Waiting room error:", error);
