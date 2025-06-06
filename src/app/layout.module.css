@@ -1,6 +1,6 @@
 .rootContainer {
-  min-height: 100vh;
   position: relative;
+  min-height: 100vh;
   overflow: hidden;
 }
 
@@ -8,5 +8,5 @@
   position: relative;
   background: linear-gradient(135deg, #ff9a56 0%, #ff6b95 100%);
   z-index: 1;
-  min-height: 100vh;
+  min-height: calc(100vh - 60px);
 }
