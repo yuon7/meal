@@ -1,7 +1,7 @@
 "use server";
-import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { createClient } from "@/utils/supabase/server";
 
 export async function resetPassword(formData: FormData) {
   const supabase = await createClient();
