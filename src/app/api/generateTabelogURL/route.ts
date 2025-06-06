@@ -1,6 +1,7 @@
 import { Hono } from "hono";
+import chromium from "@sparticuz/chromium";
+import puppeteer from "puppeteer-core";
 import { generateTabelogURL } from "@/lib/generateTabelogURL/generateTabelogURL";
-import puppeteer from "puppeteer";
 import shapingTaelogURL from "@/lib/generateTabelogURL/shapingTabelogURL";
 
 export const runtime = "nodejs";
@@ -30,10 +31,16 @@ app.post("/generateTabelogURL", async (c) => {
 
     const serchTabelogURL = `${tabelogCitycodeURL}/?sa=${keyword}`;
 
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({
+      args: chromium.args,
+      executablePath: await chromium.executablePath(),
+      headless: chromium.headless,
+      defaultViewport: chromium.defaultViewport,
+    });
+
     const page = await browser.newPage();
 
-    // 簡単なリンクで一度サイトを訪れる(https://tabelog.com/tokyo/Cxxxxx/rstLst/?sa=keyword)
+    // 簡単なリンクで一度サイトを訪れる例:(https://tabelog.com/tokyo/Cxxxxx/rstLst/?sa=keyword)
     await page.goto(serchTabelogURL, { waitUntil: "networkidle2" });
 
     // keywordが赤羽駅の場合、検索ボタンを押すと詳細条件に赤羽駅が入った状態のURLが生成される
