@@ -45,8 +45,7 @@ app.post("/select-restaurant", async (c) => {
       });
     }
 
-    // RecomendedRestaurantを作成
-    const recommendedRestaurant = await prisma.recomendedRestaurant.create({
+    const recommendedRestaurant = await prisma.recommendedRestaurant.create({
       data: {
         recommendReason,
         matchScore,
@@ -137,7 +136,7 @@ app.get("/rooms/:roomId/participants", async (c) => {
 app.get("/rooms/:roomId/recommended-restaurants", async (c) => {
   try {
     const roomId = c.req.param("roomId");
-    const recommendedRestaurants = await prisma.recomendedRestaurant.findMany({
+    const recommendedRestaurants = await prisma.recommendedRestaurant.findMany({
       where: { roomId },
       include: {
         restaurant: true,
