@@ -1,4 +1,3 @@
-// RadioCard.tsx
 import React, { useState, useEffect } from "react";
 import { Radio, Checkbox, Stack, ScrollArea } from "@mantine/core";
 import styles from "./RadioCard.module.css";
@@ -40,7 +39,7 @@ export const RadioCard: React.FC<RadioCardProps> = ({
   const handleRadioChange = (value: string) => {
     setInternalSingleSelection(value);
     if (onOptionChange) {
-      onOptionChange(value); // 単一選択は選択時に即時親へ通知
+      onOptionChange(value);
     }
   };
 
@@ -50,21 +49,27 @@ export const RadioCard: React.FC<RadioCardProps> = ({
       : internalMultiSelections.filter((item) => item !== optionValue);
     setInternalMultiSelections(newSelections);
     if (onOptionChange) {
-      onOptionChange(newSelections); // 複数選択も変更があるたびに親へ通知
+      onOptionChange(newSelections);
     }
   };
 
-  const scrollAreaMaxHeight = 300;
   const scrollbarThickness = 8;
+
+  const containerSx = {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    minHeight: 0,
+  } as const;
 
   if (allowMultiple) {
     return (
-      <div className={styles.mantineOptionsContainer}>
+      <div className={styles.mantineOptionsContainer} style={containerSx}>
         <ScrollArea.Autosize
-          mah={scrollAreaMaxHeight}
           type="always"
           className={styles.scrollableOptionsArea}
           scrollbarSize={scrollbarThickness}
+          style={{ flex: 1, minHeight: 0 }}
         >
           <Stack>
             {options.map((option) => (
@@ -97,19 +102,24 @@ export const RadioCard: React.FC<RadioCardProps> = ({
             ))}
           </Stack>
         </ScrollArea.Autosize>
-        {/* 「選択完了/次へ」ボタンを削除 */}
       </div>
     );
   }
 
+  // ★★★ ここからが単一選択（ラジオボタン）の修正箇所です ★★★
   return (
-    <div className={styles.mantineOptionsContainer}>
-      <Radio.Group value={internalSingleSelection} onChange={handleRadioChange}>
-        <ScrollArea.Autosize
-          mah={scrollAreaMaxHeight}
-          type="always"
-          className={styles.scrollableOptionsArea}
-          scrollbarSize={scrollbarThickness}
+    <div className={styles.mantineOptionsContainer} style={containerSx}>
+      {/* 最初に ScrollArea.Autosize を配置します */}
+      <ScrollArea.Autosize
+        type="always"
+        className={styles.scrollableOptionsArea}
+        scrollbarSize={scrollbarThickness}
+        style={{ flex: 1, minHeight: 0 }}
+      >
+        {/* その内側に Radio.Group を配置します */}
+        <Radio.Group
+          value={internalSingleSelection}
+          onChange={handleRadioChange}
         >
           <Stack>
             {options.map((option) => (
@@ -135,9 +145,8 @@ export const RadioCard: React.FC<RadioCardProps> = ({
               </div>
             ))}
           </Stack>
-        </ScrollArea.Autosize>
-      </Radio.Group>
-      {/* 「選択完了/次へ」ボタンを削除 */}
+        </Radio.Group>
+      </ScrollArea.Autosize>
     </div>
   );
 };

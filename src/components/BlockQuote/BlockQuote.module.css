@@ -2,11 +2,14 @@
   margin: 0 auto;
   max-width: 600px;
   padding: 20px;
-  background-color: #e6f7ff;
-  border-left: 5px solid #1890ff;
+  background-color: #fff;
+  border-left: 5px solid #ff85a2;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(255, 133, 162, 0.2);
   box-sizing: border-box;
+  /* height: 150px; */
+  display: flex;
+  align-items: center;
 }
 
 .questionText {
