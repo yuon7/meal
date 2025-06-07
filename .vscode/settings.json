@@ -1,0 +1,14 @@
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "typescriptreact"
+  ],
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.module.css": "${capture}.module.css.d.ts, ${capture}.module.css.d.ts.map"
+  },
+}
