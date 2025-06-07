@@ -1,18 +1,20 @@
 "use client";
 
 import geoConverter from "@/lib/geoConverter/geoConverter";
-import makeTabelogQuery from "@/lib/makeTabelogQuery/makeTabelogQuery";
+import makeTabelogQuery, {
+  SearchOptions,
+} from "@/lib/makeTabelogQuery/makeTabelogQuery";
 import { useState } from "react";
 
 type GenerateTabelogURLResponse = {
   tabelogURL: string;
 };
 
-const demoString: string[][] = [
-  ["和食"],
-  ["おしゃれな空間", "落ち着いた空間"],
-  ["5,000円"],
-];
+const demoobject = {
+  foodGenre: "和食",
+  ambience: ["おしゃれな空間", "落ち着いた空間"],
+  budjets: "5,000円",
+};
 
 export default function URLGenerator() {
   const [url, setUrl] = useState<string>("");
@@ -49,7 +51,7 @@ export default function URLGenerator() {
   };
 
   // ユーザーの回答から、クエリを含んだ食べログのURLを生成する関数
-  const handleMakeURL = (params: string[][]) => {
+  const handleMakeURL = (params: SearchOptions) => {
     const queryParams = makeTabelogQuery(params);
     setEndUrl(`${url}${queryParams}`);
   };
@@ -106,7 +108,7 @@ export default function URLGenerator() {
             </a>
           </div>
           <div>詳しいリンクを作成</div>
-          <button onClick={() => handleMakeURL(demoString)}>作る</button>
+          <button onClick={() => handleMakeURL(demoobject)}>作る</button>
           <a href={endUrl} target="_blank" rel="noopener noreferrer">
             {endUrl}
           </a>
