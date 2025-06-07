@@ -1,8 +1,8 @@
 "use client";
 
 import { Button, Card, Stack, Text, TextInput, Title } from "@mantine/core";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { RecommendationResults } from "../../features/Recommend/RecommendationResults";
 import { getRecomendRestaurantInfo } from "./action";
 import classes from "./page.module.css";
 
@@ -31,7 +31,7 @@ type RecommendationResult = {
 };
 
 export function Form() {
-  const [result, setResult] = useState<RecommendationResult[] | null>(null);
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(formData: FormData) {
@@ -39,10 +39,10 @@ export function Form() {
     try {
       const res = await getRecomendRestaurantInfo(formData);
       if ("result" in res && Array.isArray(res.result)) {
-        setResult(res.result);
+        const encodedData = encodeURIComponent(JSON.stringify(res.result));
+        router.push(`/recommend-result?data=${encodedData}`);
       } else {
         console.error("Invalid response format:", res);
-        setResult(null);
       }
     } finally {
       setLoading(false);
@@ -86,8 +86,6 @@ export function Form() {
           </Stack>
         </form>
       </Card>
-
-      {result && <RecommendationResults results={result} />}
     </Stack>
   );
 }
