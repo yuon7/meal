@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useState, useEffect, useCallback, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import React, { useState, useEffect, useCallback } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Card,
   Stack,
@@ -22,7 +22,7 @@ import {
 } from "@/components/RoomParticipants/RoomParticipants";
 import { RoomShare } from "@/components/RoomShare/RoomShare";
 
-type RoomWithParticipant = {
+export type RoomWithParticipant = {
   id: string;
   maxUser: number;
   area: string;
@@ -37,7 +37,8 @@ interface RoomPageProps {
   roomId: string;
 }
 
-function RoomContent({ roomId: roomid }: RoomPageProps) {
+export const RoomPage = ({ roomId: roomid }: RoomPageProps) => {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const isCreated = searchParams.get("created") === "true";
 
@@ -107,6 +108,12 @@ function RoomContent({ roomId: roomid }: RoomPageProps) {
     RoomParticipant,
   } = roomWithParticipant;
 
+  const handleQrate = () => {
+    const payload = JSON.stringify(roomWithParticipant);
+    const encoded = encodeURIComponent(payload);
+    router.push(`/meal3?room=${encoded}`);
+  };
+
   return (
     <Container size="md" py="xl">
       <Stack gap="lg">
@@ -129,19 +136,11 @@ function RoomContent({ roomId: roomid }: RoomPageProps) {
             maxUser={maxUser}
           />
           <Box mt="md" style={{ textAlign: "center" }}>
-            <Button>Qrate</Button>
+            <Button onClick={handleQrate}>Qrate</Button>
           </Box>
         </Card>
         <RoomShare roomId={id} showCreatedAlert={isCreated} />
       </Stack>
     </Container>
-  );
-}
-
-export const RoomPage = ({ roomId }: RoomPageProps) => {
-  return (
-    <Suspense fallback={<LoadingState isCreated={false} />}>
-      <RoomContent roomId={roomId} />
-    </Suspense>
   );
 };
