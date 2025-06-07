@@ -30,6 +30,8 @@ model Room {
 
   RoomParticipant RoomParticipant[]
   Message Message[]
+
+  RecomendedRestaurant RecomendedRestaurant[] @relation("RecomendedRestaurantRoom")
 }
 
 model RoomParticipant{
@@ -39,4 +41,17 @@ model RoomParticipant{
   isHost Boolean
 
   room Room    @relation(fields: [roomId], references: [id])
+}
+
+model RecomendedRestaurant {
+  id String @id @default(uuid())
+  name String
+  url String
+  userId String
+  roomId String?
+  isselected Boolean @default(false)
+  
+  createdAt DateTime @default(now())
+
+  room Room? @relation("RecomendedRestaurantRoom", fields: [roomId], references: [id])
 }
