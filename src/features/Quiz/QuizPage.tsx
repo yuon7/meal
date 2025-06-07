@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./Quiz.module.css";
+import styles from "./QuizPage.module.css";
 import React, { useState, useEffect } from "react";
 import { ProgressBar } from "@/components/Progress/Progress";
 import { RadioCard } from "@/components/RadioCard/RadioCard";
@@ -8,7 +8,7 @@ import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
 import { allQuestions } from "@/data/questions";
 import { Button, ScrollArea } from "@mantine/core";
 
-export const Quiz = () => {
+export default function QuizPage(){
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
   const [showSummaryPage, setShowSummaryPage] = useState<boolean>(false);
