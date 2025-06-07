@@ -3,11 +3,11 @@
 import { Avatar, Box, Card, Group, Text } from "@mantine/core";
 import { User } from "@supabase/supabase-js";
 
-type UserProps = {
+type UserProp = {
   user: User | null;
 };
 
-export default function Profile({ user }: UserProps) {
+export default function Profile({ user }: UserProp) {
   return (
     <Card shadow="lg" radius="md">
       <Group>

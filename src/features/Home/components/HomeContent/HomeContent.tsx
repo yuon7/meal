@@ -26,11 +26,11 @@ import { useRouter } from "next/navigation";
 import { User } from "@supabase/supabase-js";
 import Profile from "@/features/Profile/Profile";
 
-type userProps = {
+type userProp = {
   user: User | null;
 };
 
-export function HomeContent({ user }: userProps) {
+export function HomeContent({ user }: userProp) {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();

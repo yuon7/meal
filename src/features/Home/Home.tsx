@@ -6,11 +6,11 @@ import { User } from "@supabase/supabase-js";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 
-type userProps = {
+type userProp = {
   user: User | null;
 };
 
-export default function Home({ user }: userProps) {
+export default function Home({ user }: userProp) {
   const [isShutterVisible, setIsShutterVisible] = useState(true);
 
   return (
