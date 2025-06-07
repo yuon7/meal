@@ -9,7 +9,7 @@
     "build:mastra": "mastra build --dir mastra",
     "dev:hcm": "hcm 'src/**/*.module.css' -w",
     "hcm": "hcm 'src/**/*.module.css'",
-    "build": "prisma generate --no-engine && next build",
+    "build": "prisma generate && next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:js": "eslint --ext .ts,.tsx,.js --ignore-path .gitignore .",

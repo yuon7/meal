@@ -30,6 +30,8 @@ model Room {
 
   RoomParticipant RoomParticipant[]
   Message Message[]
+
+  RecommendedRestaurant RecommendedRestaurant[] @relation("RecommendedRestaurantRoom")
 }
 
 model RoomParticipant{
@@ -40,3 +42,50 @@ model RoomParticipant{
 
   room Room    @relation(fields: [roomId], references: [id])
 }
+
+model Restaurant{
+  id String @id @default(uuid())
+
+  name String
+  url String
+  genre String
+  area String
+  station String
+  distance String
+  description String
+  
+  rating Float
+  reviewCount Int
+  savedCount Int
+  
+  budgetDinner String
+  budgetLunch String
+  
+  isHotRestaurant Boolean @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  RecommendedRestaurant RecommendedRestaurant[]
+
+}
+
+model RecommendedRestaurant {
+  id String @id @default(uuid())
+
+  recommendReason String
+  matchScore Int
+  
+  userId String
+  roomId String?
+  restaurantId String
+
+  isSelected Boolean @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  room Room? @relation("RecommendedRestaurantRoom", fields: [roomId], references: [id])
+  restaurant Restaurant @relation(fields: [restaurantId], references: [id])
+}
+
