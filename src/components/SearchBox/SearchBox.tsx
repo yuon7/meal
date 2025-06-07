@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { TextInput, ActionIcon, Center } from "@mantine/core";
 import { IconSearch, IconX } from "@tabler/icons-react";
+import React from "react";
 
 export function SearchBox() {
   const [value, setValue] = useState("");

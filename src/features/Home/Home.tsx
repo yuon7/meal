@@ -13,7 +13,6 @@ import {
   Box,
 } from "@mantine/core";
 import {
-  IconChefHat,
   IconUser,
   IconUsers,
   IconMapPin,
@@ -21,10 +20,12 @@ import {
   IconClock,
   IconToolsKitchen2,
   IconArrowRight,
+  IconBuildingStore,
 } from "@tabler/icons-react";
 import classes from "./Home.module.css";
+import React from "react";
 
-export function Home() {
+export function HomeContent() {
   return (
     <div className={classes.container}>
       <Container size={800} className={classes.content}>
@@ -32,7 +33,7 @@ export function Home() {
           {/* Hero Section */}
           <Box ta="center" className={classes.hero}>
             <div className={classes.heroIcon}>
-              <IconChefHat size={40} color="white" />
+              <IconBuildingStore size={40} color="white" />
             </div>
             <Text size="2rem" fw={800} c="white" mt="md" pb={12}>
               Qrate

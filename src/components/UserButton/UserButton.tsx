@@ -5,6 +5,7 @@ import { Avatar, Button, Group, Menu, Text } from "@mantine/core";
 import { User } from "@supabase/supabase-js";
 import { IconChevronRight, IconLogout } from "@tabler/icons-react";
 import { usePathname, useRouter } from "next/navigation";
+import React from "react";
 
 export function UserButton({
   user,

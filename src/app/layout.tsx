@@ -1,7 +1,6 @@
 import { SupabaseProvider } from "@/components/SupabaseProvider/SupabaseProvider";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { Analytics } from "@vercel/analytics/next";
 import { Metadata } from "next";
 import classes from "./layout.module.css";
 
@@ -50,7 +49,6 @@ export default async function RootLayout({
             <div className={classes.rootContainer}>
               <div className={classes.contentWrapper}>{children}</div>
             </div>
-            <Analytics />
           </MantineProvider>
         </SupabaseProvider>
       </body>
