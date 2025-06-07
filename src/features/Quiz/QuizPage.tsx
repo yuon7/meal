@@ -1,6 +1,6 @@
 "use client";
 
-import styles from "./Quiz.module.css";
+import styles from "./QuizPage.module.css";
 import React, { useState, useEffect } from "react";
 import { ProgressBar } from "@/components/Progress/Progress";
 import { RadioCard } from "@/components/RadioCard/RadioCard";
@@ -8,7 +8,7 @@ import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
 import { allQuestions } from "@/data/questions";
 import { Button, ScrollArea } from "@mantine/core";
 
-export const Quiz = () => {
+export default function QuizPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
   const [showSummaryPage, setShowSummaryPage] = useState<boolean>(false);
@@ -27,7 +27,7 @@ export const Quiz = () => {
       setIsSelectionMade(true);
     } else {
       setIsSelectionMade(
-        Array.isArray(answer) ? answer.length > 0 : Boolean(answer),
+        Array.isArray(answer) ? answer.length > 0 : Boolean(answer)
       );
     }
   }, [currentQuestionIndex, answers]);
@@ -45,7 +45,7 @@ export const Quiz = () => {
     setIsSelectionMade(
       Array.isArray(selectedValue)
         ? selectedValue.length > 0
-        : Boolean(selectedValue),
+        : Boolean(selectedValue)
     );
   };
 
@@ -64,7 +64,7 @@ export const Quiz = () => {
       if (lastQuestionId !== undefined) {
         const answer = answers[lastQuestionId];
         setIsSelectionMade(
-          Array.isArray(answer) ? answer.length > 0 : Boolean(answer),
+          Array.isArray(answer) ? answer.length > 0 : Boolean(answer)
         );
       }
     } else if (currentQuestionIndex > 0) {
@@ -153,7 +153,7 @@ export const Quiz = () => {
           <div className={styles.finalActionArea}>
             <h2 className={styles.finalActionTitle}>回答を確認してください</h2>
             <div className={styles.summaryAnswers}>
-              <ScrollArea.Autosize mah="55vh" scrollbarSize={8} type="auto">
+              <ScrollArea.Autosize mah="50vh" scrollbarSize={8} type="auto">
                 <div className={styles.summaryContent}>
                   {allQuestions.map((q) => {
                     const answer = answers[q.id];
@@ -195,4 +195,4 @@ export const Quiz = () => {
       </div>
     </div>
   );
-};
+}

@@ -9,12 +9,12 @@ interface RadioCardProps {
   allowMultiple?: boolean;
 }
 
-export const RadioCard: React.FC<RadioCardProps> = ({
+export function RadioCard({
   options,
   onOptionChange,
   selectedValue,
   allowMultiple = false,
-}) => {
+}: RadioCardProps) {
   const [internalSingleSelection, setInternalSingleSelection] = useState<
     string | null
   >(null);
@@ -25,12 +25,12 @@ export const RadioCard: React.FC<RadioCardProps> = ({
   useEffect(() => {
     if (allowMultiple) {
       setInternalMultiSelections(
-        Array.isArray(selectedValue) ? selectedValue : [],
+        Array.isArray(selectedValue) ? selectedValue : []
       );
       setInternalSingleSelection(null);
     } else {
       setInternalSingleSelection(
-        typeof selectedValue === "string" ? selectedValue : null,
+        typeof selectedValue === "string" ? selectedValue : null
       );
       setInternalMultiSelections([]);
     }
@@ -53,8 +53,6 @@ export const RadioCard: React.FC<RadioCardProps> = ({
     }
   };
 
-  const scrollbarThickness = 8;
-
   const containerSx = {
     flex: 1,
     display: "flex",
@@ -68,7 +66,7 @@ export const RadioCard: React.FC<RadioCardProps> = ({
         <ScrollArea.Autosize
           type="always"
           className={styles.scrollableOptionsArea}
-          scrollbarSize={scrollbarThickness}
+          scrollbarSize={8}
           style={{ flex: 1, minHeight: 0 }}
         >
           <Stack>
@@ -76,9 +74,7 @@ export const RadioCard: React.FC<RadioCardProps> = ({
               <div
                 key={option}
                 className={`${styles.optionCard} ${
-                  internalMultiSelections.includes(option)
-                    ? styles.selected
-                    : ""
+                  internalMultiSelections.includes(option) ? styles.selected : ""
                 }`}
               >
                 <Checkbox
@@ -106,20 +102,18 @@ export const RadioCard: React.FC<RadioCardProps> = ({
     );
   }
 
-  // ★★★ ここからが単一選択（ラジオボタン）の修正箇所です ★★★
   return (
     <div className={styles.mantineOptionsContainer} style={containerSx}>
-      {/* 最初に ScrollArea.Autosize を配置します */}
       <ScrollArea.Autosize
         type="always"
         className={styles.scrollableOptionsArea}
-        scrollbarSize={scrollbarThickness}
+        scrollbarSize={8}
         style={{ flex: 1, minHeight: 0 }}
       >
-        {/* その内側に Radio.Group を配置します */}
         <Radio.Group
           value={internalSingleSelection}
           onChange={handleRadioChange}
+          style={{ display: "flex", flexDirection: "column", flex: 1 }}
         >
           <Stack>
             {options.map((option) => (
@@ -149,4 +143,4 @@ export const RadioCard: React.FC<RadioCardProps> = ({
       </ScrollArea.Autosize>
     </div>
   );
-};
+}
