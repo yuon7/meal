@@ -43,14 +43,18 @@ export async function waitingRoom({ roomId }: { roomId: string }) {
     }
 
     await prisma.roomParticipant.create({
-      data: {
-        roomId,
-        userId: user.id,
-        isHost: false,
-      },
+      data: { roomId, userId: user.id, isHost: false },
     });
 
-    return { success: true, room: roomWithParticipant };
+    const updatedRoom = await prisma.room.findUnique({
+      where: { id: roomId },
+      include: { RoomParticipant: true },
+    });
+    if (!updatedRoom) {
+      return { success: false, error: "ルーム情報の取得に失敗しました。" };
+    }
+
+    return { success: true, room: updatedRoom };
   } catch (error) {
     console.error("Waiting room error:", error);
     return {

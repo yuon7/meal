@@ -70,7 +70,6 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
 
       return locationName;
     } catch (error) {
-      console.error("Reverse geocoding error:", error);
       throw error;
     }
   };
@@ -140,8 +139,6 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
       };
 
       const result = await createRoom(roomData);
-
-      console.log("Room creation result:", result);
 
       if (result.success && result.roomId) {
         handleClose();
