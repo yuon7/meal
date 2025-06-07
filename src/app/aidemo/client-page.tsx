@@ -12,7 +12,7 @@ interface ClientPageProp {
   user: User;
 }
 
-export default function ClientPage({ user }: ClientPageProps) {
+export default function ClientPage({ user }: ClientPageProp) {
   const [showMockData, setShowMockData] = useState(false);
 
   const handleShowMock = () => {
