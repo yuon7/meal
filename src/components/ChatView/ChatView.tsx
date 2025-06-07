@@ -1,23 +1,49 @@
 "use client";
 
 import { User } from "@supabase/supabase-js";
-import { useChatMessages } from "@/features/Chat/hooks/useChatMessages";
-import { useChatRooms } from "@/features/Chat/hooks/useChatRooms";
-import { useRoomParticipants } from "@/features/Chat/hooks/useRoomParticipants";
+import { FormEvent, Dispatch, SetStateAction } from "react";
 import styles from "./ChatView.module.css";
+
+interface Room {
+  id: string;
+  area: string;
+  mealType: string;
+}
+
+interface Message {
+  id: string;
+  text: string;
+  userId: string;
+  createdAt: string;
+}
+
+interface Participant {
+  id: string;
+  userId: string;
+  username: string;
+}
 
 interface ChatViewProps {
   selectedRoomId: string | null;
+  selectedRoom?: Room;
   user: User;
+  messages: Message[];
+  newMessage: string;
+  setNewMessage: Dispatch<SetStateAction<string>>;
+  handleSendMessage: (e: FormEvent<HTMLFormElement>) => Promise<void>;
+  participants: Participant[];
 }
 
-export default function ChatView({ selectedRoomId, user }: ChatViewProps) {
-  const { rooms } = useChatRooms();
-  const { messages, newMessage, setNewMessage, handleSendMessage } =
-    useChatMessages(selectedRoomId, user);
-  const { participants } = useRoomParticipants(selectedRoomId, user);
-
-  const selectedRoom = rooms.find((room) => room.id === selectedRoomId);
+export default function ChatView({
+  selectedRoomId,
+  selectedRoom,
+  user,
+  messages,
+  newMessage,
+  setNewMessage,
+  handleSendMessage,
+  participants,
+}: ChatViewProps) {
 
   if (!selectedRoomId) {
     return (
@@ -77,7 +103,12 @@ export default function ChatView({ selectedRoomId, user }: ChatViewProps) {
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
-                handleSendMessage(e);
+                const form = e.currentTarget.closest('form');
+                if (form) {
+                  const formEvent = new Event('submit', { bubbles: true, cancelable: true });
+                  Object.defineProperty(formEvent, 'currentTarget', { value: form });
+                  handleSendMessage(formEvent as any);
+                }
               }
             }}
           />

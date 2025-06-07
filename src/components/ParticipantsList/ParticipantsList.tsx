@@ -1,20 +1,26 @@
 "use client";
 
 import { User } from "@supabase/supabase-js";
-import { useRoomParticipants } from "@/features/Chat/hooks/useRoomParticipants";
 import styles from "./ParticipantsList.module.css";
+
+interface Participant {
+  id: string;
+  userId: string;
+  username: string;
+  isHost?: boolean;
+}
 
 interface ParticipantsListProps {
   selectedRoomId: string | null;
   user: User;
+  participants: Participant[];
 }
 
 export default function ParticipantsList({
   selectedRoomId,
   user,
+  participants,
 }: ParticipantsListProps) {
-  const { participants } = useRoomParticipants(selectedRoomId, user);
-
   const getInitials = (username: string) => {
     return username
       .split(" ")
@@ -28,9 +34,7 @@ export default function ParticipantsList({
     return (
       <div className={styles.container}>
         <h2 className={styles.title}>参加者一覧</h2>
-        <div className={styles.emptyState}>
-          ルームが選択されていません
-        </div>
+        <div className={styles.emptyState}>ルームが選択されていません</div>
       </div>
     );
   }
