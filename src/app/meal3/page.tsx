@@ -14,20 +14,21 @@ const Page = () => {
   const [showSummaryPage, setShowSummaryPage] = useState<boolean>(false);
   const [isSelectionMade, setIsSelectionMade] = useState<boolean>(false);
 
-  const totalSteps: number = allQuestions.length + 1;
+  const totalSteps: number = allQuestions.length;
+
   useEffect(() => {
     const currentQuestion = allQuestions[currentQuestionIndex];
-    const currentQuestionId = currentQuestion?.id;
+    if (!currentQuestion) return;
+
+    const currentQuestionId = currentQuestion.id;
     const answer = answers[currentQuestionId];
 
-    if (currentQuestion) {
-      if (currentQuestion.required === false) {
-        setIsSelectionMade(true);
-      } else {
-        setIsSelectionMade(
-          Array.isArray(answer) ? answer.length > 0 : Boolean(answer),
-        );
-      }
+    if (currentQuestion.required === false) {
+      setIsSelectionMade(true);
+    } else {
+      setIsSelectionMade(
+        Array.isArray(answer) ? answer.length > 0 : Boolean(answer)
+      );
     }
   }, [currentQuestionIndex, answers]);
 
@@ -44,7 +45,7 @@ const Page = () => {
     setIsSelectionMade(
       Array.isArray(selectedValue)
         ? selectedValue.length > 0
-        : Boolean(selectedValue),
+        : Boolean(selectedValue)
     );
   };
 
@@ -61,15 +62,13 @@ const Page = () => {
       setShowSummaryPage(false);
       const lastQuestionId = allQuestions[allQuestions.length - 1]?.id;
       if (lastQuestionId !== undefined) {
-        setIsSelectionMade(Boolean(answers[lastQuestionId]));
+        const answer = answers[lastQuestionId];
+        setIsSelectionMade(
+          Array.isArray(answer) ? answer.length > 0 : Boolean(answer)
+        );
       }
     } else if (currentQuestionIndex > 0) {
-      const prevQuestionIndex = currentQuestionIndex - 1;
-      setCurrentQuestionIndex(prevQuestionIndex);
-      const prevQuestionId = allQuestions[prevQuestionIndex]?.id;
-      if (prevQuestionId !== undefined) {
-        setIsSelectionMade(Boolean(answers[prevQuestionId]));
-      }
+      setCurrentQuestionIndex(currentQuestionIndex - 1);
     }
   };
 
@@ -91,99 +90,110 @@ const Page = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.progress}>
-        <ProgressBar
-          currentStep={showSummaryPage ? totalSteps : currentQuestionIndex + 1}
-          totalSteps={totalSteps}
-        />
-      </div>
-      {!showSummaryPage && currentQuestion && (
-        <div className={styles.currentQuestionInputArea}>
-          <div className={styles.currentQuestionDisplay}>
-            <BlockQuote questionText={currentQuestion.text} />
-          </div>
+      <div className={styles.mainPanel}>
+        <div className={styles.progress}>
+          <ProgressBar
+            currentStep={
+              showSummaryPage ? totalSteps : currentQuestionIndex
+            }
+            totalSteps={totalSteps}
+          />
+        </div>
 
-          <div className={styles.area}>
-            <RadioCard
-              options={currentQuestion.options}
-              onOptionChange={handleOptionChange}
-              selectedValue={answers[currentQuestion.id] || null}
-              allowMultiple={currentQuestion.allowMultiple}
-            />
-          </div>
+        {!showSummaryPage && currentQuestion && (
+          <div className={styles.currentQuestionInputArea}>
+            <div className={styles.currentQuestionDisplay}>
+              <BlockQuote questionText={currentQuestion.text} />
+            </div>
 
-          <div className={styles.questionNavButtons}>
-            {currentQuestionIndex > 0 && (
+            <div className={styles.area}>
+              <RadioCard
+                options={currentQuestion.options}
+                onOptionChange={handleOptionChange}
+                selectedValue={answers[currentQuestion.id] || null}
+                allowMultiple={currentQuestion.allowMultiple}
+              />
+            </div>
+
+            <div className={styles.questionNavButtons}>
+              {currentQuestionIndex > 0 && (
+                <Button
+                  onClick={handleGoBack}
+                  className={styles.backButton}
+                  variant="default"
+                  size="md"
+                >
+                  戻る
+                </Button>
+              )}
               <Button
-                onClick={handleGoBack}
-                className={styles.backButton}
-                variant="default"
+                onClick={proceedToNext}
                 size="md"
+                disabled={!isSelectionMade}
+                className={styles.nextButton}
+                styles={{
+                  root: {
+                    backgroundColor: "#ff6b95",
+                    "&:hover": {
+                      backgroundColor: "#ff497a",
+                    },
+                    "&:disabled": {
+                      backgroundColor: "#f8c8d0",
+                      color: "#aaa",
+                    },
+                  },
+                }}
               >
-                戻る
+                次へ
               </Button>
-            )}
-            <Button
-              onClick={proceedToNext}
-              size="md"
-              disabled={!isSelectionMade}
-              className={styles.nextButton}
-              styles={{
-                root: {
-                  backgroundColor: "#ff6b95",
-                  "&:hover": {
-                    backgroundColor: "#ff497a",
-                  },
-                  "&:disabled": {
-                    backgroundColor: "#f8c8d0",
-                    color: "#aaa",
-                  },
-                },
-              }}
-            >
-              次へ
-            </Button>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {showSummaryPage && (
-        <div className={styles.finalActionArea}>
-          <h2 className={styles.finalActionTitle}>回答を確認してください</h2>
-          <div className={styles.summaryAnswers}>
-            <ScrollArea.Autosize mah="45vh" scrollbarSize={8} type="auto">
-              <div className={styles.summaryContent}>
-                {allQuestions.map((q) => {
-                  const answer = answers[q.id];
-                  const hasAnswer = Array.isArray(answer)
-                    ? answer.length > 0
-                    : Boolean(answer);
+        {showSummaryPage && (
+          <div className={styles.finalActionArea}>
+            <h2 className={styles.finalActionTitle}>回答を確認してください</h2>
+            <div className={styles.summaryAnswers}>
+              <ScrollArea.Autosize mah="55vh" scrollbarSize={8} type="auto">
+                <div className={styles.summaryContent}>
+                  {allQuestions.map((q) => {
+                    const answer = answers[q.id];
+                    const hasAnswer = Array.isArray(answer)
+                      ? answer.length > 0
+                      : Boolean(answer);
 
-                  return hasAnswer ? (
-                    <div key={q.id} className={styles.answerBlock}>
-                      <strong>{q.text}</strong>
-                      <div className={styles.answerContent}>
-                        {Array.isArray(answer) ? answer.join(", ") : answer}
+                    return hasAnswer ? (
+                      <div key={q.id} className={styles.answerBlock}>
+                        <strong>{q.text}</strong>
+                        <div className={styles.answerContent}>
+                          {Array.isArray(answer) ? answer.join(", ") : answer}
+                        </div>
                       </div>
-                    </div>
-                  ) : null;
-                })}
-              </div>
-            </ScrollArea.Autosize>
+                    ) : null;
+                  })}
+                </div>
+              </ScrollArea.Autosize>
+            </div>
+            <div className={styles.finalActionButtons}>
+              {/* <Button size="lg" onClick={handleGoBack} variant="default">
+                修正する
+              </Button> */}
+              <Button
+                size="lg"
+                onClick={handleComplete}
+                className={styles.completeButton}
+              >
+                お店を探す
+              </Button>
+            </div>
+            <div className={styles.resetButtonContainer}>
+              <button onClick={handleReset} className={styles.resetButton}>
+                最初からやり直す
+              </button>
+            </div>
           </div>
-          <div className={styles.finalActionButtons}>
-            <button onClick={handleComplete} className={styles.completeButton}>
-              お店を探す
-            </button>
-          </div>
-
-          <div className={styles.resetButtonContainer}>
-            <button onClick={handleReset} className={styles.resetButton}>
-              最初からやり直す
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
