@@ -25,6 +25,14 @@ type CreateRoomProps = {
   close: () => void;
 };
 
+type CreateRoomError =
+  | string
+  | {
+      message: string;
+      link: string;
+      linkText: string;
+    };
+
 export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
   const router = useRouter();
   const [numPeople, setNumPeople] = useState<number | undefined>(2);
@@ -38,14 +46,14 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
     return `${yyyy}-${mm}-${dd}`;
   });
   const [isGettingLocation, setIsGettingLocation] = useState(false);
-  const [locationError, setLocationError] = useState("");
   const [isCreating, setIsCreating] = useState(false);
-  const [createError, setCreateError] = useState("");
+  const [locationError, setLocationError] = useState<string>("");
+  const [createError, setCreateError] = useState<CreateRoomError>("");
 
   const reverseGeocode = async (lat: number, lng: number): Promise<string> => {
     try {
       const response = await fetch(
-        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ja&addressdetails=1`,
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=ja&addressdetails=1`
       );
       const data = await response.json();
 
@@ -114,7 +122,7 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
         enableHighAccuracy: true,
         timeout: 10000,
         maximumAge: 300000,
-      },
+      }
     );
   };
 
@@ -218,7 +226,6 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
               )}
             </ActionIcon>
           </Group>
-
           {locationError && (
             <Alert icon={<IconAlertCircle size={16} />} color="red" mt="xs">
               {locationError}
@@ -249,7 +256,18 @@ export default function CreateRoomModal({ opened, close }: CreateRoomProps) {
 
         {createError && (
           <Alert icon={<IconAlertCircle size={16} />} color="red">
-            {createError}
+            {typeof createError === "object" && createError.link ? (
+              <>
+                <a href={createError.link} style={{ color: "#228be6" }}>
+                  {createError.linkText ?? "ログイン"}
+                </a>
+                {createError.message}
+              </>
+            ) : typeof createError === "object" ? (
+              createError.message
+            ) : (
+              createError
+            )}
           </Alert>
         )}
 

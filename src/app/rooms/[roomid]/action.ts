@@ -18,7 +18,14 @@ export async function waitingRoom({ roomId }: { roomId: string }) {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      throw new Error("認証が必要です");
+      return {
+        success: false,
+        error: {
+          message: "が必要です",
+          linkText: "ログイン",
+          link: "/auth/login",
+        },
+      };
     }
 
     const roomWithParticipant = await prisma.room.findUnique({
@@ -26,7 +33,7 @@ export async function waitingRoom({ roomId }: { roomId: string }) {
       include: { RoomParticipant: true },
     });
     if (!roomWithParticipant) {
-      return { success: false, error: "ルームが見つかりません。" };
+      return { success: false, error: { message: "ルームが見つかりません。" } };
     }
     if (
       roomWithParticipant.RoomParticipant.some(
@@ -39,7 +46,7 @@ export async function waitingRoom({ roomId }: { roomId: string }) {
     if (
       roomWithParticipant.RoomParticipant.length >= roomWithParticipant.maxUser
     ) {
-      return { success: false, error: "ルームが満員です。" };
+      return { success: false, error: { message: "ルームが満員です。" } };
     }
 
     await prisma.roomParticipant.create({
@@ -51,7 +58,10 @@ export async function waitingRoom({ roomId }: { roomId: string }) {
       include: { RoomParticipant: true },
     });
     if (!updatedRoom) {
-      return { success: false, error: "ルーム情報の取得に失敗しました。" };
+      return {
+        success: false,
+        error: { message: "ルーム情報の取得に失敗しました。" },
+      };
     }
 
     return { success: true, room: updatedRoom };
@@ -59,8 +69,12 @@ export async function waitingRoom({ roomId }: { roomId: string }) {
     console.error("Waiting room error:", error);
     return {
       success: false,
-      error:
-        error instanceof Error ? error.message : "ルームへの参加に失敗しました",
+      error: {
+        message:
+          error instanceof Error
+            ? error.message
+            : "ルームへの参加に失敗しました",
+      },
     };
   }
 }
