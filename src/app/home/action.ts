@@ -15,7 +15,7 @@ export interface CreateRoomData {
 
 export async function createRoom(data: CreateRoomData) {
   try {
-    const supabase = await createClient()
+    const supabase = await createClient();
 
     const {
       data: { user },
@@ -23,7 +23,14 @@ export async function createRoom(data: CreateRoomData) {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      throw new Error("認証が必要です");
+      return {
+        success: false,
+        error: {
+          message: "が必要です",
+          linkText: "ログイン",
+          link: "/auth/login",
+        },
+      };
     }
 
     const room = await prisma.room.create({

@@ -15,7 +15,16 @@ export default async function RoomPage({
   const result = await waitingRoom({ roomId });
 
   if (!result.success) {
-    return <p>{result.error ?? "Invalid room ID"}</p>;
+    const error = result.error;
+    if (error?.link) {
+      return (
+        <p>
+          <a href={error.link}>{error.linkText ?? "ログイン"}</a>
+          {error.message}
+        </p>
+      );
+    }
+    return <p>{error?.message ?? "Invalid room ID"}</p>;
   }
 
   if (!result.room) {
