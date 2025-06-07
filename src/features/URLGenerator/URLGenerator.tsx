@@ -1,15 +1,24 @@
 "use client";
 
+import makeTabelogQuery from "@/lib/makeTabelogQuery/makeTabelogQuery";
 import { useState } from "react";
 
 type GenerateTabelogURLResponse = {
   tabelogURL: string;
 };
 
+const demoString: string[][] = [
+  ["デート"],
+  ["おしゃれな空間"],
+  ["景色が奇麗"],
+  ["5,000円"],
+];
+
 export default function URLGenerator() {
   const [url, setUrl] = useState<string>("");
   const [lat, setLat] = useState<number>(35.774601);
   const [lng, setLng] = useState<number>(139.707837);
+  const [endUrl, setEndUrl] = useState<string>("");
 
   const generateUrl = async (latitude: number, longitude: number) => {
     try {
@@ -33,6 +42,10 @@ export default function URLGenerator() {
       console.error(err);
       setUrl("");
     }
+  };
+  const handleMakeURL = (params: string[][]) => {
+    const queryParams = makeTabelogQuery(params);
+    setEndUrl(`${url}${queryParams}`);
   };
   return (
     <div style={{ padding: "1rem" }}>
@@ -68,11 +81,18 @@ export default function URLGenerator() {
       </button>
 
       {url && (
-        <div style={{ marginTop: "1rem" }}>
-          <strong>生成されたURL：</strong>
-          <br />
-          <a href={url} target="_blank" rel="noopener noreferrer">
-            {url}
+        <div>
+          <div style={{ marginTop: "1rem" }}>
+            <strong>生成されたURL：</strong>
+            <br />
+            <a href={url} target="_blank" rel="noopener noreferrer">
+              {url}
+            </a>
+          </div>
+          <div>詳しいリンクを作成</div>
+          <button onClick={() => handleMakeURL(demoString)}>作る</button>
+          <a href={endUrl} target="_blank" rel="noopener noreferrer">
+            {endUrl}
           </a>
         </div>
       )}
