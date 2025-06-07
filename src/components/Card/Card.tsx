@@ -19,6 +19,7 @@ import {
   useMantineTheme,
 } from "@mantine/core";
 import classes from "./Card.module.css";
+import React from "react";
 
 const mockdata = [
   { title: "Credit cards", icon: IconCreditCard, color: "violet" },

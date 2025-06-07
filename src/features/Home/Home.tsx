@@ -1,25 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
-import { useDisclosure } from "@mantine/hooks";
 import {
   Container,
-  Stack,
-  Title,
+  Card,
+  Avatar,
   Text,
   Group,
-  ThemeIcon,
+  Stack,
+  Grid,
+  Box,
   SimpleGrid,
 } from "@mantine/core";
-import { IconUser, IconUsers, IconChefHat } from "@tabler/icons-react";
-import styles from "./Home.module.css";
-import MenuCard from "../../components/MenuCard/MenuCard";
-import CreateRoomModal from "../../components/CreateRoomModal/CreateRoomModal";
+import {
+  IconUser,
+  IconUsers,
+  IconStar,
+  IconToolsKitchen2,
+  IconBuildingStore,
+} from "@tabler/icons-react";
+import classes from "./Home.module.css";
+import React, { useState } from "react";
+import MenuCard from "@/components/MenuCard/MenuCard";
+import CreateRoomModal from "@/components/CreateRoomModal/CreateRoomModal";
+import { useDisclosure } from "@mantine/hooks";
+import { useRouter } from "next/navigation";
 
-export default function Home() {
+export function HomeContent() {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
-
+  const router = useRouter();
   const menuOptions = [
     {
       id: "solo",
@@ -43,37 +52,45 @@ export default function Home() {
 
   const handleCardClick = (optionId: string) => {
     if (optionId === "solo") {
-      //TODO - mealに進行？？
+      router.push("/meal3");
     } else {
       open();
     }
   };
-
   return (
-    <div className={styles.container}>
-      <div className={styles.wrapper}>
-        <Container size="sm" className={styles.content}>
-          <Stack align="center" gap="lg" className={styles.header}>
-            <Group justify="center" className={styles.headerIconGroup}>
-              <ThemeIcon
-                size={50}
-                radius="xl"
-                className={styles.logoIcon}
-                gradient={{ from: "#ffd93d", to: "#ff8f3d", deg: 135 }}
-                variant="gradient"
-              >
-                <IconChefHat size={28} color="white" />
-              </ThemeIcon>
-            </Group>
-            <Title order={1} className={styles.title}>
-              AppName
-            </Title>
-            <Text className={styles.subtitle}>
-              今日のお店を一緒に決めよう！
+    <div className={classes.container}>
+      <Container size={800} className={classes.content}>
+        <Stack gap="xl">
+          {/* Hero Section */}
+          <Box ta="center" className={classes.hero}>
+            <div className={classes.heroIcon}>
+              <IconBuildingStore size={40} color="white" />
+            </div>
+            <Text size="2rem" fw={800} c="white" mt="md" pb={12}>
+              Qrate
             </Text>
-          </Stack>
-
-          <SimpleGrid cols={1} spacing="md" className={styles.menuGrid}>
+            <Text size="lg" c="white" className={classes.heroSubtext}>
+              行ってみたいお店を一緒に決めよう！
+            </Text>
+          </Box>
+          {/* Profile Card */}
+          <Card className={classes.profileCard} shadow="lg" radius="md">
+            <Group>
+              <Avatar size="lg" className={classes.avatar}>
+                <IconUser size={24} />
+              </Avatar>
+              <Box style={{ flex: 1 }}>
+                <Text fw={600} c="dark">
+                  田中 太郎さん
+                </Text>
+                <Text size="sm" c="dimmed">
+                  今日も美味しいお店を見つけましょう！
+                </Text>
+              </Box>
+              <Box ta="right"></Box>
+            </Group>
+          </Card>
+          <SimpleGrid cols={1} spacing="md" className={classes.menuGrid}>
             {menuOptions.map((option) => (
               <MenuCard
                 key={option.id}
@@ -91,8 +108,68 @@ export default function Home() {
               />
             ))}
           </SimpleGrid>
-        </Container>
-      </div>
+
+          {/* Quick Actions */}
+          <Grid>
+            <Grid.Col span={6}>
+              <Card className={classes.quickActionCard} shadow="md" radius="lg">
+                <Stack align="center" gap="xs">
+                  <div className={classes.quickActionIconYellow}>
+                    <IconStar size={20} />
+                  </div>
+                  <Text fw={500} size="sm" c="dark">
+                    お気に入り
+                  </Text>
+                  <Text size="xs" c="dimmed">
+                    保存したお店
+                  </Text>
+                </Stack>
+              </Card>
+            </Grid.Col>
+            <Grid.Col span={6}>
+              <Card className={classes.quickActionCard} shadow="md" radius="lg">
+                <Stack align="center" gap="xs">
+                  <div className={classes.quickActionIconGreen}>
+                    <IconToolsKitchen2 size={20} />
+                  </div>
+                  <Text fw={500} size="sm" c="dark">
+                    履歴
+                  </Text>
+                  <Text size="xs" c="dimmed">
+                    過去の選択
+                  </Text>
+                </Stack>
+              </Card>
+            </Grid.Col>
+          </Grid>
+          {/* Recent Activity */}
+          <Card className={classes.activityCard} shadow="md" radius="md">
+            <Text fw={600} c="dark" mb="md">
+              最近の活動
+            </Text>
+            <Stack gap="sm">
+              <Group gap="sm">
+                <div className={classes.activityDotGreen}></div>
+                <Text size="sm" c="dimmed" style={{ flex: 1 }}>
+                  「イタリアン・ビストロ」を訪問しました
+                </Text>
+                <Text size="xs" c="dimmed">
+                  2時間前
+                </Text>
+              </Group>
+              <Group gap="sm">
+                <div className={classes.activityDotBlue}></div>
+                <Text size="sm" c="dimmed" style={{ flex: 1 }}>
+                  友達とルーム「今夜の夕食」を作成
+                </Text>
+                <Text size="xs" c="dimmed">
+                  1日前
+                </Text>
+              </Group>
+            </Stack>
+          </Card>
+        </Stack>
+      </Container>
       <CreateRoomModal opened={opened} close={close} />
     </div>
   );

@@ -13,6 +13,7 @@ import {
 } from "@mantine/core";
 import classes from "./ForgotPassword.module.css";
 import { forgotPassword } from "@/app/auth/password/form/action";
+import React from "react";
 
 type Props = {
   readonly searchParams: { error?: string };
