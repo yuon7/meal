@@ -12,6 +12,7 @@ import {
 } from "@mantine/core";
 import Link from "next/link";
 import classes from "./page.module.css";
+import React from "react";
 
 type Props = {
   searchParams: { email: string };
@@ -35,18 +36,14 @@ export default function ConfirmSignup({ searchParams }: Props) {
               </Text>
             </Stack>
             <Group justify="space-between" mt="lg" className={classes.controls}>
-              <Anchor
-                c="dimmed"
-                size="sm"
-                href="/auth/login"
-                className={classes.control}
-                component={Link}
-              >
-                <Center inline>
-                  <IconArrowLeft size={12} stroke={1.5} />
-                  <Box ml={5}>ログインページに戻る</Box>
-                </Center>
-              </Anchor>
+              <Link href="/auth/login" passHref legacyBehavior>
+                <Anchor c="dimmed" size="sm" className={classes.control}>
+                  <Center inline>
+                    <IconArrowLeft size={12} stroke={1.5} />
+                    <Box ml={5}>ログインページに戻る</Box>
+                  </Center>
+                </Anchor>
+              </Link>
             </Group>
           </Paper>
         </form>
