@@ -89,16 +89,13 @@ export default function QuizPage() {
   };
 
   const handleComplete = async () => {
-    // const answersParam = encodeURIComponent(JSON.stringify(answers));
     const roomObj = JSON.parse(encoded);
     const area = roomObj.area;
     const areaLatLng = await geoConverter(area);
     if (areaLatLng) {
-      const lat = areaLatLng.latitude;
-      const lng = areaLatLng.longitude;
-      const latNum = parseFloat(lat);
-      const lngNum = parseFloat(lng);
-      const returnTabelogUrl = await buildTabelogUrl(latNum, lngNum);
+      const lat = parseFloat(areaLatLng.latitude);
+      const lng = parseFloat(areaLatLng.longitude);
+      const returnTabelogUrl = await buildTabelogUrl(lat, lng);
       console.log("食べログURL:", returnTabelogUrl);
     }
     // 食べログ検索クエリを発行したい:
