@@ -2,8 +2,7 @@
 
 import { mastra } from "../../../mastra";
 
-export async function getRecommendRestaurantInfo(formData: FormData) {
-  const tabelogURL = formData.get("tabelogURL") as string;
+export async function getRecommendRestaurantInfo(tabelogURL: string) {
   const workflow = mastra.getWorkflow("restaurantRecommendationWorkflow");
 
   const run = await workflow.createRun();
