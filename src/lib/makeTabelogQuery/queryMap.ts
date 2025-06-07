@@ -1,14 +1,14 @@
 export const QUERY_MAP: Record<string, string> = {
   // 料理のジャンル
-  和食: "Cat=RC&LstCat=RC01&",
-  洋食: "Cat=RC&LstCat=RC02&",
-  中華: "Cat=RC&LstCat=RC03&",
-  アジア・エスニック: "Cat=RC&LstCat=RC04&",
-  居酒屋: "Cat=RC&LstCat=RC21&LstCatD=RC2101&",
-  ダイニングバー: "Cat=RC&LstCat=RC21&LstCatD=RC2102&",
-  焼肉・ホルモン: "Cat=RC&LstCat=RC13&",
-  ラーメン: "Cat=MC&LstCat=MC01&",
-  スイーツ: "Cat=SC&LstCat=SC02&",
+  和食: "LstCat=RC01&",
+  洋食: "LstCat=RC02&",
+  中華: "LstCat=RC03&",
+  アジア・エスニック: "LstCat=RC04&",
+  居酒屋: "LstCat=RC21&LstCatD=RC2101&",
+  ダイニングバー: "LstCat=RC21&LstCatD=RC2102&",
+  焼肉・ホルモン: "LstCat=RC13&",
+  ラーメン: "LstCat=MC01&",
+  スイーツ: "LstCat=SC02&",
 
   //利用目的
   知人・友人と: "LstSitu=1&",

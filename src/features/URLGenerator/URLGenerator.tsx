@@ -8,9 +8,8 @@ type GenerateTabelogURLResponse = {
 };
 
 const demoString: string[][] = [
-  ["デート"],
-  ["おしゃれな空間"],
-  ["景色が奇麗"],
+  ["和食"],
+  ["おしゃれな空間", "落ち着いた空間"],
   ["5,000円"],
 ];
 
