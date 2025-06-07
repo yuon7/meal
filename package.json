@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run dev:next & npm run dev:mastra",
+    "dev": "npm run dev:next & npm run dev:hcm",
     "dev:next": "next dev",
     "dev:mastra": "mastra dev --dir mastra",
     "build:mastra": "mastra build --dir mastra",
@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai": "^1.3.22",
+    "@geolonia/open-reverse-geocoder": "^0.1.0",
     "@mantine/core": "^7.17.0",
     "@mantine/form": "^8.0.2",
     "@mantine/hooks": "^7.17.0",
@@ -64,7 +65,7 @@
     "jiti": "^2.4.2",
     "npm": "^11.2.0",
     "prettier": "3.5.3",
-    "prisma": "^6.5.0",
+    "prisma": "^6.9.0",
     "stylelint": "^15.11.0",
     "stylelint-config-standard": "^31.0.0",
     "typescript": "^5.8.2"

@@ -90,7 +90,7 @@ export default function Home() {
 
               <Button
                 component={Link}
-                href="/todo"
+                href="/home"
                 variant="gradient"
                 gradient={{ deg: 133, from: "blue", to: "cyan" }}
                 size="lg"

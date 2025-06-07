@@ -1,0 +1,13 @@
+.container {
+  margin-top: 16px;
+}
+
+.avatarWrapper {
+  position: relative;
+}
+
+.hostBadge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+}

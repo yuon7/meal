@@ -1,0 +1,23 @@
+.rootContainer {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+.shareWrapper {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+
+.alertMargin {
+  margin-bottom: 12px;
+}
+
+.roomIdText {
+  text-align: center;
+  color: #666666;
+  font-size: 0.75rem;
+  margin-top: 8px;
+}
