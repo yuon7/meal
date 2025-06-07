@@ -8,9 +8,9 @@ import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
 import { allQuestions } from "@/data/questions";
 import { Button, ScrollArea } from "@mantine/core";
 
-export default function QuizPage(){
+export default function QuizPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
+  const [answers, setAnswers] = useState<Record<number, string[]>>({});
   const [showSummaryPage, setShowSummaryPage] = useState<boolean>(false);
   const [isSelectionMade, setIsSelectionMade] = useState<boolean>(false);
 
@@ -26,13 +26,11 @@ export default function QuizPage(){
     if (currentQuestion.required === false) {
       setIsSelectionMade(true);
     } else {
-      setIsSelectionMade(
-        Array.isArray(answer) ? answer.length > 0 : Boolean(answer),
-      );
+      setIsSelectionMade(answer ? answer.length > 0 : false);
     }
   }, [currentQuestionIndex, answers]);
 
-  const handleOptionChange = (selectedValue: string | string[]) => {
+  const handleOptionChange = (selectedValue: string[]) => {
     const currentQuestion = allQuestions[currentQuestionIndex];
     if (!currentQuestion) return;
     const questionId = currentQuestion.id;
@@ -42,11 +40,7 @@ export default function QuizPage(){
       [questionId]: selectedValue,
     }));
 
-    setIsSelectionMade(
-      Array.isArray(selectedValue)
-        ? selectedValue.length > 0
-        : Boolean(selectedValue),
-    );
+    setIsSelectionMade(selectedValue.length > 0);
   };
 
   const proceedToNext = () => {
@@ -64,7 +58,7 @@ export default function QuizPage(){
       if (lastQuestionId !== undefined) {
         const answer = answers[lastQuestionId];
         setIsSelectionMade(
-          Array.isArray(answer) ? answer.length > 0 : Boolean(answer),
+          Array.isArray(answer) ? answer.length > 0 : Boolean(answer)
         );
       }
     } else if (currentQuestionIndex > 0) {
@@ -153,7 +147,7 @@ export default function QuizPage(){
           <div className={styles.finalActionArea}>
             <h2 className={styles.finalActionTitle}>回答を確認してください</h2>
             <div className={styles.summaryAnswers}>
-              <ScrollArea.Autosize mah="55vh" scrollbarSize={8} type="auto">
+              <ScrollArea.Autosize mah="50vh" scrollbarSize={8} type="auto">
                 <div className={styles.summaryContent}>
                   {allQuestions.map((q) => {
                     const answer = answers[q.id];
@@ -195,4 +189,4 @@ export default function QuizPage(){
       </div>
     </div>
   );
-};
+}

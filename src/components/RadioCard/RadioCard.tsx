@@ -39,8 +39,6 @@ export function RadioCard({
     }
   };
 
-  const scrollbarThickness = 8;
-
   const containerSx = {
     flex: 1,
     display: "flex",
@@ -54,7 +52,7 @@ export function RadioCard({
         <ScrollArea.Autosize
           type="always"
           className={styles.scrollableOptionsArea}
-          scrollbarSize={scrollbarThickness}
+          scrollbarSize={8}
           style={{ flex: 1, minHeight: 0 }}
         >
           <Stack>
@@ -92,16 +90,16 @@ export function RadioCard({
 
   return (
     <div className={styles.mantineOptionsContainer} style={containerSx}>
-      <Radio.Group
-        value={internalSelections[0] || null}
-        onChange={handleRadioChange}
-        style={{ display: "flex", flexDirection: "column", flex: 1 }}
+      <ScrollArea.Autosize
+        type="always"
+        className={styles.scrollableOptionsArea}
+        scrollbarSize={8}
+        style={{ flex: 1, minHeight: 0 }}
       >
-        <ScrollArea.Autosize
-          type="always"
-          className={styles.scrollableOptionsArea}
-          scrollbarSize={scrollbarThickness}
-          style={{ flex: 1, minHeight: 0 }}
+        <Radio.Group
+          value={internalSelections[0] || null}
+          onChange={handleRadioChange}
+          style={{ display: "flex", flexDirection: "column", flex: 1 }}
         >
           <Stack>
             {options.map((option) => (
@@ -127,8 +125,8 @@ export function RadioCard({
               </div>
             ))}
           </Stack>
-        </ScrollArea.Autosize>
-      </Radio.Group>
+        </Radio.Group>
+      </ScrollArea.Autosize>
     </div>
   );
 }
