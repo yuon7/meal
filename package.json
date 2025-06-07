@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run dev:next & npm run dev:mastra",
+    "dev": "npm run dev:next & npm run dev:hcm",
     "dev:next": "next dev",
     "dev:mastra": "mastra dev --dir mastra",
     "build:mastra": "mastra build --dir mastra",
@@ -32,7 +32,6 @@
     "@mastra/loggers": "^0.10.0",
     "@mastra/memory": "^0.10.1",
     "@next/eslint-plugin-next": "^15.2.1",
-    "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/auth-helpers-react": "^0.5.0",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.50.0",
@@ -43,9 +42,7 @@
     "hono": "^4.7.0",
     "lucide-react": "^0.511.0",
     "mastra": "^0.10.1",
-    "next": "^15.3.3",
-    "puppeteer": "^24.10.0",
-    "puppeteer-core": "^21.5.1",
+    "next": "^14.2.23",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typescript-eslint": "^8.26.1"

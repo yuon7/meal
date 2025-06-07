@@ -10,20 +10,15 @@ export default function URLGenerator() {
   const [url, setUrl] = useState<string>("");
   const [lat, setLat] = useState<number>(35.774601);
   const [lng, setLng] = useState<number>(139.707837);
-  const [keyword, setKeyword] = useState<string>("");
 
-  const generateUrl = async (
-    latitude: number,
-    longitude: number,
-    keyword: string
-  ) => {
+  const generateUrl = async (latitude: number, longitude: number) => {
     try {
       const fetchRes = await fetch("api/generateTabelogURL", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ lat: latitude, lng: longitude, keyword }),
+        body: JSON.stringify({ lat: latitude, lng: longitude }),
       });
 
       if (!fetchRes.ok) {
@@ -65,18 +60,8 @@ export default function URLGenerator() {
           />
         </label>
       </div>
-      <div>
-        <label>キーワード</label>
-        <input
-          type="text"
-          value={keyword}
-          onChange={(e) => setKeyword(e.target.value)}
-          placeholder="駅名など（例: 赤羽駅）"
-        />
-      </div>
-
       <button
-        onClick={() => generateUrl(lat, lng, keyword)}
+        onClick={() => generateUrl(lat, lng)}
         style={{ marginTop: "1rem" }}
       >
         URLを生成する
