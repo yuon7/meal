@@ -1,11 +1,12 @@
 "use client";
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
-import styles from "./page.module.css";
 import { AuthenticationForm } from "@/components/Authentication/AuthencationForm";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { signInWithGitHub } from "../social/github/action";
 import { signInWithGoogle } from "../social/google/action";
 import { signInWithTwitter } from "../social/twitter/action";
-import { signInWithGitHub } from "../social/github/action";
+import styles from "./page.module.css";
+import { Loader } from "@mantine/core";
 
 function LoginContent() {
   const searchParams = useSearchParams();
@@ -33,7 +34,7 @@ function LoginContent() {
 export default function LoginPage() {
   return (
     <div className={styles.container}>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader color="blue" size="xl" />}>
         <LoginContent />
       </Suspense>
     </div>
