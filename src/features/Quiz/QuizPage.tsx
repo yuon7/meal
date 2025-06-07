@@ -7,8 +7,12 @@ import { RadioCard } from "@/components/RadioCard/RadioCard";
 import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
 import { allQuestions } from "@/data/questions";
 import { Button, ScrollArea } from "@mantine/core";
+import { useSearchParams } from "next/navigation";
 
 export default function QuizPage() {
+  const searchParams = useSearchParams();
+  const encoded = searchParams.get("room");
+  if (!encoded) return <p>ルーム情報がありません</p>;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
   const [showSummaryPage, setShowSummaryPage] = useState<boolean>(false);
@@ -73,9 +77,8 @@ export default function QuizPage() {
   };
 
   const handleComplete = () => {
-    // 後のお店検索の際にこちらに処理を実装するために残しています
-    console.log("お店を検索する！");
-    console.log("最終的な回答:", answers);
+    const answersParam = encodeURIComponent(JSON.stringify(answers));
+    // 食べログ検索クエリを発行したい:
   };
 
   const handleReset = () => {
