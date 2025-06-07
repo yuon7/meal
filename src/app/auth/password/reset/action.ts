@@ -1,11 +1,9 @@
 "use server";
 import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
 import { createClient } from "@/utils/supabase/server";
 
 export async function resetPassword(formData: FormData) {
   const supabase = await createClient();
-  const cookieStore = cookies();
 
   const data = {
     newPassword: formData.get("newPassword") as string,
@@ -14,7 +12,7 @@ export async function resetPassword(formData: FormData) {
 
   if (data.newPassword !== data.confirmPassword) {
     redirect(
-      `/auth/password/reset?error=${encodeURIComponent("パスワードが一致しません")}`,
+      `/auth/password/reset?error=${encodeURIComponent("パスワードが一致しません")}`
     );
   }
 
@@ -36,10 +34,6 @@ export async function resetPassword(formData: FormData) {
       errorMessages[error.message] || "パスワードリセットに失敗しました";
     redirect(`/auth/password/reset?error=${encodeURIComponent(message)}`);
   }
-
-  cookieStore.getAll().forEach((cookie) => {
-    cookieStore.delete(cookie.name);
-  });
 
   redirect("/auth/login");
 }
