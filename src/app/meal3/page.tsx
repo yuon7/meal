@@ -1,7 +1,7 @@
-import { Quiz } from "@/features/Quiz/Quiz";
+import QuizPage from "@/features/Quiz/QuizPage";
 
 const Page = () => {
-  return <Quiz />;
+  return <QuizPage />;
 };
 
 export default Page;

@@ -1,16 +1,15 @@
 "use client";
 
-import styles from "./Quiz.module.css";
+import styles from "./QuizPage.module.css";
 import React, { useState, useEffect } from "react";
 import { ProgressBar } from "@/components/Progress/Progress";
 import { RadioCard } from "@/components/RadioCard/RadioCard";
 import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
 import { allQuestions } from "@/data/questions";
 import { Button, ScrollArea } from "@mantine/core";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
-export const Quiz = () => {
-  const router = useRouter();
+export default function QuizPage() {
   const searchParams = useSearchParams();
   const encoded = searchParams.get("room");
   if (!encoded) return <p>ルーム情報がありません</p>;
@@ -157,7 +156,7 @@ export const Quiz = () => {
           <div className={styles.finalActionArea}>
             <h2 className={styles.finalActionTitle}>回答を確認してください</h2>
             <div className={styles.summaryAnswers}>
-              <ScrollArea.Autosize mah="55vh" scrollbarSize={8} type="auto">
+              <ScrollArea.Autosize mah="50vh" scrollbarSize={8} type="auto">
                 <div className={styles.summaryContent}>
                   {allQuestions.map((q) => {
                     const answer = answers[q.id];
@@ -199,4 +198,4 @@ export const Quiz = () => {
       </div>
     </div>
   );
-};
+}
