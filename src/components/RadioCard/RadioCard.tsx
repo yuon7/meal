@@ -25,12 +25,12 @@ export const RadioCard: React.FC<RadioCardProps> = ({
   useEffect(() => {
     if (allowMultiple) {
       setInternalMultiSelections(
-        Array.isArray(selectedValue) ? selectedValue : []
+        Array.isArray(selectedValue) ? selectedValue : [],
       );
       setInternalSingleSelection(null);
     } else {
       setInternalSingleSelection(
-        typeof selectedValue === "string" ? selectedValue : null
+        typeof selectedValue === "string" ? selectedValue : null,
       );
       setInternalMultiSelections([]);
     }

@@ -27,7 +27,7 @@ const Page = () => {
       setIsSelectionMade(true);
     } else {
       setIsSelectionMade(
-        Array.isArray(answer) ? answer.length > 0 : Boolean(answer)
+        Array.isArray(answer) ? answer.length > 0 : Boolean(answer),
       );
     }
   }, [currentQuestionIndex, answers]);
@@ -45,7 +45,7 @@ const Page = () => {
     setIsSelectionMade(
       Array.isArray(selectedValue)
         ? selectedValue.length > 0
-        : Boolean(selectedValue)
+        : Boolean(selectedValue),
     );
   };
 
@@ -64,7 +64,7 @@ const Page = () => {
       if (lastQuestionId !== undefined) {
         const answer = answers[lastQuestionId];
         setIsSelectionMade(
-          Array.isArray(answer) ? answer.length > 0 : Boolean(answer)
+          Array.isArray(answer) ? answer.length > 0 : Boolean(answer),
         );
       }
     } else if (currentQuestionIndex > 0) {
@@ -93,9 +93,7 @@ const Page = () => {
       <div className={styles.mainPanel}>
         <div className={styles.progress}>
           <ProgressBar
-            currentStep={
-              showSummaryPage ? totalSteps : currentQuestionIndex
-            }
+            currentStep={showSummaryPage ? totalSteps : currentQuestionIndex}
             totalSteps={totalSteps}
           />
         </div>
