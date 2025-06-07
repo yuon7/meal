@@ -1,12 +1,14 @@
 "use client";
-import { useSearchParams } from "next/navigation";
-import styles from "./page.module.css";
 import { AuthenticationForm } from "@/components/Authentication/AuthencationForm";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { signInWithGitHub } from "../social/github/action";
 import { signInWithGoogle } from "../social/google/action";
 import { signInWithTwitter } from "../social/twitter/action";
-import { signInWithGitHub } from "../social/github/action";
+import styles from "./page.module.css";
+import { Loader } from "@mantine/core";
 
-export default function LoginPage() {
+function LoginContent() {
   const searchParams = useSearchParams();
   const error = searchParams.get("error") || undefined;
   const handleGoogleLogin = async () => {
@@ -20,13 +22,21 @@ export default function LoginPage() {
   };
 
   return (
+    <AuthenticationForm
+      searchParams={{ error }}
+      handleGoogleLogin={handleGoogleLogin}
+      handleTwitterLogin={handleTwitterLogin}
+      handleGitHubLogin={handleGitHubLogin}
+    />
+  );
+}
+
+export default function LoginPage() {
+  return (
     <div className={styles.container}>
-      <AuthenticationForm
-        searchParams={{ error }}
-        handleGoogleLogin={handleGoogleLogin}
-        handleTwitterLogin={handleTwitterLogin}
-        handleGitHubLogin={handleGitHubLogin}
-      />
+      <Suspense fallback={<Loader color="blue" size="xl" />}>
+        <LoginContent />
+      </Suspense>
     </div>
   );
 }

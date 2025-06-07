@@ -1,132 +1,91 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
-import {
-  Button,
-  Container,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  TextInput,
-  Title,
-} from "@mantine/core";
+import ChatView from "@/components/ChatView/ChatView";
+import ParticipantsList from "@/components/ParticipantsList/ParticipantsList";
+import RestaurantList from "@/components/RestaurantList/RestaurantList";
+import TabNavigation, {
+  TabType,
+} from "@/components/TabNavigation/TabNavigation";
 import { User } from "@supabase/supabase-js";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useChatMessages } from "./hooks/useChatMessages";
+import { useChatRooms } from "./hooks/useChatRooms";
+import { useRoomParticipants } from "./hooks/useRoomParticipants";
 
-interface Message {
-  id: string;
-  text: string;
-  userId: string;
-  created_at: string;
+interface ChatProps {
+  user: User | null;
+  roomId?: string;
 }
 
-export default function Chat({ user }: { user: User | null }) {
+export default function Chat({ user, roomId }: ChatProps) {
   if (!user) {
     return null;
   }
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [newMessage, setNewMessage] = useState("");
-  const supabase = createClient();
 
-  const fetchMessages = useCallback(async () => {
-    const { data } = await supabase
-      .from("Message")
-      .select("*")
-      .order("createdAt", { ascending: true });
-    if (data) {
-      setMessages(data);
-    }
-  }, [supabase]);
+  const [activeTab, setActiveTab] = useState<TabType>("chat");
+  const [selectedRoomId, setSelectedRoomId] = useState<string | null>(
+    roomId || null
+  );
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newMessage.trim()) return;
-
-    if (!user) {
-      return;
-    }
-
-    const { error: insertError } = await supabase.from("Message").insert([
-      {
-        id: crypto.randomUUID(),
-        text: newMessage,
-        userId: user.id,
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString(),
-      },
-    ]);
-
-    if (insertError) {
-      //TODO: mantineのnotificationとかで通知したい
-      console.error("Error sending message:", insertError);
-      return;
-    }
-
-    setNewMessage("");
-  };
+  const { rooms } = useChatRooms();
+  const { messages, newMessage, setNewMessage, handleSendMessage } =
+    useChatMessages(selectedRoomId, user);
+  const { participants } = useRoomParticipants(selectedRoomId, user);
 
   useEffect(() => {
-    fetchMessages();
+    if (roomId) {
+      setSelectedRoomId(roomId);
+    } else if (rooms.length > 0 && !selectedRoomId) {
+      setSelectedRoomId(rooms[0].id);
+    }
+  }, [roomId, rooms, selectedRoomId]);
 
-    const channel = supabase
-      .channel("Message")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "Message",
-        },
-        () => {
-          fetchMessages();
-        },
-      )
-      .subscribe();
+  const selectedRoom = rooms.find((room) => room.id === selectedRoomId);
 
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [fetchMessages, supabase]);
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case "chat":
+        return (
+          <ChatView
+            selectedRoomId={selectedRoomId}
+            selectedRoom={selectedRoom}
+            user={user}
+            messages={messages}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            handleSendMessage={handleSendMessage}
+            participants={participants}
+          />
+        );
+      case "restaurants":
+        return <RestaurantList />;
+      case "participants":
+        return (
+          <ParticipantsList
+            selectedRoomId={selectedRoomId}
+            user={user}
+            participants={participants}
+          />
+        );
+      default:
+        return (
+          <ChatView
+            selectedRoomId={selectedRoomId}
+            selectedRoom={selectedRoom}
+            user={user}
+            messages={messages}
+            newMessage={newMessage}
+            setNewMessage={setNewMessage}
+            handleSendMessage={handleSendMessage}
+            participants={participants}
+          />
+        );
+    }
+  };
 
   return (
-    <Container size="md" py="md">
-      <Stack>
-        <Title order={1} ta="center">
-          Chat Room
-        </Title>
-        <Paper style={{ height: "60vh", overflowY: "auto" }} p="md" withBorder>
-          <Stack gap={16}>
-            {messages.map((message) => (
-              <Paper key={message.id} withBorder p="md" radius="md">
-                <Group justify="space-between" mb={4}>
-                  <Text size="sm" c="dimmed">
-                    {/* 将来的にはユーザーネームを期待する */}
-                    {user?.email || "Anonymous"}
-                  </Text>
-                  <Text size="xs" c="dimmed">
-                    {new Date(message.created_at).toLocaleString()}
-                  </Text>
-                </Group>
-                <Text size="lg">{message.text}</Text>
-              </Paper>
-            ))}
-          </Stack>
-        </Paper>
-        <form onSubmit={handleSendMessage}>
-          <Group gap={8}>
-            <TextInput
-              placeholder="Type your message..."
-              value={newMessage}
-              onChange={(e) => setNewMessage(e.target.value)}
-              style={{ flex: 1 }}
-            />
-            <Button type="submit" variant="filled">
-              送信
-            </Button>
-          </Group>
-        </form>
-      </Stack>
-    </Container>
+    <TabNavigation activeTab={activeTab} onTabChange={setActiveTab}>
+      {renderTabContent()}
+    </TabNavigation>
   );
 }

@@ -2,7 +2,13 @@ import Chat from "@/features/Chat/Chat";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 
-export default async function ChatPage() {
+interface ChatPageProps {
+  params: {
+    roomId: string;
+  };
+}
+
+export default async function ChatPage({ params }: ChatPageProps) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -12,5 +18,5 @@ export default async function ChatPage() {
     redirect("/auth/login");
   }
 
-  return <Chat user={user} />;
+  return <Chat user={user} roomId={params.roomId} />;
 }

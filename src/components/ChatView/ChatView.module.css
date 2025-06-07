@@ -1,0 +1,139 @@
+.container {
+  padding: 16px;
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.title {
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.chatCard {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 16px;
+  background: white;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.chatHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.roomTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.messageCount {
+  background: #007bff;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.messagesContainer {
+  height: calc(100% - 140px);
+  overflow-y: auto;
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  background: #f8f9fa;
+}
+
+.emptyMessages {
+  text-align: center;
+  color: #6c757d;
+  padding: 32px 16px;
+}
+
+.messageItem {
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 12px;
+  background: white;
+}
+
+.messageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.messageAuthor {
+  font-size: 14px;
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.messageTime {
+  font-size: 12px;
+  color: #6c757d;
+}
+
+.messageText {
+  font-size: 16px;
+  color: #212529;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.messageForm {
+  display: flex;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.messageInput {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  resize: none;
+  min-height: 44px;
+  max-height: 120px;
+  font-size: 16px;
+}
+
+.sendButton {
+  padding: 12px 16px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.sendButton:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.sendButton:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.noRoomSelected {
+  text-align: center;
+  color: #6c757d;
+  padding: 32px 16px;
+}
