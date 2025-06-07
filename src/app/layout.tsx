@@ -1,5 +1,4 @@
 import { SupabaseProvider } from "@/components/SupabaseProvider/SupabaseProvider";
-import { createClient } from "@/utils/supabase/server";
 import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import { Analytics } from "@vercel/analytics/next";
@@ -40,11 +39,6 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
   return (
     <html lang="ja">
       <head>
