@@ -63,7 +63,6 @@ export const RadioCard: React.FC<RadioCardProps> = ({
   } as const;
 
   if (allowMultiple) {
-    // こちらの構造は正しく動作しているので、そのままです
     return (
       <div className={styles.mantineOptionsContainer} style={containerSx}>
         <ScrollArea.Autosize

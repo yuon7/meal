@@ -72,7 +72,7 @@ const Page = () => {
     }
   };
 
-  const handleComplete = () => {
+  const handleComplete = () => {// 後のお店検索の際にこちらに処理を実装するために残しています
     console.log("お店を検索する！");
     console.log("最終的な回答:", answers);
   };
