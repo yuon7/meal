@@ -7,6 +7,67 @@ export const runtime = "nodejs";
 const app = new Hono().basePath("/api");
 const prisma = new PrismaClient();
 
+app.post("/select-restaurant", async (c) => {
+  try {
+    const roomId = c.req.param("roomId");
+    const body = await c.req.json();
+    const { restaurantData, recommendReason, matchScore, userId } = body;
+
+    if (!restaurantData || !userId) {
+      return c.json({ error: "Restaurant data and userId are required" }, 400);
+    }
+
+    // まずRestaurantを作成または取得
+    let restaurant = await prisma.restaurant.findFirst({
+      where: {
+        name: restaurantData.name,
+        url: restaurantData.url,
+      },
+    });
+
+    if (!restaurant) {
+      restaurant = await prisma.restaurant.create({
+        data: {
+          name: restaurantData.name,
+          url: restaurantData.url,
+          genre: restaurantData.genre,
+          area: restaurantData.area,
+          station: restaurantData.station,
+          distance: restaurantData.distance,
+          description: restaurantData.description,
+          rating: restaurantData.rating,
+          reviewCount: restaurantData.reviewCount,
+          savedCount: restaurantData.savedCount,
+          budgetDinner: restaurantData.budgetDinner,
+          budgetLunch: restaurantData.budgetLunch,
+          isHotRestaurant: restaurantData.isHotRestaurant || false,
+        },
+      });
+    }
+
+    // RecomendedRestaurantを作成
+    const recommendedRestaurant = await prisma.recomendedRestaurant.create({
+      data: {
+        recommendReason,
+        matchScore,
+        userId,
+        roomId,
+        restaurantId: restaurant.id,
+        isSelected: true,
+      },
+      include: {
+        restaurant: true,
+        room: true,
+      },
+    });
+
+    return c.json(recommendedRestaurant, 201);
+  } catch (error) {
+    console.error("Error selecting restaurant:", error);
+    return c.json({ error: "Failed to select restaurant" }, 500);
+  }
+});
+
 // TODO: 仮置き、ルーム参加ができたら消す
 app.get("/rooms", async (c) => {
   try {
@@ -70,6 +131,23 @@ app.get("/rooms/:roomId/participants", async (c) => {
   } catch (error) {
     console.error("Error fetching participants:", error);
     return c.json({ error: "Failed to fetch participants" }, 500);
+  }
+});
+
+app.get("/rooms/:roomId/recommended-restaurants", async (c) => {
+  try {
+    const roomId = c.req.param("roomId");
+    const recommendedRestaurants = await prisma.recomendedRestaurant.findMany({
+      where: { roomId },
+      include: {
+        restaurant: true,
+      },
+      orderBy: { matchScore: "desc" },
+    });
+    return c.json(recommendedRestaurants);
+  } catch (error) {
+    console.error("Error fetching recommended restaurants:", error);
+    return c.json({ error: "Failed to fetch recommended restaurants" }, 500);
   }
 });
 
