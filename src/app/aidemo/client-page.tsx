@@ -8,7 +8,7 @@ import { Form } from "./form";
 import { mockRecommendationData } from "./mockData";
 import classes from "./page.module.css";
 
-interface ClientPageProps {
+interface ClientPageProp {
   user: User;
 }
 
