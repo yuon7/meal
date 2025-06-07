@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/client";
+import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
 import { useCallback, useEffect, useState } from "react";
 
@@ -26,17 +26,19 @@ export function useRoomParticipants(selectedRoomId: string | null, user: User) {
       }
       const roomParticipants = await response.json();
 
-      const participantsWithUsernames = roomParticipants.map((participant: any) => {
-        return {
-          id: participant.id,
-          userId: participant.userId,
-          username:
-            participant.userId === user?.id
-              ? user.user_metadata?.full_name || "あなた"
-              : participant.userId,
-          isHost: participant.isHost,
-        };
-      });
+      const participantsWithUsernames = roomParticipants.map(
+        (participant: any) => {
+          return {
+            id: participant.id,
+            userId: participant.userId,
+            username:
+              participant.userId === user?.id
+                ? user.user_metadata?.full_name || "あなた"
+                : participant.userId,
+            isHost: participant.isHost,
+          };
+        }
+      );
 
       setParticipants(participantsWithUsernames);
     } catch (error) {
