@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
   Card,
@@ -37,7 +37,7 @@ interface RoomPageProps {
   roomId: string;
 }
 
-export const RoomPage = ({ roomId: roomid }: RoomPageProps) => {
+function RoomContent({ roomId: roomid }: RoomPageProps) {
   const searchParams = useSearchParams();
   const isCreated = searchParams.get("created") === "true";
 
@@ -135,5 +135,13 @@ export const RoomPage = ({ roomId: roomid }: RoomPageProps) => {
         <RoomShare roomId={id} showCreatedAlert={isCreated} />
       </Stack>
     </Container>
+  );
+}
+
+export const RoomPage = ({ roomId }: RoomPageProps) => {
+  return (
+    <Suspense fallback={<LoadingState isCreated={false} />}>
+      <RoomContent roomId={roomId} />
+    </Suspense>
   );
 };
