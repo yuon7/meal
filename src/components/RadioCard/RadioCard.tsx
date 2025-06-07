@@ -4,50 +4,36 @@ import styles from "./RadioCard.module.css";
 
 interface RadioCardProps {
   options: string[];
-  onOptionChange: (selectedValue: string | string[]) => void;
-  selectedValue: string | string[] | null;
+  onOptionChange: (selectedValue: string[]) => void;
+  selectedValue: string[] | null;
   allowMultiple?: boolean;
 }
 
-export const RadioCard: React.FC<RadioCardProps> = ({
+export function RadioCard({
   options,
   onOptionChange,
   selectedValue,
   allowMultiple = false,
-}) => {
-  const [internalSingleSelection, setInternalSingleSelection] = useState<
-    string | null
-  >(null);
-  const [internalMultiSelections, setInternalMultiSelections] = useState<
-    string[]
-  >([]);
+}: RadioCardProps) {
+  const [internalSelections, setInternalSelections] = useState<string[]>([]);
 
   useEffect(() => {
-    if (allowMultiple) {
-      setInternalMultiSelections(
-        Array.isArray(selectedValue) ? selectedValue : [],
-      );
-      setInternalSingleSelection(null);
-    } else {
-      setInternalSingleSelection(
-        typeof selectedValue === "string" ? selectedValue : null,
-      );
-      setInternalMultiSelections([]);
-    }
-  }, [selectedValue, allowMultiple]);
+    setInternalSelections(selectedValue || []);
+  }, [selectedValue]);
 
   const handleRadioChange = (value: string) => {
-    setInternalSingleSelection(value);
+    const newSelection = [value];
+    setInternalSelections(newSelection);
     if (onOptionChange) {
-      onOptionChange(value);
+      onOptionChange(newSelection);
     }
   };
 
   const handleCheckboxChange = (optionValue: string, checked: boolean) => {
     const newSelections = checked
-      ? [...internalMultiSelections, optionValue]
-      : internalMultiSelections.filter((item) => item !== optionValue);
-    setInternalMultiSelections(newSelections);
+      ? [...internalSelections, optionValue]
+      : internalSelections.filter((item) => item !== optionValue);
+    setInternalSelections(newSelections);
     if (onOptionChange) {
       onOptionChange(newSelections);
     }
@@ -76,15 +62,13 @@ export const RadioCard: React.FC<RadioCardProps> = ({
               <div
                 key={option}
                 className={`${styles.optionCard} ${
-                  internalMultiSelections.includes(option)
-                    ? styles.selected
-                    : ""
+                  internalSelections.includes(option) ? styles.selected : ""
                 }`}
               >
                 <Checkbox
                   label={<div className={styles.cardContent}>{option}</div>}
                   value={option}
-                  checked={internalMultiSelections.includes(option)}
+                  checked={internalSelections.includes(option)}
                   onChange={(event) =>
                     handleCheckboxChange(option, event.currentTarget.checked)
                   }
@@ -106,27 +90,25 @@ export const RadioCard: React.FC<RadioCardProps> = ({
     );
   }
 
-  // ★★★ ここからが単一選択（ラジオボタン）の修正箇所です ★★★
   return (
     <div className={styles.mantineOptionsContainer} style={containerSx}>
-      {/* 最初に ScrollArea.Autosize を配置します */}
-      <ScrollArea.Autosize
-        type="always"
-        className={styles.scrollableOptionsArea}
-        scrollbarSize={scrollbarThickness}
-        style={{ flex: 1, minHeight: 0 }}
+      <Radio.Group
+        value={internalSelections[0] || null}
+        onChange={handleRadioChange}
+        style={{ display: "flex", flexDirection: "column", flex: 1 }}
       >
-        {/* その内側に Radio.Group を配置します */}
-        <Radio.Group
-          value={internalSingleSelection}
-          onChange={handleRadioChange}
+        <ScrollArea.Autosize
+          type="always"
+          className={styles.scrollableOptionsArea}
+          scrollbarSize={scrollbarThickness}
+          style={{ flex: 1, minHeight: 0 }}
         >
           <Stack>
             {options.map((option) => (
               <div
                 key={option}
                 className={`${styles.optionCard} ${
-                  internalSingleSelection === option ? styles.selected : ""
+                  internalSelections[0] === option ? styles.selected : ""
                 }`}
               >
                 <Radio
@@ -145,8 +127,8 @@ export const RadioCard: React.FC<RadioCardProps> = ({
               </div>
             ))}
           </Stack>
-        </Radio.Group>
-      </ScrollArea.Autosize>
+        </ScrollArea.Autosize>
+      </Radio.Group>
     </div>
   );
-};
+}
