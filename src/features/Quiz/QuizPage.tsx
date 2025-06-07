@@ -10,7 +10,7 @@ import { Button, ScrollArea } from "@mantine/core";
 
 export default function QuizPage() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [answers, setAnswers] = useState<Record<number, string[]>>({});
+  const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
   const [showSummaryPage, setShowSummaryPage] = useState<boolean>(false);
   const [isSelectionMade, setIsSelectionMade] = useState<boolean>(false);
 
@@ -26,11 +26,13 @@ export default function QuizPage() {
     if (currentQuestion.required === false) {
       setIsSelectionMade(true);
     } else {
-      setIsSelectionMade(answer ? answer.length > 0 : false);
+      setIsSelectionMade(
+        Array.isArray(answer) ? answer.length > 0 : Boolean(answer)
+      );
     }
   }, [currentQuestionIndex, answers]);
 
-  const handleOptionChange = (selectedValue: string[]) => {
+  const handleOptionChange = (selectedValue: string | string[]) => {
     const currentQuestion = allQuestions[currentQuestionIndex];
     if (!currentQuestion) return;
     const questionId = currentQuestion.id;
@@ -40,7 +42,11 @@ export default function QuizPage() {
       [questionId]: selectedValue,
     }));
 
-    setIsSelectionMade(selectedValue.length > 0);
+    setIsSelectionMade(
+      Array.isArray(selectedValue)
+        ? selectedValue.length > 0
+        : Boolean(selectedValue)
+    );
   };
 
   const proceedToNext = () => {

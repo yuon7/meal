@@ -4,8 +4,8 @@ import styles from "./RadioCard.module.css";
 
 interface RadioCardProps {
   options: string[];
-  onOptionChange: (selectedValue: string[]) => void;
-  selectedValue: string[] | null;
+  onOptionChange: (selectedValue: string | string[]) => void;
+  selectedValue: string | string[] | null;
   allowMultiple?: boolean;
 }
 
@@ -15,25 +15,39 @@ export function RadioCard({
   selectedValue,
   allowMultiple = false,
 }: RadioCardProps) {
-  const [internalSelections, setInternalSelections] = useState<string[]>([]);
+  const [internalSingleSelection, setInternalSingleSelection] = useState<
+    string | null
+  >(null);
+  const [internalMultiSelections, setInternalMultiSelections] = useState<
+    string[]
+  >([]);
 
   useEffect(() => {
-    setInternalSelections(selectedValue || []);
-  }, [selectedValue]);
+    if (allowMultiple) {
+      setInternalMultiSelections(
+        Array.isArray(selectedValue) ? selectedValue : []
+      );
+      setInternalSingleSelection(null);
+    } else {
+      setInternalSingleSelection(
+        typeof selectedValue === "string" ? selectedValue : null
+      );
+      setInternalMultiSelections([]);
+    }
+  }, [selectedValue, allowMultiple]);
 
   const handleRadioChange = (value: string) => {
-    const newSelection = [value];
-    setInternalSelections(newSelection);
+    setInternalSingleSelection(value);
     if (onOptionChange) {
-      onOptionChange(newSelection);
+      onOptionChange(value);
     }
   };
 
   const handleCheckboxChange = (optionValue: string, checked: boolean) => {
     const newSelections = checked
-      ? [...internalSelections, optionValue]
-      : internalSelections.filter((item) => item !== optionValue);
-    setInternalSelections(newSelections);
+      ? [...internalMultiSelections, optionValue]
+      : internalMultiSelections.filter((item) => item !== optionValue);
+    setInternalMultiSelections(newSelections);
     if (onOptionChange) {
       onOptionChange(newSelections);
     }
@@ -60,22 +74,21 @@ export function RadioCard({
               <div
                 key={option}
                 className={`${styles.optionCard} ${
-                  internalSelections.includes(option) ? styles.selected : ""
+                  internalMultiSelections.includes(option)
+                    ? styles.selected
+                    : ""
                 }`}
               >
                 <Checkbox
                   label={<div className={styles.cardContent}>{option}</div>}
                   value={option}
-                  checked={internalSelections.includes(option)}
+                  checked={internalMultiSelections.includes(option)}
                   onChange={(event) =>
                     handleCheckboxChange(option, event.currentTarget.checked)
                   }
                   size="md"
                   styles={{
-                    root: {
-                      width: "100%",
-                      padding: "var(--mantine-spacing-sm)",
-                    },
+                    root: { width: "100%" },
                     body: { alignItems: "center", width: "100%" },
                     labelWrapper: { width: "100%" },
                   }}
@@ -97,16 +110,15 @@ export function RadioCard({
         style={{ flex: 1, minHeight: 0 }}
       >
         <Radio.Group
-          value={internalSelections[0] || null}
+          value={internalSingleSelection}
           onChange={handleRadioChange}
-          style={{ display: "flex", flexDirection: "column", flex: 1 }}
         >
           <Stack>
             {options.map((option) => (
               <div
                 key={option}
                 className={`${styles.optionCard} ${
-                  internalSelections[0] === option ? styles.selected : ""
+                  internalSingleSelection === option ? styles.selected : ""
                 }`}
               >
                 <Radio
@@ -114,10 +126,7 @@ export function RadioCard({
                   value={option}
                   size="md"
                   styles={{
-                    root: {
-                      width: "100%",
-                      padding: "var(--mantine-spacing-sm)",
-                    },
+                    root: { width: "100%" },
                     body: { alignItems: "center", width: "100%" },
                     labelWrapper: { width: "100%" },
                   }}
