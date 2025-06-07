@@ -8,6 +8,9 @@ import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
 import { allQuestions } from "@/data/questions";
 import { Button, ScrollArea } from "@mantine/core";
 import { useSearchParams } from "next/navigation";
+import geoConverter from "@/lib/geoConverter/geoConverter";
+import { generateTabelogURL } from "@/lib/generateTabelogURL/generateTabelogURL";
+import makeTabelogQuery from "@/lib/makeTabelogQuery/makeTabelogQuery";
 
 export default function QuizPage() {
   const searchParams = useSearchParams();
@@ -76,8 +79,25 @@ export default function QuizPage() {
     }
   };
 
-  const handleComplete = () => {
-    const answersParam = encodeURIComponent(JSON.stringify(answers));
+  const buildTabelogUrl = async (lat: number, lng: number) => {
+    // URLのクエリないやつ
+    const tabelogURL = await generateTabelogURL(lat, lng);
+    // クエリパラメータ部分
+    const queryParams = makeTabelogQuery(answers);
+    const returnTabelogUrl = `${tabelogURL}${queryParams}`;
+    return returnTabelogUrl;
+  };
+
+  const handleComplete = async () => {
+    const roomObj = JSON.parse(encoded);
+    const area = roomObj.area;
+    const areaLatLng = await geoConverter(area);
+    if (areaLatLng) {
+      const lat = parseFloat(areaLatLng.latitude);
+      const lng = parseFloat(areaLatLng.longitude);
+      const returnTabelogUrl = await buildTabelogUrl(lat, lng);
+      console.log("食べログURL:", returnTabelogUrl);
+    }
     // 食べログ検索クエリを発行したい:
   };
 
