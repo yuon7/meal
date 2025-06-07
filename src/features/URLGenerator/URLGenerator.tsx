@@ -1,5 +1,6 @@
 "use client";
 
+import geoConverter from "@/lib/geoConverter/geoConverter";
 import makeTabelogQuery from "@/lib/makeTabelogQuery/makeTabelogQuery";
 import { useState } from "react";
 
@@ -18,7 +19,11 @@ export default function URLGenerator() {
   const [lat, setLat] = useState<number>(35.774601);
   const [lng, setLng] = useState<number>(139.707837);
   const [endUrl, setEndUrl] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
+  const [geoLat, setGeoLat] = useState<number>(0);
+  const [geoLng, setGeoLng] = useState<number>(0);
 
+  // 緯度経度から阿部ログの町コード入りURLを生成する関数
   const generateUrl = async (latitude: number, longitude: number) => {
     try {
       const fetchRes = await fetch("api/generateTabelogURL", {
@@ -42,10 +47,22 @@ export default function URLGenerator() {
       setUrl("");
     }
   };
+
+  // ユーザーの回答から、クエリを含んだ食べログのURLを生成する関数
   const handleMakeURL = (params: string[][]) => {
     const queryParams = makeTabelogQuery(params);
     setEndUrl(`${url}${queryParams}`);
   };
+
+  // 入力された場所から緯度経度を生成する関数
+  const handleGeocode = async (location: string) => {
+    const result = await geoConverter(location);
+    if (result) {
+      setGeoLat(parseFloat(result.latitude));
+      setGeoLng(parseFloat(result.longitude));
+    }
+  };
+
   return (
     <div style={{ padding: "1rem" }}>
       <h2>食べログのURL生成</h2>
@@ -95,6 +112,24 @@ export default function URLGenerator() {
           </a>
         </div>
       )}
+
+      <div>
+        <label>
+          経度：
+          <input
+            type="string"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </label>
+        <button onClick={() => handleGeocode(location)}>緯度経度を生成</button>
+        {geoLat !== 0 && geoLng !== 0 && (
+          <div>
+            <p>緯度: {geoLat}</p>
+            <p>経度: {geoLng}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
