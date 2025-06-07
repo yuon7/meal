@@ -31,7 +31,7 @@ model Room {
   RoomParticipant RoomParticipant[]
   Message Message[]
 
-  RecomendedRestaurant RecomendedRestaurant[] @relation("RecomendedRestaurantRoom")
+  RecommendedRestaurant RecommendedRestaurant[] @relation("RecommendedRestaurantRoom")
 }
 
 model RoomParticipant{
@@ -66,11 +66,11 @@ model Restaurant{
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  RecomendedRestaurant RecomendedRestaurant[]
+  RecommendedRestaurant RecommendedRestaurant[]
 
 }
 
-model RecomendedRestaurant {
+model RecommendedRestaurant {
   id String @id @default(uuid())
 
   recommendReason String
@@ -85,7 +85,7 @@ model RecomendedRestaurant {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  room Room? @relation("RecomendedRestaurantRoom", fields: [roomId], references: [id])
+  room Room? @relation("RecommendedRestaurantRoom", fields: [roomId], references: [id])
   restaurant Restaurant @relation(fields: [restaurantId], references: [id])
 }
 
