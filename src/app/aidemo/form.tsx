@@ -3,7 +3,7 @@
 import { Button, Card, Stack, Text, TextInput, Title } from "@mantine/core";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { getRecomendRestaurantInfo } from "./action";
+import { getRecommendRestaurantInfo } from "./action";
 import classes from "./page.module.css";
 
 type Restaurant = {
@@ -37,7 +37,7 @@ export function Form() {
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     try {
-      const res = await getRecomendRestaurantInfo(formData);
+      const res = await getRecommendRestaurantInfo(formData);
       if ("result" in res && Array.isArray(res.result)) {
         const encodedData = encodeURIComponent(JSON.stringify(res.result));
         router.push(`/recommend-result?data=${encodedData}`);
