@@ -5,27 +5,58 @@ import {
   Card,
   Avatar,
   Text,
-  Badge,
-  Button,
   Group,
   Stack,
   Grid,
   Box,
+  SimpleGrid,
 } from "@mantine/core";
 import {
   IconUser,
   IconUsers,
-  IconMapPin,
   IconStar,
-  IconClock,
   IconToolsKitchen2,
-  IconArrowRight,
   IconBuildingStore,
 } from "@tabler/icons-react";
 import classes from "./Home.module.css";
-import React from "react";
+import React, { useState } from "react";
+import MenuCard from "@/components/MenuCard/MenuCard";
+import CreateRoomModal from "@/components/CreateRoomModal/CreateRoomModal";
+import { useDisclosure } from "@mantine/hooks";
+import { useRouter } from "next/navigation";
 
 export function HomeContent() {
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [opened, { open, close }] = useDisclosure(false);
+  const router = useRouter();
+  const menuOptions = [
+    {
+      id: "solo",
+      title: "ひとりで",
+      subtitle: "お店を見つけよう",
+      icon: IconUser,
+      color: "#FF6B6B",
+      gradient: "linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%)",
+      description: "気分に合わせてお店を選択",
+    },
+    {
+      id: "create",
+      title: "ルームを作成",
+      subtitle: "みんなでお店を決めよう",
+      icon: IconUsers,
+      color: "#4ECDC4",
+      gradient: "linear-gradient(135deg, #4ECDC4 0%, #6ED5CE 100%)",
+      description: "友達を招待して一緒にお店選び",
+    },
+  ];
+
+  const handleCardClick = (optionId: string) => {
+    if (optionId === "solo") {
+      router.push("/meal3");
+    } else {
+      open();
+    }
+  };
   return (
     <div className={classes.container}>
       <Container size={800} className={classes.content}>
@@ -42,7 +73,6 @@ export function HomeContent() {
               行ってみたいお店を一緒に決めよう！
             </Text>
           </Box>
-
           {/* Profile Card */}
           <Card className={classes.profileCard} shadow="lg" radius="md">
             <Group>
@@ -60,86 +90,29 @@ export function HomeContent() {
               <Box ta="right"></Box>
             </Group>
           </Card>
-
-          {/* Main Actions */}
-          <Stack gap="md">
-            <Card className={classes.actionCard} shadow="lg" radius="md">
-              <Group>
-                <div className={classes.actionIconPink}>
-                  <IconUser size={24} color="white" />
-                </div>
-                <Box style={{ flex: 1 }}>
-                  <Text fw={600} size="lg" c="dark" mb={4}>
-                    ひとりで探す
-                  </Text>
-                  <Text size="sm" c="dimmed" mb="xs">
-                    気分に合わせてお店を選択
-                  </Text>
-                  <Group gap="xs">
-                    <Badge
-                      variant="outline"
-                      size="xs"
-                      leftSection={<IconMapPin size={12} />}
-                    >
-                      好きなお店
-                    </Badge>
-                    <Badge
-                      variant="outline"
-                      size="xs"
-                      leftSection={<IconStar size={12} />}
-                    >
-                      おすすめ
-                    </Badge>
-                  </Group>
-                </Box>
-                <Button className={classes.buttonPink} size="sm">
-                  開始
-                  <IconArrowRight size={16} style={{ marginLeft: 4 }} />
-                </Button>
-              </Group>
-            </Card>
-
-            <Card className={classes.actionCard} shadow="lg" radius="md">
-              <Group>
-                <div className={classes.actionIconTeal}>
-                  <IconUsers size={24} color="white" />
-                </div>
-                <Box style={{ flex: 1 }}>
-                  <Text fw={600} size="lg" c="dark" mb={4}>
-                    ルームを作成
-                  </Text>
-                  <Text size="sm" c="dimmed" mb="xs">
-                    みんなでお店を決めよう
-                  </Text>
-                  <Group gap="xs">
-                    <Badge
-                      variant="outline"
-                      size="xs"
-                      leftSection={<IconUsers size={12} />}
-                    >
-                      グループ決め
-                    </Badge>
-                    <Badge
-                      variant="outline"
-                      size="xs"
-                      leftSection={<IconClock size={12} />}
-                    >
-                      リアルタイム
-                    </Badge>
-                  </Group>
-                </Box>
-                <Button className={classes.buttonTeal} size="sm">
-                  作成
-                  <IconArrowRight size={16} style={{ marginLeft: 4 }} />
-                </Button>
-              </Group>
-            </Card>
-          </Stack>
+          <SimpleGrid cols={1} spacing="md" className={classes.menuGrid}>
+            {menuOptions.map((option) => (
+              <MenuCard
+                key={option.id}
+                id={option.id}
+                title={option.title}
+                subtitle={option.subtitle}
+                description={option.description}
+                icon={option.icon}
+                color={option.color}
+                gradient={option.gradient}
+                isHovered={hoveredCard === option.id}
+                onMouseEnter={() => setHoveredCard(option.id)}
+                onMouseLeave={() => setHoveredCard(null)}
+                onClick={() => handleCardClick(option.id)}
+              />
+            ))}
+          </SimpleGrid>
 
           {/* Quick Actions */}
           <Grid>
             <Grid.Col span={6}>
-              <Card className={classes.quickActionCard} shadow="md" radius="md">
+              <Card className={classes.quickActionCard} shadow="md" radius="lg">
                 <Stack align="center" gap="xs">
                   <div className={classes.quickActionIconYellow}>
                     <IconStar size={20} />
@@ -154,7 +127,7 @@ export function HomeContent() {
               </Card>
             </Grid.Col>
             <Grid.Col span={6}>
-              <Card className={classes.quickActionCard} shadow="md" radius="md">
+              <Card className={classes.quickActionCard} shadow="md" radius="lg">
                 <Stack align="center" gap="xs">
                   <div className={classes.quickActionIconGreen}>
                     <IconToolsKitchen2 size={20} />
@@ -169,7 +142,6 @@ export function HomeContent() {
               </Card>
             </Grid.Col>
           </Grid>
-
           {/* Recent Activity */}
           <Card className={classes.activityCard} shadow="md" radius="md">
             <Text fw={600} c="dark" mb="md">
@@ -198,6 +170,7 @@ export function HomeContent() {
           </Card>
         </Stack>
       </Container>
+      <CreateRoomModal opened={opened} close={close} />
     </div>
   );
 }
