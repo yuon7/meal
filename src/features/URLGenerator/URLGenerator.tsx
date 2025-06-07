@@ -23,7 +23,7 @@ export default function URLGenerator() {
   const [geoLat, setGeoLat] = useState<number>(0);
   const [geoLng, setGeoLng] = useState<number>(0);
 
-  // 緯度経度から阿部ログの町コード入りURLを生成する関数
+  // 緯度経度から食べログの町コード入りURLを生成する関数
   const generateUrl = async (latitude: number, longitude: number) => {
     try {
       const fetchRes = await fetch("api/generateTabelogURL", {
