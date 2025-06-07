@@ -74,9 +74,7 @@ export function RadioCard({
               <div
                 key={option}
                 className={`${styles.optionCard} ${
-                  internalMultiSelections.includes(option)
-                    ? styles.selected
-                    : ""
+                  internalMultiSelections.includes(option) ? styles.selected : ""
                 }`}
               >
                 <Checkbox
@@ -88,7 +86,10 @@ export function RadioCard({
                   }
                   size="md"
                   styles={{
-                    root: { width: "100%" },
+                    root: {
+                      width: "100%",
+                      padding: "var(--mantine-spacing-sm)",
+                    },
                     body: { alignItems: "center", width: "100%" },
                     labelWrapper: { width: "100%" },
                   }}
@@ -112,6 +113,7 @@ export function RadioCard({
         <Radio.Group
           value={internalSingleSelection}
           onChange={handleRadioChange}
+          style={{ display: "flex", flexDirection: "column", flex: 1 }}
         >
           <Stack>
             {options.map((option) => (
@@ -126,7 +128,10 @@ export function RadioCard({
                   value={option}
                   size="md"
                   styles={{
-                    root: { width: "100%" },
+                    root: {
+                      width: "100%",
+                      padding: "var(--mantine-spacing-sm)",
+                    },
                     body: { alignItems: "center", width: "100%" },
                     labelWrapper: { width: "100%" },
                   }}
