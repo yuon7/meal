@@ -14,6 +14,7 @@ import {
 } from "@mantine/core";
 import { IconCurrencyYen, IconMapPin, IconStar } from "@tabler/icons-react";
 import classes from "./RecommendationResults.module.css";
+import React from "react";
 
 type Restaurant = {
   name: string;

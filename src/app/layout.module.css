@@ -1,7 +1,7 @@
 .rootContainer {
   position: relative;
   min-height: 100vh;
-  background: linear-gradient(135deg, #ff9a56 0%, #ff6b95 100%);
+  background: linear-gradient(135deg, #fb923c 0%, #f472b6 50%, #ef4444 100%);
   overflow: hidden;
 }
 
