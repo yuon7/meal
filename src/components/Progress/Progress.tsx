@@ -10,7 +10,8 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
   currentStep,
   totalSteps,
 }) => {
-  const progressPercentage = (currentStep / totalSteps) * 100;
+  const progressPercentage =
+    totalSteps > 0 ? (currentStep / totalSteps) * 100 : 0;
 
   return (
     <div className={styles.progressBarContainer}>
@@ -19,11 +20,12 @@ export const ProgressBar: React.FC<ProgressBarProps> = ({
         style={{ width: `${progressPercentage}%` }}
       />
 
-      {[...Array(totalSteps + 1)].map((_, index) => {
-        const left = (index / totalSteps) * 100;
+      {[...Array(totalSteps - 1)].map((_, i) => {
+        const stepIndex = i + 1;
+        const left = (stepIndex / totalSteps) * 100;
         return (
           <div
-            key={index}
+            key={stepIndex}
             className={styles.stepMarker}
             style={{ left: `${left}%` }}
           />
