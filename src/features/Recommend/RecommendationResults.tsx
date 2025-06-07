@@ -12,7 +12,10 @@ import {
   Text,
   Title,
 } from "@mantine/core";
+import { User } from "@supabase/supabase-js";
 import { IconCurrencyYen, IconMapPin, IconStar } from "@tabler/icons-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import classes from "./RecommendationResults.module.css";
 
 type Restaurant = {
@@ -41,12 +44,81 @@ type RecommendationResult = {
 
 interface RecommendationResultsProps {
   results: RecommendationResult[];
+  roomId?: string;
+  user?: User;
 }
 
-export function RecommendationResults({ results }: RecommendationResultsProps) {
-  const handleSelectRestaurant = (restaurant: Restaurant) => {
-    // TODO: 実装予定 - レストラン選択時の処理
-    console.log("レストランが選択されました:", restaurant.name);
+export function RecommendationResults({
+  results,
+  roomId,
+  user,
+}: RecommendationResultsProps) {
+  const router = useRouter();
+  const [loading, setLoading] = useState<Set<string>>(new Set());
+
+  const handleSelectRestaurant = async (
+    restaurant: Restaurant,
+    recommendationItem: RecommendationResult
+  ) => {
+    if (!user) {
+      console.log("ルームIDまたはユーザー情報が不足しています");
+      return;
+    }
+
+    const restaurantId = restaurant.url;
+
+    setLoading((prev) => new Set([...prev, restaurantId]));
+
+    const restaurantData = {
+      name: restaurant.name,
+      url: restaurant.url,
+      genre: restaurant.genre,
+      area: restaurant.area,
+      station: restaurant.station,
+      distance: restaurant.distance,
+      description: restaurant.description,
+      rating: restaurant.rating,
+      reviewCount: restaurant.reviewCount,
+      savedCount: restaurant.savedCount,
+      budgetDinner: restaurant.budgetDinner,
+      budgetLunch: restaurant.budgetLunch,
+      isHotRestaurant: restaurant.isHotRestaurant,
+    };
+
+    try {
+      const response = await fetch(`/api/select-restaurant`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          restaurantData,
+          recommendReason: recommendationItem.recommendReason,
+          matchScore: recommendationItem.matchScore,
+          userId: user.id,
+          roomId,
+        }),
+      });
+
+      if (response.ok) {
+        console.log("レストランが正常に選択されました:", restaurant.name);
+
+        if (roomId) {
+          router.push(`/rooms/${roomId}?restaurant-selected=true`);
+        }
+      } else {
+        const errorData = await response.json();
+        console.error("レストラン選択に失敗しました:", errorData.error);
+      }
+    } catch (error) {
+      console.error("レストラン選択エラー:", error);
+    } finally {
+      setLoading((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(restaurantId);
+        return newSet;
+      });
+    }
   };
   return (
     <Card className={classes.resultsCard}>
@@ -179,9 +251,15 @@ export function RecommendationResults({ results }: RecommendationResultsProps) {
                     size="sm"
                     variant="filled"
                     color="blue"
-                    onClick={() => handleSelectRestaurant(item.restaurant)}
+                    loading={loading.has(item.restaurant.name)}
+                    disabled={loading.has(item.restaurant.name)}
+                    onClick={() =>
+                      handleSelectRestaurant(item.restaurant, item)
+                    }
                   >
-                    このレストランを選択する
+                    {loading.has(item.restaurant.name)
+                      ? "選択中..."
+                      : "このレストランを選択"}
                   </Button>
                 </Group>
               </Stack>
