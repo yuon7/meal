@@ -3,45 +3,14 @@ import { z } from "zod";
 import { tabelogAgent } from "../agents/tabelog-agent";
 import { tabelogSearchResultsTool } from "../tools/tabelog-tool";
 
-// 検索結果のレストラン情報の型定義
-interface SearchRestaurantInfo {
-  name: string;
-  url: string;
-  genre: string;
-  area: string;
-  station: string;
-  distance: string;
-  rating: number;
-  reviewCount: number;
-  savedCount: number;
-  budgetDinner: string;
-  budgetLunch: string;
-  description: string;
-  hasVpoint: boolean;
-  isHotRestaurant: boolean;
-  thumbnailImages: string[];
-}
-
-// ユーザー好みの型定義
-interface UserPreference {
-  budget: string;
-  genres: string[];
-  purpose: string;
-}
-
-// 推薦結果の型定義
-interface RecommendationResult {
-  restaurant: SearchRestaurantInfo;
-  recommendReason: string;
-  matchScore: number;
-}
-
-// モックユーザー好み
-const mockPreference: UserPreference = {
-  budget: "5000円以下",
-  genres: ["バル", "焼肉"],
-  purpose: "友人との会食",
-};
+// SearchOptionsのZodスキーマ
+const SearchOptionsSchema = z
+  .object({
+    foodGenre: z.string().optional(),
+    ambience: z.array(z.string()).optional(),
+    budjets: z.string().optional(),
+  })
+  .catchall(z.union([z.string(), z.array(z.string())]).optional());
 
 // レストラン情報のZodスキーマ
 const SearchRestaurantInfoSchema = z.object({
@@ -68,9 +37,11 @@ const fetchRestaurants = createStep({
   description: "食べログの検索結果URLからレストラン一覧を取得",
   inputSchema: z.object({
     url: z.string().url(),
+    quizAnswers: SearchOptionsSchema,
   }),
   outputSchema: z.object({
     restaurants: z.array(SearchRestaurantInfoSchema),
+    quizAnswers: SearchOptionsSchema,
   }),
   execute: async ({ inputData }) => {
     try {
@@ -84,6 +55,7 @@ const fetchRestaurants = createStep({
 
       return {
         restaurants: result.restaurants,
+        quizAnswers: inputData.quizAnswers,
       };
     } catch (error) {
       console.error("Failed to fetch restaurants:", error);
@@ -92,25 +64,56 @@ const fetchRestaurants = createStep({
   },
 });
 
-// Step 2: モックユーザー好み取得
-const getMockPreferences = createStep({
-  id: "get-mock-preferences",
-  description: "モックユーザー好みデータの取得",
+// Step 2: Quiz回答からユーザー好み変換
+const convertQuizAnswersToPreferences = createStep({
+  id: "convert-quiz-answers",
+  description: "Quiz回答をユーザー好みデータに変換",
   inputSchema: z.object({
     restaurants: z.array(SearchRestaurantInfoSchema),
+    quizAnswers: SearchOptionsSchema,
   }),
   outputSchema: z.object({
     restaurants: z.array(SearchRestaurantInfoSchema),
     preferences: z.object({
       budget: z.string(),
       genres: z.array(z.string()),
-      purpose: z.string(),
+      purpose: z.array(z.string()),
+      preferences: z.array(z.string()),
     }),
   }),
   execute: async ({ inputData }) => {
+    const { quizAnswers } = inputData;
+
+    // SearchOptionsからユーザー好みデータに変換
+    const genres = quizAnswers.foodGenre ? [quizAnswers.foodGenre] : [];
+    const budget = quizAnswers.budjets || "指定なし";
+    const preferences = quizAnswers.ambience || [];
+
+    // 他のオプション値を目的として扱う
+    const purpose: string[] = [];
+    Object.entries(quizAnswers).forEach(([key, value]) => {
+      if (
+        key !== "foodGenre" &&
+        key !== "budjets" &&
+        key !== "ambience" &&
+        value
+      ) {
+        if (Array.isArray(value)) {
+          purpose.push(...value);
+        } else {
+          purpose.push(value);
+        }
+      }
+    });
+
     return {
       restaurants: inputData.restaurants,
-      preferences: mockPreference,
+      preferences: {
+        budget,
+        genres,
+        purpose,
+        preferences,
+      },
     };
   },
 });
@@ -124,7 +127,8 @@ const analyzeAndRecommend = createStep({
     preferences: z.object({
       budget: z.string(),
       genres: z.array(z.string()),
-      purpose: z.string(),
+      purpose: z.array(z.string()),
+      preferences: z.array(z.string()),
     }),
   }),
   outputSchema: z.array(
@@ -132,7 +136,7 @@ const analyzeAndRecommend = createStep({
       restaurant: SearchRestaurantInfoSchema,
       recommendReason: z.string(),
       matchScore: z.number(),
-    }),
+    })
   ),
   execute: async ({ inputData }) => {
     const prompt = `
@@ -189,7 +193,7 @@ ${JSON.stringify(inputData.restaurants, null, 2)}
           restaurant: SearchRestaurantInfoSchema,
           recommendReason: z.string(),
           matchScore: z.number(),
-        }),
+        })
       );
 
       const generateResult = await tabelogAgent.generate(prompt, {
@@ -215,7 +219,7 @@ ${JSON.stringify(inputData.restaurants, null, 2)}
             item &&
             item.restaurant &&
             typeof item.recommendReason === "string" &&
-            typeof item.matchScore === "number",
+            typeof item.matchScore === "number"
         );
 
         if (resultArray.length === 0) {
@@ -224,7 +228,7 @@ ${JSON.stringify(inputData.restaurants, null, 2)}
       } catch (error) {
         console.error("レスポンスの解析に失敗:", error);
         throw new Error(
-          `推薦結果の解析に失敗しました: ${error instanceof Error ? error.message : "不明なエラー"}`,
+          `推薦結果の解析に失敗しました: ${error instanceof Error ? error.message : "不明なエラー"}`
         );
       }
 
@@ -241,20 +245,21 @@ ${JSON.stringify(inputData.restaurants, null, 2)}
 // ワークフローの定義
 export const restaurantRecommendationWorkflow = createWorkflow({
   id: "restaurant-recommendation",
-  description: "食べログの検索結果URLから好みに合うレストランを推薦",
+  description: "食べログの検索結果URLとQuiz回答から好みに合うレストランを推薦",
   inputSchema: z.object({
     url: z.string().url(),
+    quizAnswers: SearchOptionsSchema,
   }),
   outputSchema: z.array(
     z.object({
       restaurant: SearchRestaurantInfoSchema,
       recommendReason: z.string(),
       matchScore: z.number(),
-    }),
+    })
   ),
 })
   .then(fetchRestaurants)
-  .then(getMockPreferences)
+  .then(convertQuizAnswersToPreferences)
   .then(analyzeAndRecommend);
 
 // ワークフローのコミット

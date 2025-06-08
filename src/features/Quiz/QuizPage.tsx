@@ -8,7 +8,9 @@ import { RadioCard } from "@/components/RadioCard/RadioCard";
 import { allQuestions } from "@/data/questions";
 import { generateTabelogURL } from "@/lib/generateTabelogURL/generateTabelogURL";
 import geoConverter from "@/lib/geoConverter/geoConverter";
-import makeTabelogQuery from "@/lib/makeTabelogQuery/makeTabelogQuery";
+import makeTabelogQuery, {
+  SearchOptions,
+} from "@/lib/makeTabelogQuery/makeTabelogQuery";
 import { Button, ScrollArea } from "@mantine/core";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,7 +23,7 @@ export default function QuizPage() {
   const encoded = searchParams.get("room");
   if (!encoded) return <p>ルーム情報がありません</p>;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
-  const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
+  const [answers, setAnswers] = useState<SearchOptions>({});
   const [showSummaryPage, setShowSummaryPage] = useState<boolean>(false);
   const [isSelectionMade, setIsSelectionMade] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -106,7 +108,10 @@ export default function QuizPage() {
         const lng = parseFloat(areaLatLng.longitude);
         const returnTabelogUrl = await buildTabelogUrl(lat, lng);
 
-        const aiAgentres = await getRecommendRestaurantInfo(returnTabelogUrl);
+        const aiAgentres = await getRecommendRestaurantInfo(
+          returnTabelogUrl,
+          answers
+        );
         if ("result" in aiAgentres && Array.isArray(aiAgentres.result)) {
           const encodedData = encodeURIComponent(
             JSON.stringify(aiAgentres.result)
