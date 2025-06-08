@@ -25,19 +25,6 @@
   min-height: 200px;
 }
 
-/* フロー用コンテナ */
-.flowingFood {
-  position: fixed;
-  top: 50%;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  overflow: hidden;
-  transform: translateY(-50%);
-  z-index: 1000;
-}
-
 /* 列そのもの。max-content にして横幅を計算させる */
 .foodFlow {
   display: flex;
@@ -46,36 +33,6 @@
   white-space: nowrap;
   will-change: transform;
 }
-
-.chef {
-  font-size: 4rem;
-  margin-bottom: 2rem;
-  display: inline-block;
-}
-
-.cookingScene {
-  position: relative;
-  margin: 2rem 0;
-  height: 120px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.pan {
-  font-size: 3rem;
-  position: relative;
-  z-index: 2;
-}
-
-.sparkles {
-  position: absolute;
-  font-size: 2rem;
-  top: -10px;
-  right: -10px;
-  z-index: 3;
-}
-
 
 .foodEmoji {
   font-size: 3rem;
@@ -143,29 +100,7 @@
   z-index: 1001;
 }
 
-.dots {
-  font-size: 1.5rem;
-  color: #ff6b95;
-  letter-spacing: 0.2rem;
-}
-
-.dots span {
-  display: inline-block;
-  margin: 0 0.1rem;
-}
-
 @media (max-width: 768px) {
-  .chef {
-    font-size: 3rem;
-  }
-
-  .pan {
-    font-size: 2.5rem;
-  }
-
-  .sparkles {
-    font-size: 1.5rem;
-  }
 
   .foodEmoji {
     font-size: 2rem;

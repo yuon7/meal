@@ -1,3 +1,4 @@
+import { openai } from "@ai-sdk/openai";
 import { Agent } from "@mastra/core/agent";
 import { tabelogSearchResultsTool } from "../tools/tabelog-tool";
 import { openaiWithINIADEndpoint } from "../utils/openaiWithINIADEndpoint";
@@ -81,7 +82,10 @@ export const tabelogAgent = new Agent({
 
 必要に応じてtabelogScraperToolやtabelogSearchResultsToolを使用して、正確な情報を取得してください。
 `,
-  model: openaiWithINIADEndpoint("gpt-4.1"),
+  model:
+    process.env.NODE_ENV === "production"
+      ? openai("gpt-4.1-mini")
+      : openaiWithINIADEndpoint("gpt-4.1"),
   tools: {
     tabelogSearchResultsTool,
   },
