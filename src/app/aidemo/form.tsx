@@ -37,7 +37,7 @@ export function Form() {
   async function handleSubmit(formData: FormData) {
     setLoading(true);
     try {
-      const res = await getRecommendRestaurantInfo(formData);
+      const res = await getRecommendRestaurantInfo(formData.get("tabelogURL") as string);
       if ("result" in res && Array.isArray(res.result)) {
         const encodedData = encodeURIComponent(JSON.stringify(res.result));
         router.push(`/recommend-result?data=${encodedData}`);

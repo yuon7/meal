@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { useChatMessages } from "./hooks/useChatMessages";
 import { useChatRooms } from "./hooks/useChatRooms";
 import { useRoomParticipants } from "./hooks/useRoomParticipants";
+import { useRoomRecommendations } from "./hooks/useRoomRecommendations";
 
 interface ChatProps {
   user: User | null;
@@ -31,6 +32,7 @@ export default function Chat({ user, roomId }: ChatProps) {
   const { messages, newMessage, setNewMessage, handleSendMessage } =
     useChatMessages(selectedRoomId, user);
   const { participants } = useRoomParticipants(selectedRoomId, user);
+  const { recommendations, loading: recommendationsLoading } = useRoomRecommendations(selectedRoomId, user);
 
   useEffect(() => {
     if (roomId) {
@@ -58,7 +60,14 @@ export default function Chat({ user, roomId }: ChatProps) {
           />
         );
       case "restaurants":
-        return <RestaurantList />;
+        return (
+          <RestaurantList 
+            recommendations={recommendations}
+            loading={recommendationsLoading}
+            roomId={selectedRoomId}
+            user={user}
+          />
+        );
       case "participants":
         return (
           <ParticipantsList

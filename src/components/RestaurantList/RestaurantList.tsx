@@ -1,88 +1,142 @@
 "use client";
 
+import { User } from "@supabase/supabase-js";
 import styles from "./RestaurantList.module.css";
 
 interface Restaurant {
   id: string;
   name: string;
-  cuisine: string;
-  location: string;
+  url: string;
+  genre: string;
+  area: string;
+  station: string;
+  distance: string;
+  description: string;
   rating: number;
-  priceRange: string;
-  tags: string[];
+  reviewCount: number;
+  savedCount: number;
+  budgetDinner: string;
+  budgetLunch: string;
+  isHotRestaurant: boolean;
 }
 
-const mockRestaurants: Restaurant[] = [
-  {
-    id: "1",
-    name: "和食亭 さくら",
-    cuisine: "日本料理",
-    location: "渋谷区",
-    rating: 4.5,
-    priceRange: "¥3,000-5,000",
-    tags: ["個室あり", "飲み放題", "接待向け"],
-  },
-  {
-    id: "2",
-    name: "Trattoria Bella Vista",
-    cuisine: "イタリア料理",
-    location: "港区",
-    rating: 4.3,
-    priceRange: "¥4,000-6,000",
-    tags: ["テラス席", "ワイン豊富", "デート向け"],
-  },
-  {
-    id: "3",
-    name: "焼肉 炎",
-    cuisine: "焼肉",
-    location: "新宿区",
-    rating: 4.2,
-    priceRange: "¥2,500-4,000",
-    tags: ["食べ放題", "深夜営業", "団体OK"],
-  },
-  {
-    id: "4",
-    name: "寿司処 海",
-    cuisine: "寿司",
-    location: "中央区",
-    rating: 4.7,
-    priceRange: "¥8,000-12,000",
-    tags: ["カウンター席", "高級", "おまかせ"],
-  },
-  {
-    id: "5",
-    name: "中華飯店 龍",
-    cuisine: "中華料理",
-    location: "台東区",
-    rating: 4.1,
-    priceRange: "¥2,000-3,500",
-    tags: ["円卓", "大皿料理", "宴会向け"],
-  },
-];
+interface RecommendedRestaurant {
+  id: string;
+  recommendReason: string;
+  matchScore: number;
+  userId: string;
+  roomId: string | null;
+  restaurantId: string;
+  isSelected: boolean;
+  createdAt: string;
+  updatedAt: string;
+  restaurant: Restaurant;
+}
 
-export default function RestaurantList() {
+interface RestaurantListProps {
+  recommendations: RecommendedRestaurant[];
+  loading: boolean;
+  roomId: string | null;
+  user: User | null;
+}
+
+export default function RestaurantList({
+  recommendations,
+  loading,
+  roomId,
+  user,
+}: RestaurantListProps) {
+  if (loading) {
+    return (
+      <div className={styles.container}>
+        <h2 className={styles.title}>おすすめのお店</h2>
+        <div className={styles.loading}>読み込み中...</div>
+      </div>
+    );
+  }
+
+  if (!roomId) {
+    return (
+      <div className={styles.container}>
+        <h2 className={styles.title}>おすすめのお店</h2>
+        <div className={styles.noRoom}>ルームが選択されていません</div>
+      </div>
+    );
+  }
+
+  if (recommendations.length === 0) {
+    return (
+      <div className={styles.container}>
+        <h2 className={styles.title}>おすすめのお店</h2>
+        <div className={styles.noRecommendations}>
+          まだレストランの推薦がありません。
+          <br />
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className={styles.container}>
       <h2 className={styles.title}>おすすめのお店</h2>
-      {mockRestaurants.map((restaurant) => (
-        <div key={restaurant.id} className={styles.restaurantCard}>
+      {recommendations.map((recommendation) => (
+        <div key={recommendation.id} className={styles.restaurantCard}>
           <div className={styles.restaurantHeader}>
-            <h3 className={styles.restaurantName}>{restaurant.name}</h3>
+            <h3 className={styles.restaurantName}>
+              <a
+                href={recommendation.restaurant.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.restaurantLink}
+              >
+                {recommendation.restaurant.name}
+              </a>
+            </h3>
             <div className={styles.rating}>
-              ⭐ {restaurant.rating}
+              ⭐ {recommendation.restaurant.rating}
+            </div>
+            {recommendation.restaurant.isHotRestaurant && (
+              <div className={styles.hotBadge}>🔥 話題</div>
+            )}
+          </div>
+
+          <div className={styles.restaurantInfo}>
+            <div className={styles.genre}>
+              {recommendation.restaurant.genre}
+            </div>
+            <div className={styles.location}>
+              📍 {recommendation.restaurant.area} -{" "}
+              {recommendation.restaurant.station}
+            </div>
+            <div className={styles.distance}>
+              🚶 {recommendation.restaurant.distance}
+            </div>
+            <div className={styles.budget}>
+              💰 ディナー: {recommendation.restaurant.budgetDinner} | ランチ:{" "}
+              {recommendation.restaurant.budgetLunch}
             </div>
           </div>
-          <div className={styles.restaurantInfo}>
-            <div className={styles.cuisine}>{restaurant.cuisine}</div>
-            <div className={styles.location}>📍 {restaurant.location}</div>
-            <div className={styles.price}>💰 {restaurant.priceRange}</div>
+
+          <div className={styles.description}>
+            {recommendation.restaurant.description}
           </div>
-          <div className={styles.tags}>
-            {restaurant.tags.map((tag, index) => (
-              <span key={index} className={styles.tag}>
-                {tag}
-              </span>
-            ))}
+
+          <div className={styles.recommendationInfo}>
+            <div className={styles.matchScore}>
+              マッチ度: {recommendation.matchScore}/100
+            </div>
+            <div className={styles.recommendReason}>
+              <strong>推薦理由:</strong> {recommendation.recommendReason}
+            </div>
+          </div>
+
+          <div className={styles.stats}>
+            <span className={styles.stat}>
+              👥 {recommendation.restaurant.reviewCount} レビュー
+            </span>
+            <span className={styles.stat}>
+              💾 {recommendation.restaurant.savedCount} 保存
+            </span>
           </div>
         </div>
       ))}

@@ -1,25 +1,29 @@
 "use client";
 
-import styles from "./QuizPage.module.css";
-import React, { useState, useEffect } from "react";
+import { getRecommendRestaurantInfo } from "@/app/aidemo/action";
+import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
+import { CookingLoader } from "@/components/CookingLoader/CookingLoader";
 import { ProgressBar } from "@/components/Progress/Progress";
 import { RadioCard } from "@/components/RadioCard/RadioCard";
-import { BlockQuote } from "@/components/BlockQuote/BlockQuote";
 import { allQuestions } from "@/data/questions";
-import { Button, ScrollArea } from "@mantine/core";
-import { useSearchParams } from "next/navigation";
-import geoConverter from "@/lib/geoConverter/geoConverter";
 import { generateTabelogURL } from "@/lib/generateTabelogURL/generateTabelogURL";
+import geoConverter from "@/lib/geoConverter/geoConverter";
 import makeTabelogQuery from "@/lib/makeTabelogQuery/makeTabelogQuery";
+import { Button, ScrollArea } from "@mantine/core";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import styles from "./QuizPage.module.css";
 
 export default function QuizPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const encoded = searchParams.get("room");
   if (!encoded) return <p>ルーム情報がありません</p>;
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [answers, setAnswers] = useState<Record<number, string | string[]>>({});
   const [showSummaryPage, setShowSummaryPage] = useState<boolean>(false);
   const [isSelectionMade, setIsSelectionMade] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const totalSteps: number = allQuestions.length;
 
@@ -89,16 +93,33 @@ export default function QuizPage() {
   };
 
   const handleComplete = async () => {
-    const roomObj = JSON.parse(encoded);
-    const area = roomObj.area;
-    const areaLatLng = await geoConverter(area);
-    if (areaLatLng) {
-      const lat = parseFloat(areaLatLng.latitude);
-      const lng = parseFloat(areaLatLng.longitude);
-      const returnTabelogUrl = await buildTabelogUrl(lat, lng);
-      console.log("食べログURL:", returnTabelogUrl);
+    setIsLoading(true);
+
+    try {
+      const roomObj = JSON.parse(encoded);
+      const roomId = roomObj.id;
+      const area = roomObj.area;
+      const areaLatLng = await geoConverter(area);
+      if (areaLatLng) {
+        const lat = parseFloat(areaLatLng.latitude);
+        const lng = parseFloat(areaLatLng.longitude);
+        const returnTabelogUrl = await buildTabelogUrl(lat, lng);
+
+        const aiAgentres = await getRecommendRestaurantInfo(returnTabelogUrl);
+        if ("result" in aiAgentres && Array.isArray(aiAgentres.result)) {
+          const encodedData = encodeURIComponent(
+            JSON.stringify(aiAgentres.result)
+          );
+          router.push(`/recommend-result?roomid=${roomId}&data=${encodedData}`);
+        } else {
+          console.error("Invalid response format:", aiAgentres);
+        }
+      }
+    } catch (error) {
+      console.error("レストラン情報の取得に失敗しました:", error);
+    } finally {
+      setIsLoading(false);
     }
-    // 食べログ検索クエリを発行したい:
   };
 
   const handleReset = () => {
@@ -111,6 +132,10 @@ export default function QuizPage() {
   const currentQuestion = showSummaryPage
     ? null
     : allQuestions[currentQuestionIndex];
+
+  if (isLoading) {
+    return <CookingLoader />;
+  }
 
   return (
     <div className={styles.container}>
@@ -204,8 +229,9 @@ export default function QuizPage() {
                 size="lg"
                 onClick={handleComplete}
                 className={styles.completeButton}
+                disabled={isLoading}
               >
-                お店を探す
+                {isLoading ? "検索中..." : "お店を探す"}
               </Button>
             </div>
             <div className={styles.resetButtonContainer}>

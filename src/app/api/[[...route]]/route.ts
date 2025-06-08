@@ -9,9 +9,9 @@ const prisma = new PrismaClient();
 
 app.post("/select-restaurant", async (c) => {
   try {
-    const roomId = c.req.param("roomId");
     const body = await c.req.json();
-    const { restaurantData, recommendReason, matchScore, userId } = body;
+    const { restaurantData, recommendReason, matchScore, userId, roomId } =
+      body;
 
     if (!restaurantData || !userId) {
       return c.json({ error: "Restaurant data and userId are required" }, 400);
