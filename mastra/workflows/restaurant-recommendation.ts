@@ -2,48 +2,15 @@ import { createStep, createWorkflow } from "@mastra/core/workflows";
 import { z } from "zod";
 import { tabelogAgent } from "../agents/tabelog-agent";
 import { tabelogSearchResultsTool } from "../tools/tabelog-tool";
-import { SearchOptions } from "../../src/lib/makeTabelogQuery/makeTabelogQuery";
-
-// 検索結果のレストラン情報の型定義
-interface SearchRestaurantInfo {
-  name: string;
-  url: string;
-  genre: string;
-  area: string;
-  station: string;
-  distance: string;
-  rating: number;
-  reviewCount: number;
-  savedCount: number;
-  budgetDinner: string;
-  budgetLunch: string;
-  description: string;
-  hasVpoint: boolean;
-  isHotRestaurant: boolean;
-  thumbnailImages: string[];
-}
 
 // SearchOptionsのZodスキーマ
-const SearchOptionsSchema = z.object({
-  foodGenre: z.string().optional(),
-  ambience: z.array(z.string()).optional(),
-  budjets: z.string().optional(),
-}).catchall(z.union([z.string(), z.array(z.string())]).optional());
-
-// ユーザー好みの型定義
-interface UserPreference {
-  budget: string;
-  genres: string[];
-  purpose: string[];
-  preferences: string[];
-}
-
-// 推薦結果の型定義
-interface RecommendationResult {
-  restaurant: SearchRestaurantInfo;
-  recommendReason: string;
-  matchScore: number;
-}
+const SearchOptionsSchema = z
+  .object({
+    foodGenre: z.string().optional(),
+    ambience: z.array(z.string()).optional(),
+    budjets: z.string().optional(),
+  })
+  .catchall(z.union([z.string(), z.array(z.string())]).optional());
 
 // レストラン情報のZodスキーマ
 const SearchRestaurantInfoSchema = z.object({
@@ -116,16 +83,21 @@ const convertQuizAnswersToPreferences = createStep({
   }),
   execute: async ({ inputData }) => {
     const { quizAnswers } = inputData;
-    
+
     // SearchOptionsからユーザー好みデータに変換
     const genres = quizAnswers.foodGenre ? [quizAnswers.foodGenre] : [];
     const budget = quizAnswers.budjets || "指定なし";
     const preferences = quizAnswers.ambience || [];
-    
+
     // 他のオプション値を目的として扱う
     const purpose: string[] = [];
     Object.entries(quizAnswers).forEach(([key, value]) => {
-      if (key !== 'foodGenre' && key !== 'budjets' && key !== 'ambience' && value) {
+      if (
+        key !== "foodGenre" &&
+        key !== "budjets" &&
+        key !== "ambience" &&
+        value
+      ) {
         if (Array.isArray(value)) {
           purpose.push(...value);
         } else {
@@ -164,7 +136,7 @@ const analyzeAndRecommend = createStep({
       restaurant: SearchRestaurantInfoSchema,
       recommendReason: z.string(),
       matchScore: z.number(),
-    }),
+    })
   ),
   execute: async ({ inputData }) => {
     const prompt = `
@@ -221,7 +193,7 @@ ${JSON.stringify(inputData.restaurants, null, 2)}
           restaurant: SearchRestaurantInfoSchema,
           recommendReason: z.string(),
           matchScore: z.number(),
-        }),
+        })
       );
 
       const generateResult = await tabelogAgent.generate(prompt, {
@@ -247,7 +219,7 @@ ${JSON.stringify(inputData.restaurants, null, 2)}
             item &&
             item.restaurant &&
             typeof item.recommendReason === "string" &&
-            typeof item.matchScore === "number",
+            typeof item.matchScore === "number"
         );
 
         if (resultArray.length === 0) {
@@ -256,7 +228,7 @@ ${JSON.stringify(inputData.restaurants, null, 2)}
       } catch (error) {
         console.error("レスポンスの解析に失敗:", error);
         throw new Error(
-          `推薦結果の解析に失敗しました: ${error instanceof Error ? error.message : "不明なエラー"}`,
+          `推薦結果の解析に失敗しました: ${error instanceof Error ? error.message : "不明なエラー"}`
         );
       }
 
@@ -283,7 +255,7 @@ export const restaurantRecommendationWorkflow = createWorkflow({
       restaurant: SearchRestaurantInfoSchema,
       recommendReason: z.string(),
       matchScore: z.number(),
-    }),
+    })
   ),
 })
   .then(fetchRestaurants)
