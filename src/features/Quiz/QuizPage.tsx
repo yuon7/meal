@@ -13,6 +13,7 @@ import { Button, ScrollArea } from "@mantine/core";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import styles from "./QuizPage.module.css";
+import React from "react";
 
 export default function QuizPage() {
   const searchParams = useSearchParams();

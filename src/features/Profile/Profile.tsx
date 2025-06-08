@@ -15,7 +15,7 @@ export default function Profile({ user }: UserProp) {
         <Group>
           <Avatar
             size="lg"
-            src={user?.user_metadata?.avatar_url || "/default-avatar.png"}
+            src={user?.user_metadata?.avatar_url}
             alt="プロフィール画像"
           />
           <Box>

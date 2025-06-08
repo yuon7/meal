@@ -1,19 +1,8 @@
 "use client";
 
-import {
-  Accordion,
-  Anchor,
-  Badge,
-  Button,
-  Card,
-  Divider,
-  Group,
-  Stack,
-  Text,
-  Title,
-} from "@mantine/core";
-import { User } from "@supabase/supabase-js";
-import { IconCurrencyYen, IconMapPin, IconStar } from "@tabler/icons-react";
+import { Badge, Button, Card, Group, Stack, Text, Title } from "@mantine/core";
+import type { User } from "@supabase/supabase-js";
+import { IconMapPin, IconStar, IconArrowRight } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import classes from "./RecommendationResults.module.css";
@@ -107,7 +96,6 @@ export function RecommendationResults({
       });
 
       if (response.ok) {
-
         if (roomId) {
           router.push(`/chat/${roomId}?restaurant-selected=true`);
         }
@@ -125,153 +113,83 @@ export function RecommendationResults({
       });
     }
   };
+
   return (
-    <Card className={classes.resultsCard}>
-      <Title order={3} mb="md" ta="center">
-        推薦レストラン ({results.length}件)
-      </Title>
+    <div className={classes.container}>
+      <div className={classes.header}>
+        <Title order={2} className={classes.title}>
+          おすすめレストラン
+        </Title>
+        <Text size="sm" c="#9a3412">
+          {results.length}件見つかりました
+        </Text>
+      </div>
 
-      <Accordion variant="separated" radius="md">
+      <Stack gap="md">
         {results.map((item, index) => (
-          <Accordion.Item key={index} value={`restaurant-${index}`}>
-            <Accordion.Control>
-              <div className={classes.accordionHeader}>
-                <div className={classes.restaurantHeaderInfo}>
-                  <div className={classes.restaurantNameRow}>
-                    <Text fw={600} className={classes.restaurantNameMobile}>
-                      {item.restaurant.name}
-                    </Text>
-                  </div>
-                  <div className={classes.restaurantMetaRow}>
-                    <Group gap="xs" className={classes.restaurantMeta}>
-                      <Text size="md" c="dimmed">
-                        {item.restaurant.area}
-                      </Text>
-                      <Group gap={2}>
-                        <IconStar size={14} />
-                        <Text size="md">{item.restaurant.rating}</Text>
-                      </Group>
-                      <Badge
-                        size="md"
-                        variant="light"
-                        color="green"
-                        className={classes.genreBadgeMobile}
-                      >
-                        {item.restaurant.genre}
-                      </Badge>
-                      <Badge className={classes.compactMatchScore}>
-                        マッチ度:{item.matchScore}%
-                      </Badge>
-                    </Group>
-                  </div>
-                </div>
-              </div>
-            </Accordion.Control>
-
-            <Accordion.Panel>
-              <Stack gap="sm">
-                <div>
-                  <Group justify="space-between" mb={6}>
-                    <Anchor
-                      href={item.restaurant.url}
-                      target="_blank"
-                      fw={500}
-                      c="blue"
-                    >
-                      食べログで詳細を見る
-                    </Anchor>
-                    {item.restaurant.isHotRestaurant && (
-                      <Badge variant="light" color="red" size="sm">
-                        🔥話題のお店
-                      </Badge>
-                    )}
-                  </Group>
-
-                  <Stack gap="xs" className={classes.restaurantDetailsStack}>
-                    <Group gap={4}>
-                      <IconMapPin size={14} />
-                      <Text size="sm">
-                        {item.restaurant.station}駅 {item.restaurant.distance}
-                      </Text>
-                    </Group>
-                    <Group gap={4}>
-                      <IconStar size={14} />
-                      <Text size="sm">
-                        {item.restaurant.rating} ({item.restaurant.reviewCount}
-                        件)
-                      </Text>
-                    </Group>
-                  </Stack>
-
-                  {(item.restaurant.budgetDinner ||
-                    item.restaurant.budgetLunch) && (
-                    <div className={classes.budgetInfo}>
-                      <Group gap={4}>
-                        <IconCurrencyYen size={14} />
-                        <div>
-                          {item.restaurant.budgetDinner && (
-                            <Text size="sm" className={classes.budgetText}>
-                              夜: {item.restaurant.budgetDinner}
-                            </Text>
-                          )}
-                          {item.restaurant.budgetLunch && (
-                            <Text size="sm" className={classes.budgetText}>
-                              昼: {item.restaurant.budgetLunch}
-                            </Text>
-                          )}
-                        </div>
-                      </Group>
-                    </div>
-                  )}
-                </div>
-                <Divider />
-
-                <Group gap={4}>
-                  {item.restaurant.description && (
-                    <div>
-                      <div>
-                        <Text fw={500} mb={4} size="sm">
-                          お店の特徴:
-                        </Text>
-                        <Text size="sm" c="dimmed">
-                          {item.restaurant.description}
-                        </Text>
-                      </div>
-                    </div>
-                  )}
-
-                  <div>
-                    <Divider />
-                    <Text fw={500} mb={4} size="sm">
-                      推薦理由:
-                    </Text>
+          <Card key={index} className={classes.restaurantCard} p="lg">
+            <Group justify="space-between" align="flex-start" mb="md">
+              <div className={classes.restaurantInfo}>
+                <Text className={classes.restaurantName} mb="xs">
+                  {item.restaurant.name}
+                </Text>
+                <Group gap="md" mb="xs">
+                  <Group gap="xs">
+                    <IconMapPin size={16} />
                     <Text size="sm" c="dimmed">
-                      {item.recommendReason}
+                      {item.restaurant.area}
                     </Text>
-                  </div>
+                  </Group>
+                  <Group gap="xs">
+                    <IconStar size={16} className={classes.starIcon} />
+                    <Text size="sm">{item.restaurant.rating}</Text>
+                    <Text size="sm" c="dimmed">
+                      ({item.restaurant.reviewCount}件)
+                    </Text>
+                  </Group>
                 </Group>
+                <Group gap="xs">
+                  <Badge className={classes.genreBadge}>
+                    {item.restaurant.genre}
+                  </Badge>
+                  <Badge className={classes.matchBadge}>
+                    マッチ度 {item.matchScore}%
+                  </Badge>
+                  {item.restaurant.isHotRestaurant && (
+                    <Badge className={classes.hotBadge}>話題のお店</Badge>
+                  )}
+                </Group>
+              </div>
+            </Group>
 
-                <Group justify="flex-end" mt="sm">
-                  <Button
-                    size="sm"
-                    variant="filled"
-                    color="blue"
-                    loading={loading.has(item.restaurant.name)}
-                    disabled={loading.has(item.restaurant.name)}
-                    onClick={() =>
-                      handleSelectRestaurant(item.restaurant, item)
-                    }
-                  >
-                    {loading.has(item.restaurant.name)
-                      ? "選択中..."
-                      : "このレストランを選択"}
-                  </Button>
-                </Group>
-              </Stack>
-            </Accordion.Panel>
-          </Accordion.Item>
+            <Text size="sm" c="dimmed" mb="md" className={classes.description}>
+              {item.recommendReason}
+            </Text>
+
+            <Group justify="space-between" align="center">
+              <Text
+                component="a"
+                href={item.restaurant.url}
+                target="_blank"
+                className={classes.detailsLink}
+                size="sm"
+              >
+                詳細を見る
+              </Text>
+              <Button
+                className={classes.selectButton}
+                size="sm"
+                loading={loading.has(item.restaurant.name)}
+                disabled={loading.has(item.restaurant.name)}
+                onClick={() => handleSelectRestaurant(item.restaurant, item)}
+                rightSection={<IconArrowRight size={16} />}
+              >
+                選択
+              </Button>
+            </Group>
+          </Card>
         ))}
-      </Accordion>
-    </Card>
+      </Stack>
+    </div>
   );
 }
