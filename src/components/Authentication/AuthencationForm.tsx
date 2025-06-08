@@ -14,14 +14,12 @@ import {
 import { useForm } from "@mantine/form";
 import { upperFirst, useToggle } from "@mantine/hooks";
 import { GoogleButton } from "./GoogleButton";
-import { TwitterButton } from "./TwitterButton";
 import { login, signup } from "@/app/auth/login/action";
 import { GithubButton } from "./GithubButton/GithubButton";
 
 type Props = {
   readonly searchParams: { error?: string };
   readonly handleGoogleLogin: () => Promise<void>;
-  readonly handleTwitterLogin: () => Promise<void>;
   readonly handleGitHubLogin: () => Promise<void>;
 };
 
@@ -30,7 +28,6 @@ type CombinedProps = PaperProps & Props;
 export function AuthenticationForm({
   searchParams,
   handleGoogleLogin,
-  handleTwitterLogin,
   handleGitHubLogin,
   ...props
 }: CombinedProps) {
@@ -64,11 +61,6 @@ export function AuthenticationForm({
             <GoogleButton radius="xl" onClick={handleGoogleLogin}>
               Google
             </GoogleButton>
-            <TwitterButton radius="xl" onClick={handleTwitterLogin}>
-              Twitter
-            </TwitterButton>
-          </Group>
-          <Group ps="center">
             <GithubButton onClick={handleGitHubLogin} />
           </Group>
         </Stack>
