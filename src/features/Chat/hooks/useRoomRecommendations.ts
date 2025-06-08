@@ -2,7 +2,7 @@
 
 import { createClient } from "@/utils/supabase/client";
 import { User } from "@supabase/supabase-js";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 interface Restaurant {
   id: string;
@@ -39,63 +39,36 @@ export function useRoomRecommendations(roomId: string | null, user: User | null)
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const fetchRecommendations = useCallback(async () => {
+    if (!roomId) {
+      setRecommendations([]);
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await fetch(`/api/rooms/${roomId}/recommended-restaurants`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch recommendations");
+      }
+      const data: RecommendedRestaurant[] = await response.json();
+      setRecommendations(data);
+    } catch (err) {
+      console.error("Error fetching room recommendations:", err);
+      setError(err instanceof Error ? err.message : "Unknown error");
+      setRecommendations([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [roomId]);
+
   useEffect(() => {
     if (!roomId || !user) {
       setRecommendations([]);
       return;
     }
-
-    const fetchRecommendations = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const supabase = createClient();
-        
-        const { data, error: fetchError } = await supabase
-          .from("RecommendedRestaurant")
-          .select(`
-            id,
-            recommendReason,
-            matchScore,
-            userId,
-            roomId,
-            restaurantId,
-            isSelected,
-            createdAt,
-            updatedAt,
-            restaurant:Restaurant (
-              id,
-              name,
-              url,
-              genre,
-              area,
-              station,
-              distance,
-              description,
-              rating,
-              reviewCount,
-              savedCount,
-              budgetDinner,
-              budgetLunch,
-              isHotRestaurant
-            )
-          `)
-          .eq("roomId", roomId)
-          .order("matchScore", { ascending: false });
-
-        if (fetchError) {
-          throw fetchError;
-        }
-
-        setRecommendations(data || []);
-      } catch (err) {
-        console.error("Error fetching room recommendations:", err);
-        setError(err instanceof Error ? err.message : "Unknown error");
-      } finally {
-        setLoading(false);
-      }
-    };
 
     fetchRecommendations();
 
