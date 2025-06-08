@@ -26,7 +26,6 @@ function LoginContent() {
     <AuthenticationForm
       searchParams={{ error }}
       handleGoogleLogin={handleGoogleLogin}
-      handleTwitterLogin={handleTwitterLogin}
       handleGitHubLogin={handleGitHubLogin}
     />
   );
