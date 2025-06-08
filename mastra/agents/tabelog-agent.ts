@@ -84,7 +84,7 @@ export const tabelogAgent = new Agent({
 `,
   model:
     process.env.NODE_ENV === "production"
-      ? openai("gpt-4.1-mini")
+      ? openai("gpt-4.1")
       : openaiWithINIADEndpoint("gpt-4.1"),
   tools: {
     tabelogSearchResultsTool,
