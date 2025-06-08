@@ -31,10 +31,11 @@ type RecommendationResult = {
 
 interface ClientPageProps {
   user: User;
+  roomId?: string;
   results: RecommendationResult[];
 }
 
-export default function ClientPage({ user, results }: ClientPageProps) {
+export default function ClientPage({ user, results, roomId }: ClientPageProps) {
   const router = useRouter();
 
   const handleGoBack = () => {
@@ -51,7 +52,7 @@ export default function ClientPage({ user, results }: ClientPageProps) {
         レストラン推薦結果
       </Title>
 
-      <RecommendationResults results={results} user={user} />
+      <RecommendationResults results={results} user={user} roomId={roomId} />
     </Container>
   );
 }
