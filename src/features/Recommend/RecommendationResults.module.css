@@ -125,8 +125,16 @@
 
 /* ライトモード専用（食卓に合う明るい色） */
 @media (prefers-color-scheme: light) {
-  .container {
-    background: linear-gradient(135deg, #fef7ed 0%, #fed7aa 50%, #fdba74 100%);
+  .title {
+    color: #9a3412;
+  }
+
+  .restaurantName {
+    color: #9a3412;
+  }
+
+  .description {
+    color: #7c2d12;
   }
 }
 
