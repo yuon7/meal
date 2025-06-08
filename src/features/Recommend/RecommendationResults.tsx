@@ -66,7 +66,12 @@ export function RecommendationResults({
       return;
     }
 
-    const restaurantId = restaurant.url;
+    const restaurantId = restaurant.name;
+
+    // 連打防止：既にローディング中の場合は処理を中断
+    if (loading.has(restaurantId)) {
+      return;
+    }
 
     setLoading((prev) => new Set([...prev, restaurantId]));
 
@@ -102,10 +107,11 @@ export function RecommendationResults({
       });
 
       if (response.ok) {
+        console.log(roomId)
         console.log("レストランが正常に選択されました:", restaurant.name);
 
         if (roomId) {
-          router.push(`/rooms/${roomId}?restaurant-selected=true`);
+          router.push(`/chat/${roomId}?restaurant-selected=true`);
         }
       } else {
         const errorData = await response.json();
