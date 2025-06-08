@@ -107,8 +107,6 @@ export function RecommendationResults({
       });
 
       if (response.ok) {
-        console.log(roomId)
-        console.log("レストランが正常に選択されました:", restaurant.name);
 
         if (roomId) {
           router.push(`/chat/${roomId}?restaurant-selected=true`);

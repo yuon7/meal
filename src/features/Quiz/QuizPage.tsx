@@ -98,7 +98,6 @@ export default function QuizPage() {
     try {
       const roomObj = JSON.parse(encoded);
       const roomId = roomObj.id;
-      console.log("Room ID:", roomId);
       const area = roomObj.area;
       const areaLatLng = await geoConverter(area);
       if (areaLatLng) {
