@@ -4,7 +4,6 @@ import {
   Accordion,
   Anchor,
   Badge,
-  Button,
   Card,
   Divider,
   Group,
@@ -17,7 +16,6 @@ import { IconCurrencyYen, IconMapPin, IconStar } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import classes from "./RecommendationResults.module.css";
-import React from "react";
 
 type Restaurant = {
   name: string;
@@ -107,7 +105,6 @@ export function RecommendationResults({
       });
 
       if (response.ok) {
-
         if (roomId) {
           router.push(`/chat/${roomId}?restaurant-selected=true`);
         }
@@ -252,7 +249,7 @@ export function RecommendationResults({
                 </Group>
 
                 <Group justify="flex-end" mt="sm">
-                  <Button
+                  {/* <Button
                     size="sm"
                     variant="filled"
                     color="blue"
@@ -265,7 +262,7 @@ export function RecommendationResults({
                     {loading.has(item.restaurant.name)
                       ? "選択中..."
                       : "このレストランを選択"}
-                  </Button>
+                  </Button> */}
                 </Group>
               </Stack>
             </Accordion.Panel>
