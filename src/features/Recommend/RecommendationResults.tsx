@@ -1,19 +1,16 @@
 "use client";
 
 import {
-  Accordion,
-  Anchor,
   Badge,
   Button,
   Card,
-  Divider,
   Group,
   Stack,
   Text,
   Title,
 } from "@mantine/core";
 import { User } from "@supabase/supabase-js";
-import { IconCurrencyYen, IconMapPin, IconStar } from "@tabler/icons-react";
+import { IconMapPin, IconStar } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import classes from "./RecommendationResults.module.css";
@@ -188,9 +185,9 @@ export function RecommendationResults({
                       : "このレストランを選択"}
                   </Button>
                 </Group>
-              </Stack>
-            </Accordion.Panel>
-          </Accordion.Item>
+              </div>
+            </Group>
+          </Card>
         ))}
       </Stack>
     </div>
